@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import wasm from "vite-plugin-wasm"
 const path = require('path')
 const config = require('./package.json')
 
@@ -9,11 +10,13 @@ export default defineConfig({
       "__APP_VERSION__": `'rd-runtime:${config.version}'`
    },
    build: {
+      target: 'esnext',
       sourcemap: true,
       cssCodeSplit: true,
       lib: {
          entry: path.resolve(__dirname, 'src/index.js'),
-         name: 'rd-runtime'
+         name: 'rd-runtime',
+         formats: ['es'],
       },
       rollupOptions: {
          // 请确保外部化那些你的库中不需要的依赖
@@ -24,16 +27,18 @@ export default defineConfig({
          }
       }
    },
-   plugins: [{
-      buildStart() {
-         console.log('开始打包')
-         times = new Date().getTime()
-      },
-      closeBundle() {
-         times = new Date().getTime() - times
-         console.log('结束打包，用时:' + (times / 1000) + 's')
-      }
-   }],
+   plugins: [
+      wasm(),
+      {
+         buildStart() {
+            console.log('开始打包')
+            times = new Date().getTime()
+         },
+         closeBundle() {
+            times = new Date().getTime() - times
+            console.log('结束打包，用时:' + (times / 1000) + 's')
+         }
+      }],
    resolve: {
       alias: {
          '@': path.resolve(__dirname, 'src')
