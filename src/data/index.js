@@ -9,6 +9,7 @@ import * as helper from '../helper'
 import initData from './initData'
 import getData from './getData'
 import getTemplateData from './getTemplateData'
+import { useAsyncLoad } from '../plugin/use'
 export default {
    getData(blob = false) {
       if (blob == false) {
@@ -21,6 +22,9 @@ export default {
    // init: initData,
    async init(data) {
       let res = await secrecy.decrypt(data)
+      if (res && Array.isArray(res.plugins)) {
+         await useAsyncLoad(res.plugins)
+      }
       initData(res)
       return res
    },

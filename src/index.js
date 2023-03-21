@@ -1,19 +1,19 @@
-import isPlainObject from 'lodash/isPlainObject'
+import pageLifecycle from 'page-lifecycle'
 import App from './app'
-import { initSet, getMyApp, destroyMyApp, createMyApp, displayMyApp } from './app'
-import { AppSetup } from './config'
 import Data from './data'
 import Component from './component'
 import ComponentMixin from './component/baseMixin'
 import Controller from './controller'
 import Command from './command'
 import TypeModel from './data/TypeModel'
-import { EVENTS as events } from './events'
 import * as Helper from './helper'
 import * as Remote from './remote'
 import * as Utils from './utils'
-import loadjs from './utils/loadjs'
-import pageLifecycle from 'page-lifecycle'
+import * as Use from './plugin/use'
+import * as Stage from './stage'
+import { AppSetup } from './config'
+import { EVENTS as events } from './events'
+import { setProps } from './runtime'
 
 import './css.css'
 export const utils = Utils
@@ -35,101 +35,22 @@ export const EVENTS = events;
 export const helper = Helper;
 // 远程接口数据
 export const remote = Remote
-
+// 应用
 export const app = App
+// 应用基本信息
 export const appInfo = AppSetup
-
 // 创建舞台
-export const createStage = function (options, props) {
-   if (AppSetup.status == 'none' || AppSetup.status == 'remove' || AppSetup.status == 'destroy') {
-      initSet(options)
-      Data.resetAppData()
-      // 创建应用
-      if (createMyApp(props)) {
-         // 注册组件到应用
-         component.install()
-         if (isPlainObject(options)) {
-            // 显示到舞台
-            displayStage(options)
-         }
-         return true
-      } else {
-         console.warn('应用已存在，不可重复创建')
-         return false
-      }
-   } else {
-      console.warn('应用创建失败')
-      return false
-   }
-}
+export const createStage = Stage.createStage
 // 显示内容到舞台
-export const displayStage = function (options) {
-   let appSetup = initSet({})
-   if (!getMyApp()) {
-      if (createMyApp()) {
-         component.reload()
-      }
-   }
-   if (appSetup.status != 'display') {
-      if (typeof options == 'string') {
-         appSetup = initSet({ dom: options })
-      } else if (isPlainObject(options)) {
-         appSetup = initSet(options)
-      }
-      // 显示舞台
-      displayMyApp()
-   } else {
-      console.warn('舞台已显示')
-   }
-}
+export const displayStage = Stage.displayStage
 // 删除舞台
-export const removeStage = function () {
-   // 卸载舞台应用
-   destroyMyApp()
-}
+export const removeStage = Stage.removeStage
 // 销毁舞台
-export const destroyStage = function (clearData = true) {
-   if (clearData) {
-      // 清除数据
-      Data.clearDataAll()
-      // 清除动作插件（外置）
-      Controller.removeAll()
-   }
-   // 清除组件
-   Component.removeAll()
-   // 清除动作事件
-   Command.clear()
-   // 助手临时数据
-   Helper.clear()
-   // 卸载舞台应用
-   destroyMyApp()
-   // 更改状态
-   AppSetup.status = "destroy"
-   console.log('%c灿destroy', 'color:#0aa100')
-}
+export const destroyStage = Stage.destroyStage
 // 插件安装
-export const use = function (install) {
-   if (install instanceof Function) {
-      install(runtime)
-   } else if (install && typeof install == 'object' && install.install && install.install instanceof Function) {
-      install.install(runtime)
-   }
-}
+export const use = Use.use
 // 异步插件安装
-export const useAsync = function ({ url, name }) {
-   return new Promise((resolve, reject) => {
-      loadjs(url, function () {
-         if (typeof name == 'string') {
-            use(window[name])
-         } else if (Array.isArray(name)) {
-            name.forEach(element => {
-               use(window[element])
-            })
-         }
-         resolve()
-      })
-   })
-}
+export const useAsync = Use.useAsync
 // 创建应用
 export const createApp = function (config) {
    let _components = config.components || []
@@ -169,7 +90,7 @@ export const createApp = function (config) {
 pageLifecycle.addEventListener('statechange', function (event) {
    Command.emit(EVENTS.PAGE_STATE, { state: event.newState, oldState: event.oldState })
 });
-const runtime = {
+const runtime = setProps({
    utils,
    rdata,
    component,
@@ -188,7 +109,7 @@ const runtime = {
    displayStage,
    createStage,
    destroyStage
-}
+})
 if (typeof __APP_VERSION__ != 'undefined') {
    console.log('%c' + __APP_VERSION__, 'color:#0aa100')
 }
