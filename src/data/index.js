@@ -10,6 +10,7 @@ import initData from './initData'
 import getData from './getData'
 import getTemplateData from './getTemplateData'
 import { useAsyncLoad } from '../plugin/use'
+import { nanoid } from 'nanoid'
 export default {
    getData(blob = false) {
       if (blob == false) {
@@ -35,6 +36,19 @@ export default {
    ...actData,
    ...globalData,
    ...plugin,
+   async copyData(value, option) {
+      let data = null
+      if (value) {
+         data = await secrecy.decrypt(value)
+      } else {
+         data = getData()
+      }
+      data.id = 'A_' + nanoid(10)
+      if (option) {
+         Object.assign(data, option)
+      }
+      return data
+   },
    getElement(id) {
       return spriteData.getSpriteData(id) || spriteData.getGroup(id)
    },
