@@ -174,9 +174,12 @@ export const setZindex = function (spid, level = 'up') {
    }
 }
 /**
- * 复制组件
+ * 复制元件并添加
+ * @param {*} sid 需要复制的数据id
+ * @param {*} option 数据覆盖
+ * @param {*} gpid 所在组id
  */
-export const copy = function (sid, option, gpid = null) {
+export const copyAdd = function (sid, option, gpid = null) {
    // 所有舞台元件
    const spritesData = getSpritesData()
    const groupsData = getGroups()
@@ -201,12 +204,79 @@ export const copy = function (sid, option, gpid = null) {
       }
       let newGroup = group.newGroupData(element, element.mid)
       groupComponents.forEach(sprite => {
-         copy(sprite.id, { gpid: newGroup.id }, newGroup.id)
+         copyAdd(sprite.id, { gpid: newGroup.id }, newGroup.id)
       })
       return newGroup
    }
 }
 
+/**
+ * 复制元件数据
+ * @param {*} id 需要复制的数据id
+ * @param {*} clear 是否清除事件与数据
+ */
+export const copy = function (id, clear) {
+   // 所有舞台元件
+   const spritesData = getSpritesData()
+   const groupsData = getGroups()
+   if (spritesData[id]) {
+      let sprData = jsonData(spritesData[id])
+      sprData.title += "_c"
+      if (clear) {
+         // 清除关联信息
+         delete sprData.id
+         delete sprData.gpid
+         delete sprData.mid
+         delete sprData.zIndex
+         delete sprData.lock
+         delete sprData.bind
+         if (typeof sprData.data == 'string' && (/(^GD_\S{10})|(^GD_query)|(^RD_\S{10})$/.test(sprData.data))) {
+            sprData.data = ''
+         }
+         sprData.events = []
+      }
+      return sprData
+   } else if (groupsData[id]) {
+      let element = jsonData(groupsData[id])
+      element.title += "_c"
+      if (clear) {
+         delete element.id
+         delete element.gpid
+         delete element.mid
+         delete element.zIndex
+      }
+      // 处理子元件
+      if (Array.isArray(element.components)) {
+         element.components = element.components.map(item => {
+            return copy(item.id, clear)
+         })
+      }
+      return element
+   }
+}
+export const add = function (value, mid, gid) {
+   if (value && typeof value == 'object') {
+      let element = jsonData(value)
+      if (element.type == 'group' && mid) {
+         // 组合处理
+         let groupComponents = []
+         if (element.components) {
+            groupComponents = element.components
+            delete element.components
+         }
+         let newGroup = group.newGroupData(element, mid)
+         groupComponents.forEach(sprite => {
+            add(sprite, mid, newGroup.id)
+         })
+      } else if (mid) {
+         addSpriteData(element, mid, gid)
+      } else {
+         console.warn('缺少页面数据')
+      }
+   } else {
+      console.warn('添加失败')
+   }
+}
 /**
  * 切换模块
  * @param {*} id 需要显示的模块id

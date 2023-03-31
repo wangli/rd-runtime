@@ -72,7 +72,7 @@ export const setSprite = function (data, option) {
          return sprites[data.id]
       } else if (data.name) {
          // 重新初始化对象
-         Object.assign(newData, initCompData(data.name, data))
+         Object.assign(newData, initCompData(data.name, data), option)
          sprites[newData.id] = newData
          elements[newData.id] = newData
          return sprites[newData.id]

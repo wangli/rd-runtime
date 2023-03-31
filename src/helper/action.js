@@ -76,7 +76,7 @@ export const addAction = function (actionId, target, eventName = "") {
    }
 }
 /**
- * 编辑当前元素向触发的动作传值
+ * 编辑当前元件向触发的动作传值
  * @param {*} actionId 
  * @param {*} target 
  * @param {*} eventName 

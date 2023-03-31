@@ -24,7 +24,7 @@ export const getMaxZIndex = function (mid) {
       let comps = modules[mid]['components'].map(item => {
          return {
             id: item.id,
-            zIndex: item.zIndex
+            zIndex: item.zIndex || 0
          }
       }).sort((a, b) => {
          return b.zIndex - a.zIndex
