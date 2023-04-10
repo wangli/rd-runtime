@@ -1,4 +1,5 @@
 import { modules, setModule, delModule } from './msData'
+import { delElementData } from './element'
 import { removeArray } from '@/utils'
 
 
@@ -54,8 +55,19 @@ export const delElement = function (id, mid = 'default') {
    }
 }
 // 删除模块数据
-export const delModuleData = function (mid) {
-   return delModule(mid)
+export const delModuleData = function (mid, clear = false) {
+   if (clear && modules[mid]) {
+      let items = modules[mid]['components']
+      if (Array.isArray(items)) {
+         let ids = items.map(item => item.id)
+         ids.forEach(id => {
+            delElementData(id)
+         })
+      }
+      delModule(mid)
+   } else {
+      return delModule(mid)
+   }
 }
 // 返回某个模块
 export const getModule = function (id) {

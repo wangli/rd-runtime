@@ -6,7 +6,7 @@ const actions = [{
    value: true
 },
 {
-   name: '轮换显示隐藏',
+   name: '显示开关',
    action: "toggle",
    target: 'component',
    valueType: "undefined",

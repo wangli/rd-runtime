@@ -1,4 +1,4 @@
-import { reactive, watch } from 'vue'
+import { watch } from 'vue'
 import { sprites, simpleSprites, groups, setGroup, delGroup, unwatchs } from './msData'
 import { addElement as moduleAddElement, delElement as moduleDelElement, getModuleComponents } from './ModulesData'
 import { delSpriteData, createSimpleSprite } from "./SpritesData"
