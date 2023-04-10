@@ -13,10 +13,11 @@ export const delElementData = function (id) {
                 delElementData(element.id)
             })
             if (groupsSrc[id].gpid) {
-                return Groups.delElement(id)
+                Groups.delElement(id)
             } else {
-                return Modules.delElement(id, groupsSrc[id].mid)
+                Modules.delElement(id, groupsSrc[id].mid)
             }
         }
+        return Groups.delGroupData(id)
     }
 }

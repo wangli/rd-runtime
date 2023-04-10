@@ -257,24 +257,28 @@ export const copy = function (id, clear) {
 export const add = function (value, mid, gid) {
    if (value && typeof value == 'object') {
       let element = jsonData(value)
-      if (element.type == 'group' && mid) {
+      let myMid = mid || element.mid
+      if (element.type == 'group' && myMid) {
          // 组合处理
          let groupComponents = []
          if (element.components) {
             groupComponents = element.components
             delete element.components
          }
-         let newGroup = group.newGroupData(element, mid)
+         let newGroup = group.newGroupData(element, myMid)
          groupComponents.forEach(sprite => {
-            add(sprite, mid, newGroup.id)
+            add(sprite, myMid, newGroup.id)
          })
-      } else if (mid) {
-         addSpriteData(element, mid, gid)
+         return newGroup
+      } else if (myMid) {
+         return addSpriteData(element, myMid, gid)
       } else {
          console.warn('缺少页面数据')
+         return false
       }
    } else {
       console.warn('添加失败')
+      return false
    }
 }
 /**

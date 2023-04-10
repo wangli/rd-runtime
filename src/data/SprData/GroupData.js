@@ -187,6 +187,21 @@ export const getGroupArrData = function () {
    return Object.values(groups)
 }
 
+// 删除编组
+export const delGroupData = function (ids) {
+   if (ids) {
+      if (Array.isArray(ids)) {
+         ids.forEach(_id => {
+            delGroup(_id)
+         })
+         return true
+      } else if (typeof ids == 'string') {
+         return delGroup(ids)
+      }
+   }
+   return false
+}
+
 // 清空所有组件数据
 export const clearGroupsData = function () {
    let keys = Object.keys(groups)
