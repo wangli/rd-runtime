@@ -1,7 +1,6 @@
 import dispatchEvent from "./dispatchEvent"
 import sprites from '../display/sprites'
 import cmd from '../command'
-import { AppSetup } from '../config'
 export default {
    props: {
       id: { type: String, default: "" },
@@ -77,7 +76,6 @@ export default {
       }
    },
    created() {
-      this.AppSetup = AppSetup
       sprites.add(this)
       if (this.id) {
          cmd.addEventListener(`run_function_${this.id}`, data => {

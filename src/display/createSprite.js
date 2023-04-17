@@ -2,7 +2,6 @@ import { h, isReactive, resolveComponent } from 'vue'
 import creatEvent from './creatEvent'
 import { getSpriteData, getGroup } from '../data/SprData'
 import { getDataSource } from '../helper'
-import { AppSetup } from '../config'
 
 /**
  * 创建组件
@@ -11,7 +10,9 @@ import { AppSetup } from '../config'
  * @param {String|Object} coms 用到插槽的内容
  * @returns 
  */
-export default function (componentName, pams, coms = "") {
+export default function (options) {
+   const { AppSetup, name: componentName, pams, slot: coms = "" } = options
+
    let component = null;
    if (!componentName) {
       console.warn('数据缺少组件' + pams);

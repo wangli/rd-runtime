@@ -1,4 +1,4 @@
-import { h } from 'vue'
+import { h, getCurrentInstance } from 'vue'
 import createSprite from '../createSprite'
 
 let style = {
@@ -13,6 +13,7 @@ export default {
    name: 'vx-overlayer',
    props: ['modules'],
    setup(props) {
+      const { appContext: { config: { globalProperties: global } } } = getCurrentInstance()
       return () => {
          const modules = props.modules
          const content = [];
@@ -20,7 +21,7 @@ export default {
             if (modules.hasOwnProperty.call(modules, key)) {
                const item = modules[key];
                if (typeof item.visible == 'undefined' || item.visible == true) {
-                  content.push(createSprite('vx-module', item))
+                  content.push(createSprite({ AppSetup: global.AppSetup, name: 'vx-module', pams: item }))
                }
             }
          }

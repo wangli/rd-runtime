@@ -1,5 +1,5 @@
 import * as vue from 'vue'
-import { createApp } from 'vue'
+import { createApp, shallowReactive } from 'vue'
 import { nanoid } from 'nanoid'
 import Data from './data'
 import Stage from './display/stage'
@@ -24,7 +24,7 @@ class AppRuntime extends EventEmitter {
       // vue应用
       this.vapp = null
       this.dom = null
-      this.config = Object.assign({
+      this.config = shallowReactive(Object.assign({
          // 宽度
          width: 1920,
          // 高度
@@ -43,7 +43,7 @@ class AppRuntime extends EventEmitter {
          status: 'none',
          // 所在容器
          dom: null
-      }, option.options)
+      }, option.options))
 
       if (option.props) {
          // 创建应用
@@ -59,7 +59,7 @@ class AppRuntime extends EventEmitter {
       if (!this.vapp) {
          this.vapp = createApp(Stage, props)
          // 设置全局配置，可被所有组件访问
-         this.vapp.config.globalProperties.appConfig = this.config
+         this.vapp.config.globalProperties.AppSetup = this.config
          // 安装内部默认组件
          this.vapp.use(Display)
          // 全局混入
