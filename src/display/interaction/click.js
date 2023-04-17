@@ -1,6 +1,6 @@
+import { getCurrentInstance } from 'vue'
 import CMD from '../../command'
 import { EVENTS } from '../../events'
-import { AppSetup } from '../../config'
 import { createSimpleData } from '../../utils/sprite'
 import * as actionData from '../../data/actionData'
 import { jsonData } from '../../utils'
@@ -10,6 +10,7 @@ import { jsonData } from '../../utils'
  * @param {*} data 元件信息
  */
 export default function (element, data) {
+   const { appContext: { config: { globalProperties: { AppSetup = {} } } } } = getCurrentInstance()
    let id = data.id
    // 用户点击元件
    return {

@@ -1,10 +1,9 @@
-import { h, getCurrentInstance } from 'vue'
+import { h } from 'vue'
 import createSprite from '../createSprite'
 export default {
    name: 'vx-plane',
    props: ['components'],
    setup() {
-      const { appContext: { config: { globalProperties: global } } } = getCurrentInstance()
       return (context) => {
          // 组件内容
          const containerList = [];
@@ -13,7 +12,7 @@ export default {
          if (context.components) {
             context.components.forEach((item, i) => {
                if (item.visible) {
-                  containerList.push(createSprite({ AppSetup: global.AppSetup, name: item.name, pams: item.id }))
+                  containerList.push(createSprite(item.name, item.id))
                }
             })
          }

@@ -1,7 +1,6 @@
 import EventEmitter from 'eventemitter3'
 import isFinite from 'lodash/isFinite'
-import { reactive, ref, watch } from "vue"
-import { AppSetup } from '../config'
+import { reactive, ref, watch, getCurrentInstance } from "vue"
 import { extractData } from "../utils/convert"
 import { jsonData } from '../utils'
 import interval from '../utils/interval'
@@ -16,6 +15,8 @@ import { getBodyData } from '../helper'
 export default class extends EventEmitter {
    constructor(value, extractRule, body, method, itval) {
       super()
+      const { appContext: { config: { globalProperties: { AppSetup = {} } } } } = getCurrentInstance()
+      this.AppSetup = AppSetup
       this.id = "RD_" + nanoid(10)
       this.url = value
       this.body = body
@@ -115,7 +116,7 @@ export default class extends EventEmitter {
    }
    // 开启轮询请求
    setinterval(timeval = 0) {
-      if (AppSetup.interaction) {
+      if (this.AppSetup.interaction) {
          if (timeval && timeval > 0) {
             this.it = interval.add(() => {
                this.req.request()

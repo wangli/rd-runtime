@@ -1,4 +1,4 @@
-import { h, onMounted, reactive, isVNode, watch, getCurrentInstance } from 'vue'
+import { h, onMounted, reactive, isVNode, watch } from 'vue'
 import createSprite from './createSprite'
 import myData from '../data'
 import { jsonData } from '../utils'
@@ -40,7 +40,6 @@ export default {
       slots: [Object, Array]
    },
    setup(props) {
-      const { appContext: { config: { globalProperties: global } } } = getCurrentInstance()
       const modules = myData.getModules()
       const appData = myData.getAppData()
       const pages = reactive({})
@@ -86,22 +85,22 @@ export default {
                }
             }
          }
-         containerList.push(createSprite({ AppSetup: global.AppSetup, name: 'vx-background', pams: props.background }), ...slots)
+         containerList.push(createSprite('vx-background', props.background), ...slots)
          if (content.length > 0) {
-            containerList.push(createSprite({ AppSetup: global.AppSetup, name: 'vx-content', pams: { modules: content } }))
+            containerList.push(createSprite('vx-content', { modules: content }))
          }
          if (fixed.length > 0) {
-            containerList.push(createSprite({ AppSetup: global.AppSetup, name: 'vx-fixed', pams: { modules: fixed } }))
+            containerList.push(createSprite('vx-fixed', { modules: fixed }))
          }
          if (overlayer.length > 0) {
-            containerList.unshift(createSprite({ AppSetup: global.AppSetup, name: 'vx-mask' }))
-            containerList.push(createSprite({ AppSetup: global.AppSetup, name: 'vx-overlayer', pams: { modules: overlayer } }))
+            containerList.unshift(createSprite('vx-mask'))
+            containerList.push(createSprite('vx-overlayer', { modules: overlayer }))
          }
 
          // 用户自定义弹层窗口
-         containerList.push(createSprite({ AppSetup: global.AppSetup, name: 'vx-popwin', pams: props.popwin }))
+         containerList.push(createSprite('vx-popwin', props.popwin))
          // 消息提醒弹层
-         containerList.push(createSprite({ AppSetup: global.AppSetup, name: 'vx-message' }))
+         containerList.push(createSprite('vx-message'))
 
          let style = {
             position: 'absolute',

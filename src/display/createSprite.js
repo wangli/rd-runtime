@@ -1,8 +1,7 @@
-import { h, isReactive, resolveComponent } from 'vue'
+import { h, isReactive, resolveComponent, getCurrentInstance } from 'vue'
 import creatEvent from './creatEvent'
 import { getSpriteData, getGroup } from '../data/SprData'
 import { getDataSource } from '../helper'
-
 /**
  * 创建组件
  * @param {String} componentName 组件名称
@@ -10,9 +9,8 @@ import { getDataSource } from '../helper'
  * @param {String|Object} coms 用到插槽的内容
  * @returns 
  */
-export default function (options) {
-   const { AppSetup, name: componentName, pams, slot: coms = "" } = options
-
+export default function (componentName, pams, coms = "") {
+   const { appContext: { config: { globalProperties: { AppSetup = {} } } } } = getCurrentInstance()
    let component = null;
    if (!componentName) {
       console.warn('数据缺少组件' + pams);

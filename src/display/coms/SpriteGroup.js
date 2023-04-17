@@ -1,4 +1,4 @@
-import { provide, h, toRefs, getCurrentInstance } from 'vue'
+import { provide, h, toRefs } from 'vue'
 import createSprite from '../createSprite'
 // 原件组合容器
 export default {
@@ -6,13 +6,12 @@ export default {
    props: {
       components: {
          type: Array,
-         default() {
+         default () {
             return []
          }
       }
    },
    setup(props) {
-      const { appContext: { config: { globalProperties: global } } } = getCurrentInstance()
       const { x, y, id } = toRefs(props)
       provide('offsetX', x)
       provide('offsetY', y)
@@ -24,7 +23,7 @@ export default {
          if (ctx.components) {
             ctx.components.forEach((item, i) => {
                if (item.visible) {
-                  containerList.push(createSprite({ AppSetup: global.AppSetup, name: item.name, pams: item.id }))
+                  containerList.push(createSprite(item.name, item.id))
                }
             })
          }

@@ -1,6 +1,6 @@
+import { getCurrentInstance } from "vue"
 import CMD from '../command'
 import { EVENTS } from '../events'
-import { AppSetup } from '../config'
 import { createSimpleData } from '../utils/sprite'
 import * as interaction from './interaction'
 
@@ -11,6 +11,7 @@ import * as interaction from './interaction'
  * @returns 
  */
 export default function (events, data = {}, componentName = "") {
+   const { appContext: { config: { globalProperties: { AppSetup = {} } } } } = getCurrentInstance()
    let evts = {}
    let id = data.id
    if (componentName) {
@@ -22,21 +23,21 @@ export default function (events, data = {}, componentName = "") {
       // 开始交互动作
       events.forEach(element => {
          switch (element.event) {
-         case 'click':
-            // 用户点击元件
-            Object.assign(evts, interaction.click(element, data))
-            break
-         case 'timeout':
-            // 显示后延迟执行
-            Object.assign(evts, interaction.timeout(element, id))
-            break
-         case 'interval':
-            // 显示后定时执行
-            Object.assign(evts, interaction.interval(element, id))
-            break
-         default:
-            // 自定义事件
-            Object.assign(evts, interaction.customize(element, id, componentName))
+            case 'click':
+               // 用户点击元件
+               Object.assign(evts, interaction.click(element, data))
+               break
+            case 'timeout':
+               // 显示后延迟执行
+               Object.assign(evts, interaction.timeout(element, id))
+               break
+            case 'interval':
+               // 显示后定时执行
+               Object.assign(evts, interaction.interval(element, id))
+               break
+            default:
+               // 自定义事件
+               Object.assign(evts, interaction.customize(element, id, componentName))
          }
       });
    } else {
