@@ -43,3 +43,20 @@ export const decrypt = async function (file) {
         Promise.reject('数据格式无效')
     }
 }
+
+// 生成密钥
+export const secretkey = function (value) {
+    if (typeof value == 'string') {
+        if (value.length > 2 && value.length < 16) {
+            return crypt.secretkey(value)
+        }
+    }
+    return null
+}
+// 密钥校验
+export const validateKey = function (value1, value2) {
+    if (typeof value1 == 'string' && typeof value2 == 'string') {
+        return crypt.validate(value1, value2)
+    }
+    return false
+}
