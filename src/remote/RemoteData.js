@@ -1,12 +1,13 @@
 import EventEmitter from 'eventemitter3'
 import isFinite from 'lodash/isFinite'
-import { reactive, ref, watch, getCurrentInstance } from "vue"
+import { reactive, ref, watch } from "vue"
 import { extractData } from "../utils/convert"
 import { jsonData } from '../utils'
 import interval from '../utils/interval'
 import { nanoid } from 'nanoid'
 import requestData from './requestData'
 import { getBodyData } from '../helper'
+import getAppSetup from '@/utils/getAppSetup'
 
 /**
  * @param {string} value 接口地址
@@ -15,8 +16,7 @@ import { getBodyData } from '../helper'
 export default class extends EventEmitter {
    constructor(value, extractRule, body, method, itval) {
       super()
-      const { appContext: { config: { globalProperties: { AppSetup = {} } } } } = getCurrentInstance()
-      this.AppSetup = AppSetup
+      this.AppSetup = getAppSetup()
       this.id = "RD_" + nanoid(10)
       this.url = value
       this.body = body

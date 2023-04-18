@@ -1,7 +1,8 @@
-import { h, isReactive, resolveComponent, getCurrentInstance } from 'vue'
-import creatEvent from './creatEvent'
-import { getSpriteData, getGroup } from '../data/SprData'
+import { h, isReactive, resolveComponent } from 'vue'
+import { getSpriteData, getGroup } from '../data/ElementData'
 import { getDataSource } from '../helper'
+import creatEvent from './creatEvent'
+import getAppSetup from '@/utils/getAppSetup'
 /**
  * 创建组件
  * @param {String} componentName 组件名称
@@ -10,7 +11,7 @@ import { getDataSource } from '../helper'
  * @returns 
  */
 export default function (componentName, pams, coms = "") {
-   const { appContext: { config: { globalProperties: { AppSetup = {} } } } } = getCurrentInstance()
+   const AppSetup = getAppSetup()
    let component = null;
    if (!componentName) {
       console.warn('数据缺少组件' + pams);

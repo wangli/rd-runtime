@@ -1,4 +1,4 @@
-import { modules } from '../data/SprData/msData'
+import { modules } from '../data/ElementData/msData'
 
 export const createSimpleData = function (data) {
    let object = {

@@ -1,5 +1,5 @@
 import * as appData from './AppData'
-import * as spriteData from './SprData'
+import * as spriteData from './ElementData'
 import * as actData from './actionData'
 import * as globalData from './GlobalData'
 import * as remote from '../remote'

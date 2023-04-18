@@ -1,4 +1,4 @@
-import { getSpriteData } from '../data/SprData'
+import { getSpriteData } from '../data/ElementData'
 import { jsonData } from '../utils/index'
 import TypeModel from '../data/TypeModel'
 import component from '../component'

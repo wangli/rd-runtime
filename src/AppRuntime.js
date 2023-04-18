@@ -7,6 +7,7 @@ import Display from './display'
 import Component from './component'
 import baseMixin from './component/baseMixin'
 import Command from './command'
+import * as Use from './plugin/use'
 import * as Helper from './helper'
 
 
@@ -19,31 +20,13 @@ const domlist = []
 class AppRuntime extends EventEmitter {
    constructor(option = {}) {
       super()
-      Data.resetAppData()
       this.id = option.id || nanoid(10)
       // vue应用
       this.vapp = null
       this.dom = null
-      this.config = shallowReactive(Object.assign({
-         // 宽度
-         width: 1920,
-         // 高度
-         height: 1080,
-         // 背景色
-         backgroundColor: "#222222",
-         // 缩放模式
-         scaleMode: 'auto',
-         // 开启交互动作
-         interaction: false,
-         // 点击事件鼠标经过光标样式
-         clickCursor: 'auto',
-         // 是否开启整体缩放
-         scale: false,
-         // 当前应用状态，none未创建，create已创建，display已展示，destroy销毁
-         status: 'none',
-         // 所在容器
-         dom: null
-      }, option.options))
+      this.component = new Component(this)
+      this.data = new Data(this, option.options)
+      this.AppSetup = this.data.AppSetup
 
       if (option.props) {
          // 创建应用
@@ -54,18 +37,28 @@ class AppRuntime extends EventEmitter {
          }
       }
    }
+   initData(value) {
+      this.data.init(value)
+   }
+   addComponent(items) {
+      this.component.add(items)
+   }
+   use(value) {
+      Use.use.call(this, value)
+   }
    // 创建
    create(props = {}) {
       if (!this.vapp) {
          this.vapp = createApp(Stage, props)
          // 设置全局配置，可被所有组件访问
-         this.vapp.config.globalProperties.AppSetup = this.config
+         this.vapp.config.globalProperties.AppSetup = this.AppSetup
+         this.vapp.config.globalProperties.component = this.component
          // 安装内部默认组件
          this.vapp.use(Display)
          // 全局混入
          this.vapp.mixin(baseMixin)
          // 注册组件到应用
-         Component.install()
+         this.component.install()
          // 应用状态设置
          this.config.status = "create"
          console.log('%c灿create', 'color:#0aa100')

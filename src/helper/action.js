@@ -1,4 +1,4 @@
-import { getSpriteData, getSpriteArrData } from '../data/SprData'
+import { getSpriteData, getSpriteArrData } from '../data/ElementData'
 import { setActionData, delActionData } from '../data/actionData'
 import TypeModel from '../data/TypeModel'
 import { removeArray } from '../utils/index'

@@ -1,8 +1,8 @@
-import { getCurrentInstance } from "vue"
 import CMD from '../command'
 import { EVENTS } from '../events'
 import { createSimpleData } from '../utils/sprite'
 import * as interaction from './interaction'
+import getAppSetup from '@/utils/getAppSetup'
 
 /**
  * 对组件创建一组事件对象，并在h方法中通过props传递
@@ -11,7 +11,7 @@ import * as interaction from './interaction'
  * @returns 
  */
 export default function (events, data = {}, componentName = "") {
-   const { appContext: { config: { globalProperties: { AppSetup = {} } } } } = getCurrentInstance()
+   const AppSetup = getAppSetup()
    let evts = {}
    let id = data.id
    if (componentName) {

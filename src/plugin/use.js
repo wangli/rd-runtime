@@ -1,13 +1,11 @@
 import loadjs from '../utils/loadjs'
-import runtime from '../runtime'
-
 
 // 安装插件
 export const use = function (install) {
     if (install instanceof Function) {
-        install(runtime)
+        install(this)
     } else if (install && typeof install == 'object' && install.install && install.install instanceof Function) {
-        install.install(runtime)
+        install.install(this)
     }
 }
 // 异步插件安装
