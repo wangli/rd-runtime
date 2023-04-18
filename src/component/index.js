@@ -5,6 +5,7 @@ import TypeModel from '@/data/TypeModel'
 import baseMixin from './baseMixin'
 import merge from 'lodash/merge'
 
+
 class AppComponent {
    app = null
    // 所有已安装组件
@@ -160,3 +161,5 @@ class AppComponent {
       })
    }
 }
+
+export default AppComponent
