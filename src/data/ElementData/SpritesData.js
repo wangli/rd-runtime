@@ -1,5 +1,5 @@
-import { reactive, watch } from 'vue'
-import { initSpriteData, createSimpleSprite } from './msData'
+import { watch } from 'vue'
+import { initSpriteData, createSimpleData } from './msData'
 
 
 export default class SpritesData {
@@ -19,7 +19,7 @@ export default class SpritesData {
     * @param {*} gpid 
     * @returns 
     */
-   addSpriteData(data, mid = 'default', gpid = null) {
+   addSprite(data, mid = 'default', gpid = null) {
       // 建立一个新的元件数据对象（响应式的）
       let newData = null
       if (typeof data == 'string' && typeof mid == 'object') {
@@ -28,20 +28,18 @@ export default class SpritesData {
          newData = this.setSprite(data, { mid, gpid })
       }
       if (this.appendSprite(newData)) {
-         return this.sprites[newData.id]
-      } else {
-         throw '添加元件失败'
+         return newData
       }
+      return null
    }
    setSprite(data, option) {
       let comp = this.mData.component
       let elements = this.mData.elements
       let sprites = this.sprites
 
-      let newData = reactive({})
-      if (typeof data == 'string' && comp.items[data]) {
-         // 创建一个基础的原件对象 
-         Object.assign(newData, initSpriteData(data, option))
+      if (typeof data == 'string' && comp.iComponents[data]) {
+         // 创建一个基础的原件对象
+         let newData = initSpriteData(comp, data, option)
          sprites[newData.id] = newData
          elements[newData.id] = newData
          return newData
@@ -56,7 +54,7 @@ export default class SpritesData {
             return sprites[data.id]
          } else if (data.name) {
             // 重新初始化对象
-            Object.assign(newData, initSpriteData(comp.iComponents, data.name, data), option)
+            let newData = initSpriteData(comp, data.name, Object.assign({}, data, option))
             sprites[newData.id] = newData
             elements[newData.id] = newData
             return sprites[newData.id]
@@ -70,10 +68,8 @@ export default class SpritesData {
       }
    }
    appendSprite(newData) {
-      let unwatchs = this.mData.unwatchs
       let modules = this.mData.modules
       let groups = this.mData.groups
-      let simpleSprites = this.mData.simpleSprites
 
       if (!newData) {
          console.warn('添加元件失败,无数据信息')
@@ -88,7 +84,7 @@ export default class SpritesData {
          newData.zIndex = this.mData.getMaxZIndex(newData.mid) + 1
       }
       // 创建一个简单的元件副本
-      let simpleSprite = createSimpleSprite(newData)
+      let simpleSprite = createSimpleData.call(this.mData, newData)
       if (newData.gpid && groups.setGroup(newData.gpid)) {
          // 添加到组合中
          groups.addElement(simpleSprite, newData.gpid)
@@ -96,29 +92,31 @@ export default class SpritesData {
          // 添加到模块中
          modules.addElement(simpleSprite, newData.mid)
       } else {
-         console.warn('添加元件失败', simpleSprite)
+         console.warn('添加元件失败，无法加入组或模块', simpleSprite)
          return false
       }
-      unwatchs[newData.id] = watch(newData, attsVary => {
-         if (simpleSprites[attsVary.id]) {
-            let keys = Object.keys(simpleSprites[attsVary.id])
-            keys.forEach(key => {
-               simpleSprites[attsVary.id][key] = attsVary[key]
-            })
-         }
-      })
-      return this.sprites[newData.id]
+      this.mData.watchSimples(newData)
+      return newData
    }
    // 删除单个元件
    delOneSprite(id, source = true) {
+      let elements = this.mData.elements
       let modules = this.mData.modules
+      let groups = this.mData.groups
       let unwatchs = this.mData.unwatchs
+      let sprites = this.sprites
 
-      if (this.sprites[id] && this.sprites[id]['mid']) {
-         let res = modules.delElement(id, this.sprites[id]['mid'])
+      if (sprites[id]) {
+         let res = null
+         if (sprites[id]['gid']) {
+            res = groups.delElement(id, sprites[id]['gid'])
+         } else if (sprites[id]['mid']) {
+            res = modules.delElement(id, sprites[id]['mid'])
+         }
          if (source) {
             // 删除源头
-            this.delSprite(id)
+            delete sprites[id]
+            delete elements[id]
          }
          if (res && unwatchs[id] && typeof unwatchs[id] == 'function') {
             unwatchs[id]()
@@ -131,7 +129,7 @@ export default class SpritesData {
    }
 
    // 删除元件
-   delSpriteData(ids, source = true) {
+   delSprite(ids, source = true) {
       if (ids) {
          if (Array.isArray(ids)) {
             ids.forEach(_id => {
@@ -145,30 +143,20 @@ export default class SpritesData {
       return false
    }
 
-   // 删除数据对象
-   delSprite(id) {
-      if (this.sprites[id]) {
-         delete this.sprites[id]
-         delete this.mData.elements[id]
-         return id
-      } else {
-         return false
-      }
-   }
    // 返回元件数据集合（以id键名）
-   getSpritesData() {
+   getSprites() {
       return this.sprites;
    }
 
    // 返回元件数据集合（数组）
-   getSpriteArrData(mid) {
+   getSpriteList(mid) {
       let _sprites = Object.values(this.sprites)
       return mid ? _sprites.filter(item => item.mid == mid) : _sprites
    }
    // 返回元件数据
-   getSpriteData(id) {
-      if (this.sprites[id]) {
-         let defData = this.mData.component.getComponentDefaultData(this.sprites[id].name)
+   getSprite(id) {
+      if (id && this.sprites[id]) {
+         let defData = this.mData.component.getDefaultData(this.sprites[id].name)
          Object.assign(this.sprites[id], Object.assign({}, defData, this.sprites[id]))
          return this.sprites[id]
       } else {
@@ -176,14 +164,14 @@ export default class SpritesData {
       }
    }
    // 清空所有组件数据
-   clearSpritesData() {
+   clearSprites() {
       let keys = Object.keys(this.sprites)
       keys.forEach(key => {
          this.clearSpriteData(this.sprites[key])
          this.delSprite(key)
       });
    }
-   // 清空组件内数据
+   // 清空组件内部数据
    clearSpriteData(sprite) {
       let keys = Object.keys(sprite)
       keys.forEach(key => {

@@ -1,8 +1,7 @@
-import CMD from '../command'
-import { EVENTS } from '../events'
-import { createSimpleData } from '../utils/sprite'
+import CMD from '@/command'
+import { EVENTS } from '@/events'
+import { createSimpleData } from '@/utils'
 import * as interaction from './interaction'
-import getAppSetup from '@/utils/getAppSetup'
 
 /**
  * 对组件创建一组事件对象，并在h方法中通过props传递
@@ -10,8 +9,8 @@ import getAppSetup from '@/utils/getAppSetup'
  * @param {String} id 组件id
  * @returns 
  */
-export default function (events, data = {}, componentName = "") {
-   const AppSetup = getAppSetup()
+export default function (options) {
+   const { myApp = {}, events, data = {}, componentName = "" } = options
    let evts = {}
    let id = data.id
    if (componentName) {
@@ -19,25 +18,25 @@ export default function (events, data = {}, componentName = "") {
          style: {}
       }
    }
-   if (AppSetup.interaction) {
+   if (myApp.AppSetup && myApp.AppSetup.interaction) {
       // 开始交互动作
       events.forEach(element => {
          switch (element.event) {
             case 'click':
                // 用户点击元件
-               Object.assign(evts, interaction.click(element, data))
+               Object.assign(evts, interaction.click.call(myApp, element, data))
                break
             case 'timeout':
                // 显示后延迟执行
-               Object.assign(evts, interaction.timeout(element, id))
+               Object.assign(evts, interaction.timeout.call(myApp, element, id))
                break
             case 'interval':
                // 显示后定时执行
-               Object.assign(evts, interaction.interval(element, id))
+               Object.assign(evts, interaction.interval.call(myApp, element, id))
                break
             default:
                // 自定义事件
-               Object.assign(evts, interaction.customize(element, id, componentName))
+               Object.assign(evts, interaction.customize.call(myApp, element, id, componentName))
          }
       });
    } else {

@@ -1,9 +1,8 @@
-import { h, onMounted, reactive, isVNode, watch } from 'vue'
+import { h, onMounted, isVNode } from 'vue'
+import { jsonData, getAppGlobal } from '@/utils'
+import { EVENTS } from '@/events'
 import createSprite from './createSprite'
-import myData from '../data'
-import { jsonData } from '../utils'
-import { EVENTS } from '../events'
-import cmd from '../command'
+import cmd from '@/command'
 export default {
    name: 'stage',
    props: {
@@ -40,9 +39,9 @@ export default {
       slots: [Object, Array]
    },
    setup(props) {
-      const modules = myData.getModules()
-      const appData = myData.getAppData()
-      const pages = reactive({})
+      const data = getAppGlobal('data')
+      const modules = data.mData.modules.getModules()
+      const appData = data.getAppData()
       const slots = isVNode(props.slots) ? [props.slots] : []
       if (slots.length == 0) {
          if (Array.isArray(props.slots)) {
@@ -53,10 +52,6 @@ export default {
             slots.push(h(props.slots))
          }
       }
-
-      watch(modules, newPages => {
-         Object.assign(pages, JSON.parse(JSON.stringify(newPages)))
-      }, { deep: true })
 
       onMounted(() => {
          cmd.emit(EVENTS.STAGE_MOUNTED)
@@ -71,9 +66,9 @@ export default {
          // 弹层
          const overlayer = []
          // 遍历模块数据
-         for (const key in pages) {
-            if (pages.hasOwnProperty.call(pages, key)) {
-               const item = pages[key];
+         for (const key in modules) {
+            if (modules.hasOwnProperty.call(modules, key)) {
+               const item = modules[key];
                if (typeof item.visible == 'undefined' || item.visible == true) {
                   if (item.type == 'content') {
                      content.push(item)
@@ -85,34 +80,35 @@ export default {
                }
             }
          }
-         containerList.push(createSprite('vx-background', props.background), ...slots)
+         containerList.push(createSprite({ name: 'vx-background', props: props.background }), ...slots)
          if (content.length > 0) {
-            containerList.push(createSprite('vx-content', { modules: content }))
+            containerList.push(createSprite({ name: 'vx-content', props: { modules: content } }))
          }
          if (fixed.length > 0) {
-            containerList.push(createSprite('vx-fixed', { modules: fixed }))
+            containerList.push(createSprite({ name: 'vx-fixed', props: { modules: fixed } }))
          }
          if (overlayer.length > 0) {
-            containerList.unshift(createSprite('vx-mask'))
-            containerList.push(createSprite('vx-overlayer', { modules: overlayer }))
+            containerList.unshift(createSprite({ name: 'vx-mask' }))
+            containerList.push(createSprite({ name: 'vx-overlayer', props: { modules: overlayer } }))
          }
 
          // 用户自定义弹层窗口
-         containerList.push(createSprite('vx-popwin', props.popwin))
+         containerList.push(createSprite({ name: 'vx-popwin', props: props.popwin }))
          // 消息提醒弹层
-         containerList.push(createSprite('vx-message'))
+         containerList.push(createSprite({ name: 'vx-message' }))
 
          let style = {
             position: 'absolute',
-            width: appData.size.width ? appData.size.width + "px" : "100%",
-            height: appData.size.height ? appData.size.height + "px" : "100%",
+            width: appData.info.width ? appData.info.width + "px" : "100%",
+            height: appData.info.height ? appData.info.height + "px" : "100%",
             top: 0,
             left: 0,
             transformOrigin: "0 0",
             transform: appData.transform.value,
             zIndex: 0,
             userSelect: 'none',
-            ...jsonData(appData.background)
+            overflow: 'hidden',
+            ...jsonData(appData.info.background)
          }
          return h('div', {
             id: "vx-stage",

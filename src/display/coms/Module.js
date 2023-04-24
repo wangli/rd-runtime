@@ -1,6 +1,8 @@
 import { h, toRefs } from 'vue'
+import baseComponent from '@/component/baseComponent'
 import createSprite from '../createSprite'
 export default {
+   extends: baseComponent,
    name: 'vx-module',
    props: ['components'],
    setup(props) {
@@ -13,9 +15,9 @@ export default {
             components.value.forEach((item, i) => {
                if (item.visible) {
                   if (item.type == 'group') {
-                     containerList.push(createSprite('vx-sprite-group', item.id))
+                     containerList.push(createSprite({ name: 'vx-sprite-group', props: item.id }))
                   } else {
-                     containerList.push(createSprite(item.name, item.id))
+                     containerList.push(createSprite({ name: item.name, props: item.id }))
                   }
                }
             })

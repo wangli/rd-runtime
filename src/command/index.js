@@ -1,7 +1,7 @@
 import EventEmitter from 'eventemitter3'
 import buffer from './buffer'
-import { CEVENTS } from '../events'
-import { jsonData } from '../utils'
+import { CEVENTS } from '@/events'
+import { jsonData } from '@/utils'
 
 // 事件监听
 const evtCenter = new EventEmitter()
@@ -66,12 +66,14 @@ const command = {
    },
    /**
     * 执行命令
-    * @param {*} action 
-    * @param {*} target 
+    * @param {*} action 动作
+    * @param {*} sprid 操作元素id
+    * @param {*} appid 来自应以id
     */
-   execute(action, target = "") {
+   execute(action, sprid = "", appid) {
       let sendData = {
-         target,
+         sprid,
+         appid,
          data: jsonData(action)
       }
       this.emit(CEVENTS.ACTION, sendData)
@@ -92,14 +94,14 @@ const command = {
    },
    /**
     * 执行数据更新
-    * @param {string} target 目标对象id 
+    * @param {string} sprid 目标对象id 
     * @param {*} value 数据值
     */
-   reviewData(target, value) {
+   reviewData(sprid, value) {
       this.emit(CEVENTS.ACTION, {
          data: {
             action: 'reviewData',
-            target,
+            sprid,
             value
          }
       })

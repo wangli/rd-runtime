@@ -1,5 +1,7 @@
 import { h, toRefs } from 'vue'
+import baseComponent from '@/component/baseComponent'
 export default {
+   extends: baseComponent,
    name: 'vx-sprite',
    setup(props, context) {
       const { id } = toRefs(props)

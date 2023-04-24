@@ -1,12 +1,13 @@
-import { reactive, shallowReactive } from 'vue'
+import { ref, reactive, shallowReactive } from 'vue'
+import { nanoid } from 'nanoid'
 
 // 应用设置
 export const defineAppSetup = function (option) {
     return shallowReactive(Object.assign({
         // 宽度
-        width: 1920,
+        width: 800,
         // 高度
-        height: 1080,
+        height: 600,
         // 背景色
         backgroundColor: "#222222",
         // 缩放模式
@@ -33,10 +34,8 @@ export const defineAppInfo = function () {
         uptime: null,
         cover: null,
         description: '',
-        size: {
-            width: 800,
-            height: 600
-        },
+        width: 800,
+        height: 600,
         background: {
             backgroundColor: "#222222"
         },
@@ -45,4 +44,41 @@ export const defineAppInfo = function () {
         },
         scaleMode: 'auto'
     })
+}
+
+
+// 应用信息
+export const defineAction = function (option) {
+    return Object.assign({
+        id: 'AC_' + nanoid(10),
+        action: '',
+        target: 'app',
+        value: null,
+        description: ""
+    }, option)
+}
+
+// 全局数据信息
+export const defineGData = function (option) {
+    const { id, value = "", name = "", type = "source", uptime } = option
+    return {
+        id: id || "GD_" + nanoid(10),
+        name,
+        type,
+        value: (value instanceof Object) ? reactive(value) : ref(value),
+        uptime: uptime || new Date().getTime()
+    }
+}
+
+// 插件数据信息
+export const definePlugin = function (option) {
+    return reactive(Object.assign({
+        id: "PD_" + nanoid(10),
+        name: '',
+        title: '',
+        url: '',
+        password: '',
+        version: '',
+        uptime: new Date().getTime()
+    }, option))
 }

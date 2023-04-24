@@ -1,7 +1,9 @@
+import { reactive } from 'vue'
 import ModuleData from "./ModuleData"
 import GroupsData from "./GroupData"
 import SpritesData from "./SpritesData"
-import { getMaxZIndex } from "../dataUtils"
+import { fillData, addElement, delElement, watchSimples } from './expand'
+import { getMaxZIndex } from "@/utils"
 
 export default class ElementData {
    AppSetup = null
@@ -15,138 +17,139 @@ export default class ElementData {
    // 所有元素集合
    elements = {}
    // 元件数据集合（简单副本）
-   simpleSprites = reactive({})
+   esSimple = reactive({})
    // 监听对象
    unwatchs = {}
    // -------------------
-   constructor(app, _data) {
-      this.AppSetup = app.AppSetup
-      this.component = app.component
+   constructor(appData, _data) {
+      this.AppSetup = appData.app.AppSetup
+      this.component = appData.app.component
       this.modules = new ModuleData(this)
       this.groups = new GroupsData(this)
       this.sprites = new SpritesData(this)
-      if (_data) {
-         this.fillData(_data)
-      }
-   }
-   getMaxZIndex(mid) {
-      return getMaxZIndex(this.modules[mid].components)
+      // 初始数据
+      _data && this.fillData(_data)
    }
    // 填充数据
-   fillData(moduleList) {
-      if (Array.isArray(moduleList) && moduleList.length > 0) {
-         moduleList.forEach(_module => {
-            // 添加模块基本信息
-            if (typeof _module == 'object') {
-               let moduleComponents = []
-               if (_module.components) {
-                  moduleComponents = _module.components
-                  delete _module.components
-               }
-            }
-            // 创建模块
-            this.newMouleData(_module)
-            // 添加模块内元件
-            moduleComponents.forEach(element => {
-               if (element.type == 'group') {
-                  // 组合处理
-                  let groupComponents = []
-                  if (element.components) {
-                     groupComponents = element.components
-                     delete element.components
-                  }
-                  this.newGroupData(element, _module.id)
-                  groupComponents.forEach(sprite => {
-                     this.addSpriteData(sprite, _module.id, sprite.gpid)
-                  });
-               } else {
-                  this.addSpriteData(element, _module.id)
-               }
-            })
-         })
-      } else {
-         // 新默认模块
-         this.newMouleData({ id: 'default' })
-      }
+   fillData(data) {
+      fillData.call(this, data)
+   }
+   // 添加元素
+   addElement() {
+      return addElement.call(this, ...arguments)
    }
    // 删除元素数据
-   delElementData(id) {
-      let spritesData = this.sprites.sprites
-      let groupsData = this.groups.groups
-
-      if (spritesData[id]) {
-         return this.sprites.delSpriteData(id)
-      } else if (groupsData[id]) {
-         if (Array.isArray(groupsData[id].components) && groupsData[id].components.length > 0) {
-            groupsData[id].components.forEach(element => {
-               this.delElementData(element.id)
-            })
-            if (groupsData[id].gpid) {
-               this.groups.delElement(id)
-            } else {
-               this.modules.delElement(id, groupsData[id].mid)
-            }
-         }
-         return this.groups.delGroupData(id)
-      }
+   delElement() {
+      return delElement.call(this, ...arguments)
    }
-   clearSprites() {
-      this.sprites.clearSpritesData()
-      this.groups.clearGroupsData()
-      this.modules.clearModulesData()
+   // 返回单个元素
+   getElement(id) {
+      return this.elements[id]
    }
-   newMouleData() {
-      this.modules.newMouleData.call(this, ...arguments)
+   // 返回所有元素（含编组）的数组列表
+   getElements() {
+      return [...this.groups.getGroupList(), ...this.sprites.getSpriteList()]
    }
-   delModuleData() {
-      this.modules.delModuleData.call(this, ...arguments)
+   // 添加已有元素到模块
+   appendElement() {
+      return this.modules.addElement(...arguments)
    }
-   getModules() {
-      this.modules.getModules.call(this, ...arguments)
+   // 移除模块内的已有元素
+   removeElement() {
+      return this.modules.delElement(...arguments)
    }
+   // 新建模块
+   newMoule() {
+      return this.modules.newMoule(...arguments)
+   }
+   // 删除模块
+   delModule() {
+      return this.modules.delModule(...arguments)
+   }
+   // 返回模块
    getModule() {
-      this.modules.getModule.call(this, ...arguments)
+      return this.modules.getModule(...arguments)
    }
+   // 返回所有模块键值对集合
+   getModules() {
+      return this.modules.getModules(...arguments)
+   }
+   // 返回所有模块数组列表
    getModuleList() {
-      this.modules.getModuleList.call(this, ...arguments)
+      return this.modules.getModuleList(...arguments)
    }
-   getModuleComponents() {
-      this.modules.getModuleComponents.call(this, ...arguments)
+   // 返回模块内所有元素
+   getMyElements() {
+      return this.modules.getMyElements(...arguments)
    }
-   clearModulesData() {
-      this.modules.clearModulesData.call(this, ...arguments)
+   // 清除所有模块
+   clearModules() {
+      return this.modules.clearModules(...arguments)
    }
-   newGroupData() {
-      this.groups.newGroupData.call(this, ...arguments)
+   // 添加一个新的组合
+   newGroup() {
+      return this.groups.newGroup(...arguments)
    }
+   // 返回组合对象
    getGroup() {
-      this.groups.getGroup.call(this, ...arguments)
+      return this.groups.getGroup(...arguments)
    }
+   // 返回所有组合的键值对集合
    getGroups() {
-      this.groups.getGroups.call(this, ...arguments)
+      return this.groups.getGroups(...arguments)
    }
-   getGroupArrData() {
-      this.groups.getGroupArrData.call(this, ...arguments)
+   // 返回所有组合的数组集合
+   getGroupList() {
+      return this.groups.getGroupList(...arguments)
    }
-   clearGroupsData() {
-      this.groups.clearGroupsData.call(this, ...arguments)
+   // 编组(创建新组合并加入已有元素)
+   bindGroup() {
+      return this.groups.newBindGroup(...arguments)
    }
-   addSpriteData() {
-      this.sprites.addSpriteData.call(this, ...arguments)
+   // 解绑恢复
+   unbindGroup() {
+      return this.groups.unbindGroup(...arguments)
    }
-   delSpriteData() {
-      this.sprites.delSpriteData.call(this, ...arguments)
+   // 清除所有组合
+   clearGroups() {
+      return this.groups.clearGroups(...arguments)
    }
-   getSpritesData() {
-      this.sprites.getSpritesData.call(this, ...arguments)
+   // 添加元素
+   addSprite() {
+      return this.sprites.addSprite(...arguments)
    }
-   getSpriteArrData() {
-      this.sprites.getSpriteArrData.call(this, ...arguments)
+   // 删除元素
+   delSprite() {
+      return this.sprites.delSprite(...arguments)
    }
-   getSpriteData() {
-      this.sprites.getSpriteData.call(this, ...arguments)
+   // 返回单个元素
+   getSprite() {
+      return this.sprites.getSprite(...arguments)
    }
-   clearSpritesData() {
-      this.sprites.clearSpritesData.call(this, ...arguments)
+   // 返回所有元素键值对集合
+   getSprites() {
+      return this.sprites.getSprites(...arguments)
+   }
+   // 返回所有元素数组列表
+   getSpriteList() {
+      return this.sprites.getSpriteList(...arguments)
+   }
+   // 监听原始数据信息到副本
+   watchSimples() {
+      watchSimples.call(this, ...arguments)
+   }
+   // 清空所有元素
+   clearSprites() {
+      return this.sprites.clearSprites(...arguments)
+   }
+   // 返回模块内元素的当前最大深度
+   getMaxZIndex(mid) {
+      return getMaxZIndex(this.getMyElements(mid))
+   }
+   // 清空所有内容数据
+   clearData() {
+      this.sprites.clearSprites()
+      this.groups.clearGroups()
+      this.modules.clearModules()
    }
 }

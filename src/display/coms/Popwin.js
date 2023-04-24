@@ -1,6 +1,8 @@
 import { h } from 'vue'
+import baseComponent from '@/component/baseComponent'
 
 export default {
+   extends: baseComponent,
    name: 'vx-popwin',
    render() {
       let style = {

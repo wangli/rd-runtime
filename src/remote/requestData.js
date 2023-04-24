@@ -1,7 +1,7 @@
 import EventEmitter from 'eventemitter3'
-import request from "../utils/request"
+import request from "@/utils/request"
 import { nanoid } from 'nanoid'
-import { removeArray } from "../utils"
+import { removeArray } from "@/utils"
 
 const reqs = {}
 const ids = []

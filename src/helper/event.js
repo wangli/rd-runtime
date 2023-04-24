@@ -1,20 +1,16 @@
-import { getSpriteData } from '../data/ElementData'
-import { jsonData } from '../utils/index'
-import TypeModel from '../data/TypeModel'
-import component from '../component'
-
-const { events } = TypeModel
+import { jsonData } from '@/utils'
+import DataOptions from '@/data/DataOptions'
 
 // 创建一个新的事件对象数据
 export const newEventData = function (name, cmpName) {
-   let event = events.find(n => n.event == name) || component.getComponentEvents(cmpName).find(n => n.event == name)
+   const { component } = this.app
+   let event = DataOptions.events.find(n => n.event == name) || component.getMyEvents(cmpName).find(n => n.event == name)
    if (event) {
       return jsonData(event)
    } else {
       return false
    }
 }
-
 
 /**
  * 返回事件信息，eventName不传时返回所有事件列表
@@ -24,18 +20,15 @@ export const newEventData = function (name, cmpName) {
  * @returns 
  */
 export const getEvent = function (id, eventName, index = false) {
-   let cmp = getSpriteData(id)
-
+   let element = this.appData.getElement(id)
    if (eventName) {
-
       if (index) {
-         return cmp['events'] ? cmp['events'].findIndex(n => n.event == eventName) : -1
+         return element['events'] ? element['events'].findIndex(n => n.event == eventName) : -1
       } else {
-         return cmp['events'] ? cmp['events'].find(n => n.event == eventName) : null
+         return element['events'] ? element['events'].find(n => n.event == eventName) : null
       }
-
    } else {
-      return cmp['events'] || null
+      return element['events'] || null
    }
 }
 
@@ -46,21 +39,22 @@ export const getEvent = function (id, eventName, index = false) {
  * @param {string} pams 事件参数 
  */
 export const addEvent = function (id, eventName, pams) {
-   let event = getEvent(id, eventName)
+   const appData = this.appData
+   let event = this.getEvent(id, eventName)
    if (event) return event
-   let cmp = getSpriteData(id)
-   let newEvent = newEventData(eventName, cmp.name)
-   if (cmp && newEvent) {
-      if (!cmp['events']) {
-         cmp['events'] = []
+   let element = appData.getElement(id)
+   let newEvent = this.newEventData(eventName, element.name)
+   if (element && newEvent) {
+      if (!element['events']) {
+         element['events'] = []
       }
       if (pams) {
          newEvent['pams'] = pams
       }
 
-      cmp['events'].push(newEvent)
-      return cmp['events'][cmp['events'].length - 1]
-   } else if (!cmp) {
+      element['events'].push(newEvent)
+      return element['events'][element['events'].length - 1]
+   } else if (!element) {
       console.warn('缺少组件数据')
    } else {
       console.warn(eventName + '事件名称不对')
@@ -75,11 +69,12 @@ export const addEvent = function (id, eventName, pams) {
  * @param {string} pams 事件参数 
  */
 export const editEvent = function (id, eventName, pams) {
-   let eventIndex = getEvent(id, eventName, true)
+   const appData = this.appData
+   let eventIndex = this.getEvent(id, eventName, true)
    if (eventIndex > -1) {
-      let cmp = getSpriteData(id)
-      cmp['events'][eventIndex].pams = pams
-      return cmp['events'][eventIndex]
+      let element = appData.getElement(id)
+      element['events'][eventIndex].pams = pams
+      return element['events'][eventIndex]
    }
    return null
 }
@@ -89,11 +84,12 @@ export const editEvent = function (id, eventName, pams) {
  * @param {*} eventName 事件名称 
  */
 export const removeEvent = function (id, eventName) {
-   let eventIndex = getEvent(id, eventName, true)
+   const appData = this.appData
+   let eventIndex = this.getEvent(id, eventName, true)
    if (eventIndex > -1) {
-      let cmp = getSpriteData(id)
-      cmp['events'].splice(eventIndex, 1)
-      return cmp['events']
+      let element = appData.getElement(id)
+      element['events'].splice(eventIndex, 1)
+      return element['events']
    }
    return null
 }

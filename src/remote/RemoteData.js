@@ -1,24 +1,24 @@
 import EventEmitter from 'eventemitter3'
 import isFinite from 'lodash/isFinite'
-import { reactive, ref, watch } from "vue"
-import { extractData } from "../utils/convert"
-import { jsonData } from '../utils'
-import interval from '../utils/interval'
-import { nanoid } from 'nanoid'
 import requestData from './requestData'
-import { getBodyData } from '../helper'
-import getAppSetup from '@/utils/getAppSetup'
+import { reactive, ref, watch } from "vue"
+import { jsonData, interval, extractData } from '@/utils'
+import { nanoid } from 'nanoid'
+import { getBodyData } from '@/helper/other'
 
 /**
- * @param {string} value 接口地址
+ * @param {string} url 接口地址
  * @param {object} extractRule 数据提取规则
  */
 export default class extends EventEmitter {
-   constructor(value, extractRule, body, method, itval) {
+   constructor(options, appData = {}) {
       super()
-      this.AppSetup = getAppSetup()
-      this.id = "RD_" + nanoid(10)
-      this.url = value
+      const { id, url, extractRule, body, method, itval } = options
+      this.appData = appData
+      this.AppSetup = appData.AppSetup
+      this.AppInfo = appData.info
+      this.id = id || "RD_" + nanoid(10)
+      this.url = url
       this.body = body
       this.method = method
       this.data = reactive({})
@@ -35,7 +35,7 @@ export default class extends EventEmitter {
       this.err = null
       // 提取规则
       this.extractRule = extractRule ? reactive(extractRule) : reactive({})
-      let req = requestData({ url: value, body: getBodyData(body), method })
+      let req = requestData({ url, body: getBodyData.call(this, body), method }, this.AppInfo.network)
       req.on('request', () => {
          this.loading.value = true
          this.isloading = true
@@ -87,7 +87,7 @@ export default class extends EventEmitter {
       }
       if (info.body) {
          this.body = info.body
-         this.req.options.body = getBodyData(info.body)
+         this.req.options.body = getBodyData.call(this.appData, info.body)
       }
       if (isFinite(info.itval)) {
          this.itval = info.itval
@@ -140,6 +140,17 @@ export default class extends EventEmitter {
       keys.forEach(key => {
          delete this.data[key]
       });
+   }
+   // 返回数据内容
+   getData() {
+      return {
+         id: this.id,
+         url: this.url,
+         body: this.body || "",
+         method: this.method || "",
+         itval: this.itval || 0,
+         extractRule: this.extractRule || ""
+      }
    }
    /**
     * 填充数据

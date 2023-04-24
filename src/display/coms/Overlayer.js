@@ -1,4 +1,5 @@
 import { h } from 'vue'
+import baseComponent from '@/component/baseComponent'
 import createSprite from '../createSprite'
 
 let style = {
@@ -10,6 +11,7 @@ let style = {
    zIndex: 40000
 }
 export default {
+   exports: baseComponent,
    name: 'vx-overlayer',
    props: ['modules'],
    setup(props) {
@@ -20,7 +22,7 @@ export default {
             if (modules.hasOwnProperty.call(modules, key)) {
                const item = modules[key];
                if (typeof item.visible == 'undefined' || item.visible == true) {
-                  content.push(createSprite('vx-module', item))
+                  content.push(createSprite({ name: 'vx-module', props: item }))
                }
             }
          }

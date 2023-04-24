@@ -1,73 +1,172 @@
-import AppData from './AppData'
-import * as spriteData from './ElementData'
-import * as actData from './actionData'
-import * as globalData from './GlobalData'
-import * as plugin from '../plugin'
-import * as remote from '../remote'
-import * as secrecy from '../secrecy'
-import * as helper from '../helper'
-import initData from './initData'
+/**
+ * app基础布局与组件渲染数据
+ */
+import { reactive } from 'vue'
+import { jsonData, getScale } from '@/utils'
+import { defineAppSetup, defineAppInfo } from './defineData'
+import { EVENTS } from '@/events'
+import cmd from '@/command'
 import getData from './getData'
-import getTemplateData from './getTemplateData'
-import { useAsyncLoad } from '../plugin/use'
-import { nanoid } from 'nanoid'
-export const o = {
-   getData(blob = false) {
-      if (blob == false) {
-         return getData()
-      } else {
-         let data = getData()
-         return secrecy.encrypt(data)
-      }
-   },
-   // init: initData,
-   async init(data) {
-      let res = await secrecy.decrypt(data)
-      if (res && Array.isArray(res.plugins)) {
-         await useAsyncLoad(res.plugins)
-      }
-      initData(res)
-      return res
-   },
-   encrypt: secrecy.encrypt,
-   decrypt: secrecy.decrypt,
+import ElementData from './ElementData'
+import ActionData from './ActionData'
+import GlobalData from './GlobalData'
+import RemoteData from './RemoteData'
+import PluginData from './PluginData'
+import * as ABind from './aBind'
 
-   ...spriteData,
-   ...actData,
-   ...globalData,
-   ...plugin,
-   async copyData(value, option) {
-      let data = null
-      if (value) {
-         data = await secrecy.decrypt(value)
-      } else {
-         data = getData()
+class AppData {
+   // 应用配置
+   AppSetup = defineAppSetup()
+   // 应用
+   app = null
+   // vue实例
+   vapp = null
+   // 应用信息
+   info = defineAppInfo()
+   // 原始数据
+   iData = {}
+   // 管理舞台元素数据
+   mData = null
+   // 管理动作事件数据
+   aData = null
+   // 管理全局数据
+   gData = null
+   // 管理接口数据
+   rData = null
+   // 插件管理
+   pData = null
+   // 监听对象
+   unwatch = {}
+   filterDatas = {}
+
+   constructor(app, option) {
+      this.app = app
+      Object.assign(this.AppSetup, option)
+      // 缩放信息
+      this.scale = reactive({ value: 1, h: 1, w: 1 })
+      // 样式缩放
+      this.transform = ABind.getTransform.call(this)
+      // 模块数据
+      this.mData = new ElementData(this)
+      // 动作数据
+      this.aData = new ActionData(this)
+      // 远程数据
+      this.rData = new RemoteData(this)
+      // 全局数据
+      this.gData = new GlobalData(this)
+      // 插件数据
+      this.pData = new PluginData(this)
+   }
+   init(_data) {
+      if (this.app.vapp) {
+         this.vapp = this.app.vapp
+         if (this.vapp.dom) {
+            this.AppSetup.dom = this.vapp.dom
+         }
       }
-      data.id = 'A_' + nanoid(10)
-      if (option) {
-         Object.assign(data, option)
+      this.splitData(_data)
+      this.initData()
+      this.resetScale()
+      // 窗口变化数据处理
+      window.addEventListener('resize', () => this.resetScale())
+
+   }
+   // 缩放比例更新
+   resetScale() {
+      let size = { width: this.info.width, height: this.info.height }
+      Object.assign(this.scale, getScale(this.AppSetup.dom, size))
+   }
+   // 拆分数据
+   splitData(_data) {
+      this.iData = {}
+      let data = _data ? jsonData(_data) : {}
+      let keys = ['modules', 'actions', 'globalData', 'remote', 'plugins']
+      keys.forEach(key => {
+         if (data[key]) {
+            this.iData[key] = data[key]
+            delete data[key]
+         } else {
+            this.iData[key] = []
+         }
+      })
+      this.iData.info = data
+   }
+   initData() {
+      if (this.iData) {
+         // 应用基本信息
+         Object.assign(this.info, this.iData.info)
+         // 模块数据
+         this.mData.fillData(this.iData.modules)
+         // 动作数据
+         this.aData.fillData(this.iData.actions)
+         // 远程数据
+         this.rData.fillData(this.iData.remote)
+         // 全局数据
+         this.gData.fillData(this.iData.globalData)
+         // 插件数据
+         this.pData.fillData(this.iData.plugins)
+         // 数据加载完成
+         cmd.emit(EVENTS.DATA_LOADED, this)
+         // 请求远端数据
+         this.rData.requestData(true)
       }
-      return data
-   },
+      return this
+   }
+   requestRemote() {
+      // 请求远端数据
+      this.rData.requestData(true)
+   }
+   // 返回元素
    getElement(id) {
-      return spriteData.getSpriteData(id) || spriteData.getGroup(id)
-   },
-   getElements() {
-      return [...spriteData.getGroupArrData(), ...spriteData.getSpriteArrData()]
-   },
-   getTemplateData,
+      if (this.mData) {
+         return this.mData.getElement(id)
+      }
+   }
+   // 模块列表
+   getModuleList() {
+      return this.mData.getModuleList(...arguments)
+   }
+   // 元素列表
+   getElementList() {
+      return this.mData.getElements(...arguments)
+   }
+   // 动作列表
+   getActionList() {
+      return this.aData.getActionList(...arguments)
+   }
+   // 数据列表
+   getGDataList() {
+      return this.gData.getGDataList(...arguments)
+   }
+   // 接口列表
+   getRemoteList() {
+      return this.rData.getRemoteList(...arguments)
+   }
+   // 返回数据
+   getAppData() {
+      return {
+         info: this.info,
+         scale: this.scale,
+         transform: this.transform
+      }
+   }
+   // 返回所有数据
+   getData() {
+      return getData(this)
+   }
+   getDataSource() {
+      return ABind.getDataSource.call(this, ...arguments)
+   }
+   // 清除所有数据
    clearDataAll() {
-      // 清空数据
-      spriteData.clearSprites()
-      actData.clearAction()
-      globalData.clearGlobal()
-      remote.clearRemote()
-      plugin.clearPlugin()
-      appData.resetAppData()
-      helper.clear()
+      this.mData.clearData()
+      this.aData.clearData()
+      this.gData.clearData()
+      this.rData.clearData()
+      this.pData.clearData()
+      ABind.clearUnwatch.call(this)
    }
 }
 
-export default function (app, data) {
-   return new AppData(app, data)
-}
+
+export default AppData

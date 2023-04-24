@@ -1,67 +1,14 @@
-import { getSpriteData, getSpriteArrData } from '../data/ElementData'
-import { setActionData, delActionData } from '../data/actionData'
-import TypeModel from '../data/TypeModel'
-import { removeArray } from '../utils/index'
+import { removeArray } from '@/utils'
 
-import * as HelperEvent from './event';
-
-let { actions } = TypeModel
-
-
-/**
- * 创建触发的动作
- * @param {string} actionName 动作名称
- * @param {string} target 目标对象
- * @param {string} value 附带参数
- */
-export const createActionData = function (actionName, target = "", value, description = '') {
-   let action = actions.find(n => n.action == actionName)
-   if (action) {
-      if (action.target == 'component') {
-         return setActionData({
-            action: action.action,
-            target,
-            value: (typeof value != 'undefined') ? value : action.value,
-            description: description || (action.name + getSpriteData(target).title)
-         })
-      } else if (action.target == 'url') {
-         return setActionData({
-            action: action.action,
-            target,
-            value: (typeof value != 'undefined') ? value : action.value,
-            description: description || action.name
-         })
-      } else {
-         return setActionData({
-            action: actionName,
-            target,
-            value,
-            description: description || action.name
-         })
-      }
-   } else {
-      console.warn(actionName + ' 动作不存在')
-      return null
-   }
-}
-// 修改动作数据
-export const editActionData = function (data) {
-   if (data.id) {
-      return setActionData(data)
-   } else {
-      console.warn('没有要修改的动作信息')
-      return null
-   }
-}
 /**
  * 为事件添加一个动作
  * @param {string} actionId 动作id
  * @param {object|string} target 添加的目标对象，事件的响应对象，元件id 
  * @param {string} eventName 事件名称，通过元件id添加动作时，必须包含一个事件名称
  */
-export const addAction = function (actionId, target, eventName = "") {
+export const addEventAction = function (actionId, target, eventName = "") {
    if (eventName && typeof target == 'string') {
-      let event = HelperEvent.getEvent(target, eventName)
+      let event = this.getEvent(target, eventName)
       if (event) {
          if (event.actions.findIndex(n => n == actionId) < 0) {
             event.actions.push(actionId)
@@ -82,9 +29,9 @@ export const addAction = function (actionId, target, eventName = "") {
  * @param {*} eventName 
  * @param {*} value 
  */
-export const editAction = function (actionId, target, eventName, value) {
+export const editEventAction = function (actionId, target, eventName, value) {
    if (eventName && typeof target == 'string') {
-      let event = HelperEvent.getEvent(target, eventName)
+      let event = this.getEvent(target, eventName)
       if (event) {
          if (typeof value != 'undefined') {
             if (!event.actionValue) {
@@ -106,20 +53,21 @@ export const editAction = function (actionId, target, eventName, value) {
  * @param {*} removeSource 是否删除源头
  * @returns 
  */
-export const removeAction = function (actionId, target, eventName = "", removeSource = false) {
+export const removeEventAction = function (actionId, target, eventName = "", removeSource = false) {
+   const data = this.appData
    if (eventName && typeof target == 'string') {
-      let event = HelperEvent.getEvent(target, eventName)
+      let event = this.getEvent(target, eventName)
       if (event) {
          removeArray(event.actions, '', actionId)
       }
       if (removeSource) {
-         delActionData(actionId)
+         data.aData.delActionData(actionId)
       }
       return event
    } else if (typeof target == 'object' && target.actions && target.actions instanceof Array) {
       removeArray(target.actions, '', actionId)
       if (removeSource) {
-         delActionData(actionId)
+         data.aData.delActionData(actionId)
       }
       return target
    }
@@ -130,9 +78,10 @@ export const removeAction = function (actionId, target, eventName = "", removeSo
  * @returns 获取所有元件的所有动作id信息
  */
 export const getSpriteActions = function (id, event) {
+   const data = this.appData
    let spriteActions = []
    if (id) {
-      let sprite = getSpriteData(id)
+      let sprite = data.getElement(id)
       if (Array.isArray(sprite.events)) {
          if (event) {
             let eve = sprite.events.find(item => item.event == event)
@@ -164,7 +113,7 @@ export const getSpriteActions = function (id, event) {
          }
       }
    } else {
-      spriteActions = getSpriteArrData().map(sprite => {
+      spriteActions = data.mData.getSpriteList().map(sprite => {
          if (sprite.events && sprite.events.length > 0) {
             return sprite.events.map(event => {
                if (event.actions) {

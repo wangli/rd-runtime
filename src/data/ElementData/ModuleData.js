@@ -1,3 +1,4 @@
+import { reactive } from 'vue'
 import { initModuleData } from './msData'
 import { removeArray } from '@/utils'
 
@@ -11,7 +12,7 @@ export default class ModuleData {
       this.mData = mData
    }
    // 创建一个新的模块，并添加
-   newMouleData(data) {
+   newMoule(data) {
       if (data && typeof data == 'object') {
          if (data.id && this.modules[data.id]) {
             console.warn("模块" + data.id + '已存在')
@@ -28,18 +29,6 @@ export default class ModuleData {
       this.mData.elements[newData.id] = newData
       return newData
    }
-
-   // 删除模块
-   delModule(id) {
-      if (this.modules[id]) {
-         delete this.modules[id]
-         // 删除元素库
-         delete this.mData.elements[id]
-         return id
-      } else {
-         return false
-      }
-   }
    // 添加元件（元件、组合的基本属性）
    addElement(element, mid = 'default') {
       if (mid && element && typeof element != 'string') {
@@ -50,7 +39,7 @@ export default class ModuleData {
          }
       }
    }
-   // 删除元件
+   // 删除元件（只是在模块内删除，并为删除数据源）
    delElement(id, mid = 'default') {
       if (mid && id) {
          if (this.modules[mid] && this.modules[mid]['components']) {
@@ -65,19 +54,25 @@ export default class ModuleData {
       }
    }
    // 删除模块数据
-   delModuleData(mid, clear = false) {
+   delModule(mid, clear = false) {
       if (clear && this.modules[mid]) {
          let items = this.modules[mid]['components']
          if (Array.isArray(items)) {
             let ids = items.map(item => item.id)
             ids.forEach(id => {
                // 清除所有数据
-               this.mData.delElementData(id)
+               this.mData.delElement(id, true)
             })
          }
-         this.delModule(mid)
+         delete this.modules[mid]
+         delete this.mData.elements[mid]
+         return mid
+      } else if (this.modules[mid]) {
+         delete this.modules[mid]
+         delete this.mData.elements[mid]
+         return mid
       } else {
-         return this.delModule(mid)
+         return null
       }
    }
 
@@ -106,7 +101,7 @@ export default class ModuleData {
 
    // 返回某个模块
    getModule(id) {
-      return this.modules[id] || null
+      return id ? this.modules[id] : null
    }
    // 返回当前所有
    getModules() {
@@ -127,20 +122,20 @@ export default class ModuleData {
          return Object.values(this.modules)
       }
    }
-   // 返回模块中的所有元件
-   getModuleComponents(mid = 'default') {
+   // 返回模块中的所有元素
+   getMyElements(mid = 'default', source = false) {
       if (this.modules[mid] && this.modules[mid]['components']) {
-         return this.modules[mid]['components']
+         let components = this.modules[mid]['components']
+         return source ? components.map(item => this.mData.getElement(item.id)) : components
       } else {
          return []
       }
    }
    // 清空所有模块数据
-   clearModulesData() {
+   clearModules() {
       let keys = Object.keys(this.modules)
       keys.forEach(key => {
          this.delModule(key)
-      });
+      })
    }
-
 }

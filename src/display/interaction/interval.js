@@ -1,6 +1,5 @@
-import CMD from '../../command'
-import * as actionData from '../../data/actionData'
-import interval from '../../utils/interval'
+import CMD from '@/command'
+import { interval } from '@/utils'
 
 /**
  * 添加定时任务事件
@@ -8,6 +7,8 @@ import interval from '../../utils/interval'
  * @param {*} spid 元件id
  */
 export default function (element, spid) {
+   const actionData = this.data.aData
+   const appid = this.data.info.id
    let it = null
 
    return {
@@ -23,7 +24,7 @@ export default function (element, spid) {
             it = interval.add(() => {
                // 执行动作
                if (element.actions) {
-                  CMD.execute(actionData.getActionList(element.actions), spid)
+                  CMD.execute(actionData.getActionList(element.actions), spid, appid)
                }
             }, parseInt(delay))
          }

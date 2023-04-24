@@ -60,3 +60,12 @@ export const validateKey = function (value1, value2) {
     }
     return false
 }
+// 拷贝数据（覆盖内容，并生成新的数据id）
+export const copyData = async function (value, option) {
+    if (!value) return null;
+    let id = 'A_' + nanoid(10)
+    let data = await decrypt(value)
+    data && (data.id = id)
+    option && Object.assign(data, option)
+    return { id, data }
+}

@@ -86,33 +86,43 @@ export const initSpriteData = function (comp, name, option = {}) {
    }
    return data
 }
-export const createSimpleGroup = function (data, value = {}) {
-   return Object.assign({
-      id: data.id,
-      gpid: data.gpid,
-      mid: data.mid,
-      visible: data.visible,
-      name: data.name,
-      title: data.title,
-      type: data.type,
-      zIndex: data.zIndex
-   }, value)
-}
 /**
- * 创建一个元件的基本数据副本，主要用于添加到模块，组合等容器中，各容器通过基本信息数据在取真正的元件数据
- * @param {object} data 
- * @param {object} value 
+ * 创建数据简单描述副本
+ * @param {*} data 
+ * @param {*} value 
  * @returns 
  */
-export const createSimpleSprite = function (data, value = {}) {
-   return Object.assign({
-      id: data.id,
-      gpid: data.gpid,
-      mid: data.mid,
-      visible: data.visible,
-      name: data.name,
-      title: data.title,
-      type: data.type,
-      zIndex: data.zIndex
-   }, value)
+export const createSimpleData = function (data, value = {}) {
+   let resData = null
+   if (data && typeof data == 'object' && this) {
+      if (data.type == 'group') {
+         resData = Object.assign({
+            id: data.id,
+            gpid: data.gpid,
+            mid: data.mid,
+            visible: data.visible,
+            name: data.name,
+            title: data.title,
+            type: data.type,
+            zIndex: data.zIndex,
+            components: data.components ? data.components.map(item => item.id) : []
+         }, value)
+      } else {
+         resData = Object.assign({
+            id: data.id,
+            gpid: data.gpid,
+            mid: data.mid,
+            visible: data.visible,
+            name: data.name,
+            title: data.title,
+            type: data.type,
+            zIndex: data.zIndex
+         }, value)
+      }
+   }
+   if (resData) {
+      this.esSimple[resData.id] = resData
+      return this.esSimple[resData.id]
+   }
+   return null
 }

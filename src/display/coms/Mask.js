@@ -1,6 +1,8 @@
 import { h } from 'vue'
+import baseComponent from '@/component/baseComponent'
 
 export default {
+   exports: baseComponent,
    name: 'vx-mask',
    render() {
       let style = {
@@ -16,7 +18,7 @@ export default {
          id: "vx-mask",
          style,
          onClick: $event => {
-            
+
          }
       })
    }

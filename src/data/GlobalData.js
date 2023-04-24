@@ -1,22 +1,7 @@
-import { reactive, ref } from "vue"
-import { nanoid } from 'nanoid'
-import * as remote from '../remote'
-import { removeArray } from "../utils"
+import { reactive } from "vue"
+import { getUrlParam, removeArray } from '@/utils'
 import isPlainObject from 'lodash/isPlainObject'
-
-// 数据集合
-const data = {}
-const dataList = reactive([])
-
-const initData = function (value = "", name = "", type = "source") {
-   return {
-      id: "GD_" + nanoid(10),
-      name,
-      type,
-      value: (value instanceof Object) ? reactive(value) : ref(value),
-      uptime: new Date().getTime()
-   }
-}
+import { defineGData } from './defineData'
 
 const reactiveData = function (obj) {
    return reactive({
@@ -32,83 +17,104 @@ const reactiveData = function (obj) {
    })
 }
 
-// 新增一个数据对象
-export const addGData = function (value, name = "", type = "source") {
-   if (isPlainObject(value) && value.id) {
-      // 添加已有数据
-      if (!data[value.id]) {
-         if (value.type == 'remote') {
-            value.value = remote.add(value.value).id
-            data[value.id] = reactiveData(value)
+export default class GlobalData {
+   // 数据集合
+   data = {}
+   dataList = reactive([])
+   appData = null
+
+   constructor(appData, _data) {
+      this.appData = appData
+      // 初始数据
+      _data && this.fillData(_data)
+   }
+   // 填充数据
+   fillData(data) {
+      // 添加一组url参数信息
+      this.addGData({ id: 'GD_query', name: 'url参数', type: 'temp', value: { data: getUrlParam() } })
+      if (Array.isArray(data)) {
+         data.forEach(element => {
+            this.addGData(element)
+         })
+      }
+   }
+   // 新增一个数据对象
+   addGData = function (value, name = "", type = "source") {
+      const remote = this.appData.rData
+      if (isPlainObject(value) && value.id) {
+         // 添加已有数据
+         if (!this.data[value.id]) {
+            if (value.type == 'remote') {
+               value.value = remote.addRemote(value.value).id
+               this.data[value.id] = reactiveData(value)
+            } else {
+               this.data[value.id] = reactiveData(value)
+            }
+            this.dataList.push(this.data[value.id])
+            return this.data[value.id]
          } else {
-            data[value.id] = reactiveData(value)
+            return this.data[value.id]
          }
-         dataList.push(data[value.id])
-         return data[value.id]
+      } else if (value) {
+         // 新建数据并添加
+         let newData = {}
+         if (type == 'remote') {
+            value = remote.addRemote(value).id
+            newData = defineGData({ value, name, type })
+         } else {
+            newData = defineGData({ value, name, type })
+         }
+         this.data[newData.id] = reactiveData(newData)
+         this.dataList.push(this.data[newData.id])
+         return this.data[newData.id]
       } else {
-         return data[value.id]
+         console.warn('无效全局数据添加')
+         return false
       }
-   } else if (value) {
-      // 新建数据并添加
-      let newData = {}
-      if (type == 'remote') {
-         value = remote.add(value).id
-         newData = initData(value, name, type)
-      } else {
-         newData = initData(value, name, type)
+   }
+   // 编辑一个数据对象
+   editGData = function (res, value) {
+      let id = null
+      if (typeof res == 'string' && isPlainObject(value) && this.data[res]) {
+         id = res
+         this.data[id] = value
+      } else if (isPlainObject(res) && typeof res.id == 'string' && this.data[res.id]) {
+         id = res.id
+         this.data[id] = res
       }
-      data[newData.id] = reactiveData(newData)
-      dataList.push(data[newData.id])
-      return data[newData.id]
-   } else {
-      console.warn('无效全局数据添加')
+      if (id) {
+         let index = dataList.findIndex(item => item.id == id)
+         if (index > -1) {
+            return this.dataList[index] = this.data[id]
+         }
+      }
       return false
    }
-}
-// 编辑一个数据对象
-export const editGData = function (res, value) {
-   let id = null
-   if (typeof res == 'string' && isPlainObject(value) && data[res]) {
-      id = res
-      data[id] = value
-   } else if (isPlainObject(res) && typeof res.id == 'string' && data[res.id]) {
-      id = res.id
-      data[id] = res
-   }
-   if (id) {
-      let index = dataList.findIndex(item => item.id == id)
-      if (index > -1) {
-         return dataList[index] = data[id]
+   // 删除一个数据对象
+   delGData = function (id) {
+      if (this.data[id]) {
+         removeArray(this.dataList, 'id', id)
+         delete this.data[id]
       }
    }
-   return false
-}
-// 删除一个数据对象
-export const delGData = function (id) {
-   if (data[id]) {
-      removeArray(dataList, 'id', id)
-      delete data[id]
+   // 返回一个数据对象
+   getGData = function (id) {
+      return this.data[id] || null
+   }
+   // 返回所有数据列表(数组)
+   getGDataList = function () {
+      return this.dataList
+   }
+   // 清空数据
+   clearData = function () {
+      let keys = Object.keys(this.data)
+      keys.forEach(key => {
+         delete this.data[key]
+      });
+      this.dataList.splice(0, this.dataList.length)
+   }
+   get GData() {
+      return this.data
    }
 }
 
-// 返回一个数据对象
-export const getGData = function (id) {
-   return data[id] || null
-}
-
-// 返回所有数据列表(数组)
-export const getGDataList = function () {
-   return dataList
-}
-// 清空数据
-export const clearGlobal = function () {
-   let keys = Object.keys(data)
-   keys.forEach(key => {
-      delete data[key]
-   });
-   dataList.splice(0, dataList.length)
-}
-export const GData = data
-
-// 默认输出完整数据对象
-export default data

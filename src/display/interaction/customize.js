@@ -1,7 +1,5 @@
-import CMD from '../../command'
-import * as actionData from '../../data/actionData'
-import { components } from '../../component/components'
-import { jsonData } from '../../utils'
+import CMD from '@/command'
+import { jsonData } from '@/utils'
 
 /**
  * 执行动作列表
@@ -9,8 +7,9 @@ import { jsonData } from '../../utils'
  * @param {*} spid 
  */
 const executeActions = function (actions, spid, data) {
+   const appid = this.info.id
    // 元件内部触发的事件与绑定的动作关联，并根据发送参数合并或替换到动作中的动作值
-   let actionsArr = jsonData(actionData.getActionList(actions))
+   let actionsArr = jsonData(this.getActionList(actions))
    for (let i = 0, lg = actionsArr.length; i < lg; i++) {
       if (data && actionsArr[i].value && typeof actionsArr[i].value == 'object') {
          Object.assign(actionsArr[i].value, data)
@@ -18,7 +17,7 @@ const executeActions = function (actions, spid, data) {
          actionsArr[i].value = data
       }
    }
-   CMD.execute(actionsArr, spid)
+   CMD.execute(actionsArr, spid, appid)
 }
 
 /**
@@ -27,6 +26,9 @@ const executeActions = function (actions, spid, data) {
  * @param {*} spid 元件id
  */
 export default function (element, spid, componentName) {
+   const appData = this.data
+   const actionData = this.data.aData
+   const components = this.component.iComponents
    let evts = {}
    if (componentName && components[componentName]) {
       let emits = components[componentName].emits || []
@@ -41,13 +43,13 @@ export default function (element, spid, componentName) {
                if (/^solo-/.test(event) && data) {
                   if (element.actions && element.actions instanceof Array && element.actions.length > 0) {
                      // 如果自定义事件绑定了指定的动作，将参数传递给指定的动作
-                     executeActions(element.actions, spid, data)
+                     executeActions.call(appData, element.actions, spid, data)
                   } else {
                      // solo单事件处理，事件参数就是动作id
                      CMD.execute(jsonData(actionData.getActionList(data)), spid)
                   }
                } else if (element.actions && element.actions instanceof Array) {
-                  executeActions(element.actions, spid, data)
+                  executeActions.call(appData, element.actions, spid, data)
                }
             }
          } else {

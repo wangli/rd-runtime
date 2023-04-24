@@ -1,5 +1,6 @@
 import { h, reactive } from 'vue'
-import cmd from '../../command'
+import baseComponent from '@/component/baseComponent'
+import cmd from '@/command'
 
 let style = {
    position: 'absolute',
@@ -18,9 +19,10 @@ let itemStyle = {
    margin: '5px auto',
    boxShadow: '1px 1px 1px #00000022',
    fontSize: '14px',
-   animation:'0.4s ease 0s 1 normal none running vx_enter'
+   animation: '0.4s ease 0s 1 normal none running vx_enter'
 }
 export default {
+   extends: baseComponent,
    name: 'vx-message',
    setup() {
       const items = reactive([])

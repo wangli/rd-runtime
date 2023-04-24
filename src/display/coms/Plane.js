@@ -1,6 +1,8 @@
 import { h } from 'vue'
+import baseComponent from '@/component/baseComponent'
 import createSprite from '../createSprite'
 export default {
+   extends: baseComponent,
    name: 'vx-plane',
    props: ['components'],
    setup() {
@@ -12,7 +14,7 @@ export default {
          if (context.components) {
             context.components.forEach((item, i) => {
                if (item.visible) {
-                  containerList.push(createSprite(item.name, item.id))
+                  containerList.push(createSprite({ name: item.name, props: item.id }))
                }
             })
          }

@@ -1,12 +1,14 @@
 import { provide, h, toRefs } from 'vue'
+import baseComponent from '@/component/baseComponent'
 import createSprite from '../createSprite'
 // 原件组合容器
 export default {
+   extends: baseComponent,
    name: 'vx-sprite-group',
    props: {
       components: {
          type: Array,
-         default () {
+         default() {
             return []
          }
       }
@@ -23,7 +25,7 @@ export default {
          if (ctx.components) {
             ctx.components.forEach((item, i) => {
                if (item.visible) {
-                  containerList.push(createSprite(item.name, item.id))
+                  containerList.push(createSprite({ name: item.name, props: item.id }))
                }
             })
          }
