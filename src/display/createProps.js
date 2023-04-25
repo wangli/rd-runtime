@@ -1,9 +1,15 @@
 import createStyle from "./createStyle"
-export default function (myData, { id, event, interaction }) {
+import createEvent from './createEvent'
+export default function (myData, { id, myApp }) {
     const myStyle = createStyle(myData)
+    const myEvent = createEvent({ myApp, events: myData.events || [], data: myData, componentName: "" })
     const myClass = ['element_sprite', { 'element_selected': myData.selected }, { 'element_hover': myData.hover }]
-    if (myData['anim'] && myData['anim'].name && interaction) {
+    if (myData['anim'] && myData['anim'].name && myApp.AppSetup.interaction) {
         myClass.push(myData['anim'].name)
     }
-    return { id, style: myStyle, class: myClass, ...event }
+    if (myEvent.style) {
+        Object.assign(myStyle, myEvent.style)
+        delete myEvent.style
+    }
+    return { id, ...myEvent, style: myStyle, class: myClass }
 }

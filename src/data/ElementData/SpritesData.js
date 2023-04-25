@@ -117,9 +117,9 @@ export default class SpritesData {
             // 删除源头
             delete sprites[id]
             delete elements[id]
-         }
-         if (res && unwatchs[id] && typeof unwatchs[id] == 'function') {
-            unwatchs[id]()
+            if (res && unwatchs[id] && typeof unwatchs[id] == 'function') {
+               unwatchs[id]()
+            }
          }
          return res ? true : false
       } else {

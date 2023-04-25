@@ -41,6 +41,7 @@ export default class GroupData {
          return val
       } else if (typeof val == 'string') {
          let modules = this.mData.modules
+         let unwatchs = this.mData.unwatchs
 
          if (this.groups[val]) {
             if (clearSource) {
@@ -52,6 +53,9 @@ export default class GroupData {
             modules.delElement(this.groups[val].id, this.groups[val].mid)
             delete this.groups[val]
             delete this.mData.elements[val]
+            if (unwatchs[val] && typeof unwatchs[val] == 'function') {
+               unwatchs[val]()
+            }
             return val
          }
       }
@@ -85,6 +89,7 @@ export default class GroupData {
          let elements = this.mData.elements
          let modules = this.mData.modules
          let sprites = this.mData.sprites
+         let esSimple = this.mData.esSimple
 
          // 获取组合的边界
          let point = { x1: 0, y1: 0, x2: 0, y2: 0 }
@@ -97,7 +102,7 @@ export default class GroupData {
          ids.forEach(val => {
             if (/^group_/.test(val)) {
                // 解绑组合元素，并追加到绑定列表
-               spids.push(...this.unbindGroup(val))
+               spids.push(...this.unbindGroup(val,))
             } else {
                spids.push(val)
             }
@@ -145,9 +150,10 @@ export default class GroupData {
                   elements[id].gpid = group.id
                   elements[id].hover = false
                   elements[id].selected = false
-                  this.addElement(createSimpleData.call(this.mData, elements[id]), group.id)
+                  this.addElement(esSimple[id], group.id)
                }
             })
+            console.log(group)
             group.selected = true
             return group
          } else {
@@ -158,10 +164,11 @@ export default class GroupData {
       }
    }
    // 解绑
-   unbindGroup(gpid) {
+   unbindGroup(gpid, add = true) {
       let elements = this.mData.elements
       let modules = this.mData.modules
       let unwatchs = this.mData.unwatchs
+      let esSimple = this.mData.esSimple
       let myGroup = this.groups[gpid]
 
       if (gpid && myGroup && myGroup.components) {
@@ -172,15 +179,16 @@ export default class GroupData {
          }
          let ids = []
          // 将组合内的元件添加到模块内
-         myGroup.components.forEach(element => {
+         let components = myGroup.components
+         // 删除组合
+         this.delGroup(gpid)
+         components.forEach(element => {
             elements[element.id].x += myGroup.x
             elements[element.id].y += myGroup.y
             elements[element.id].gpid = null
             ids.push(element.id)
-            modules.addElement(element, element.mid)
+            add && modules.addElement(esSimple[element.id], element.mid)
          })
-         // 删除组合
-         this.delGroup(gpid)
          return ids
       }
       return false

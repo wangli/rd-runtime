@@ -45,6 +45,7 @@ export const initGroupData = function (options = {}) {
       border: {},
       shadow: {},
       anim: {},
+      events: [],
       components: []
    })
    Object.assign(data, options)
@@ -68,17 +69,23 @@ export const initSpriteData = function (comp, name, option = {}) {
       title: title ? (title + spriteCount++) : '元件 ' + spriteCount++,
       x: defaultData.x || 0,
       y: defaultData.y || 0,
-      width: defaultData.width || 0,
-      height: defaultData.height || 0,
-      data: defaultData.data || '',
+      zIndex: defaultData.zIndex || 0,
+      width: defaultData.width || 80,
+      height: defaultData.height || 80,
+      angle: defaultData.angle || 0,
       opacity: defaultData.opacity || 100,
       visible: defaultData.visible || true,
       selected: defaultData.selected || false,
       hover: defaultData.hover || false,
-      background: defaultData.background,
-      border: defaultData.border,
-      shadow: defaultData.shadow,
-      anim: defaultData.anim || {}
+      padding: defaultData.padding || '',
+      lock: defaultData.lock || false,
+      background: defaultData.background || {},
+      border: defaultData.border || {},
+      shadow: defaultData.shadow || {},
+      anim: defaultData.anim || {},
+      options: defaultData.options || {},
+      events: defaultData.events || [],
+      data: defaultData.data || ''
    })
    Object.assign(data, option)
    if (!data.id) {
