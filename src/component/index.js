@@ -114,7 +114,7 @@ class AppComponent {
             if (this.iComponents[component.name]) {
                 console.warn('重复组件名:' + component.name)
             } else {
-                let item = merge({}, baseComponent, component)
+                let item = merge({}, component)
                 this.iComponents[component.name] = item
                 this.iComponentsInfo[item.name] = {
                     name: item.name,

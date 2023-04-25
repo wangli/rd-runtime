@@ -1,16 +1,16 @@
 import { h, isReactive, resolveComponent } from 'vue'
 import { getAppGlobal } from '@/utils'
-import creatEvent from './creatEvent'
+import createEvent from './createEvent'
 
 /**
  * 创建组件
  * @param {String} componentName 组件名称
- * @param {String|Object} pams 元件id或组件props
+ * @param {String|Object} props 元件id或组件props
  * @param {String|Object} slots 用到插槽的内容
  * @returns 
  */
 export default function (options) {
-   const { name, props: pams, slots: coms, data } = options
+   const { name, props, slots } = options
    const myApp = {
       AppSetup: getAppGlobal('AppSetup'),
       data: getAppGlobal('data'),
@@ -21,7 +21,7 @@ export default function (options) {
    let componentName = name
    let component = null;
    if (!componentName) {
-      console.warn('数据缺少组件' + pams);
+      console.warn('数据缺少组件' + props);
       component = "div";
    } else {
       component = resolveComponent(componentName);
@@ -30,49 +30,39 @@ export default function (options) {
          component = "div";
       }
    }
-   if (typeof pams == 'string') {
+   if (typeof props == 'string') {
       // 如果是元件id
-      const spriteData = data ? data : mData.getSprite(pams) || mData.getGroup(pams)
+      const spriteData = mData.getElement(props)
       if (!spriteData) { return }
-      let props = { ...spriteData, key: pams }
+      let myProps = { id: props, options: spriteData.options }
       if (spriteData.id) {
          // 绑定事件
          let event = { myApp, events: spriteData.events || [], data: spriteData, componentName }
-         Object.assign(props, creatEvent(event))
+         Object.assign(myProps, createEvent(event))
       }
       // 删除组件定义相关信息
-      if (props['name']) delete props['name']
-      if (props['mid']) delete props['mid']
-      if (props['anim'] && props['anim'].name && myApp.AppSetup.interaction) {
-         props['class'] = props['anim'].name
-      } else if (typeof props['anim'] == 'string') {
-         delete props['anim']
-      }
-      if (props['data']) {
-         let _data = myApp.data.getDataSource(props['data'])
+      if (spriteData.data) {
+         let _data = myApp.data.getDataSource(spriteData.data)
+         // console.log(componentName, spriteData.title, _data, isReactive(_data))
          if (_data) {
-            if (isReactive(_data)) {
-               props['data'] = _data.data || _data
-            } else {
-               props['data'] = _data
-            }
+            myProps.data = isReactive(_data) ? _data.data || _data : _data
          }
       }
 
-      return h(component, props)
-   } else if (typeof pams != 'undefined') {
+      return h(component, myProps)
+   } else if (typeof props != 'undefined') {
       // 如果是模块或组合
-      let props = { ...pams };
-      if (pams.events || pams.type == 'group') {
-         let event = { myApp, events: pams.events || [], data: pams, componentName }
-         Object.assign(props, creatEvent(event))
+      let myProps = { ...props }
+      if (props.events) {
+         let event = { myApp, events: props.events || [], data: props, componentName }
+         Object.assign(myProps, createEvent(event))
       }
-      props['ref'] = props.id
+      myProps['ref'] = myProps.id
       // 删除组件定义相关信息
-      if (props['name']) delete props['name']
-      if (props['mid']) delete props['mid']
+      if (myProps['name']) delete myProps['name']
+      if (myProps['mid']) delete myProps['mid']
 
-      return h(component, props, coms)
+      return h(component, myProps, slots)
    } else {
       // 无信息返回组件
       return h(component, {}, "")

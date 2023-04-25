@@ -1,6 +1,7 @@
 import { h, toRefs } from 'vue'
 import baseComponent from '@/component/baseComponent'
-import createSprite from '../createSprite'
+import SpriteGroup from './SpriteGroup'
+import SpriteObject from './SpriteObject'
 export default {
    extends: baseComponent,
    name: 'vx-module',
@@ -15,9 +16,9 @@ export default {
             components.value.forEach((item, i) => {
                if (item.visible) {
                   if (item.type == 'group') {
-                     containerList.push(createSprite({ name: 'vx-sprite-group', props: item.id }))
+                     containerList.push(h(SpriteGroup, { id: item.id }))
                   } else {
-                     containerList.push(createSprite({ name: item.name, props: item.id }))
+                     containerList.push(h(SpriteObject, { id: item.id }))
                   }
                }
             })

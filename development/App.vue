@@ -1,7 +1,7 @@
 <template>
    <div>
       <div class="item" id="stage" ref="stage"> </div>
-      <div class="item" id="stage2" ref="stage2"> </div>
+      <!-- <div class="item" id="stage2" ref="stage2"> </div> -->
    </div>
 </template>
 <script>
@@ -46,15 +46,15 @@
                   }, { display: true, components, data })
 
                })
-               loadFileData(bb).then(data => {
-                  createVapp({
-                     interaction: true,
-                     clickCursor: 'pointer',
-                     scale: true,
-                     dom: stage2.value
-                  }, { display: true, components, data })
+               // loadFileData(bb).then(data => {
+               //    createVapp({
+               //       interaction: true,
+               //       clickCursor: 'pointer',
+               //       scale: true,
+               //       dom: stage2.value
+               //    }, { display: true, components, data })
 
-               })
+               // })
             }
          })
          return { stage, stage2 }

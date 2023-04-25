@@ -1,37 +1,44 @@
 import { provide, h, toRefs } from 'vue'
-import baseComponent from '@/component/baseComponent'
-import createSprite from '../createSprite'
+import SpriteObject from './SpriteObject'
+import createEvent from '../createEvent'
+import createProps from '../createProps'
+import { getAppGlobal } from '@/utils'
 // 原件组合容器
 export default {
-   extends: baseComponent,
    name: 'vx-sprite-group',
    props: {
-      components: {
-         type: Array,
-         default() {
-            return []
-         }
+      id: {
+         type: String
       }
    },
    setup(props) {
-      const { x, y, id } = toRefs(props)
-      provide('offsetX', x)
-      provide('offsetY', y)
+      const AppSetup = getAppGlobal('AppSetup')
+      const data = getAppGlobal('data')
+      const component = getAppGlobal('component')
+      const myData = data.getElement(props.id)
+      let event = createEvent({
+         myApp: { AppSetup, data, component },
+         events: myData.events || [],
+         data: myData,
+         componentName: ""
+      })
+      provide('offsetX', myData.x)
+      provide('offsetY', myData.y)
+
       // offset
       return (ctx) => {
+         const myProps = createProps(myData, { id: props.id, event, interaction: AppSetup.interaction })
          // 组件内容
-         const containerList = [];
+         const containerList = []
          // 遍历模块数据
-         if (ctx.components) {
-            ctx.components.forEach((item, i) => {
+         if (myData.components) {
+            myData.components.forEach((item, i) => {
                if (item.visible) {
-                  containerList.push(createSprite({ name: item.name, props: item.id }))
+                  containerList.push(h(SpriteObject, { id: item.id }))
                }
             })
          }
-         let myClass = ['element_sprite', { 'element_selected': ctx.selected }, { 'element_hover': ctx.hover }]
-
-         return h('div', { id: id.value, style: ctx.style, class: myClass }, containerList)
+         return h('div', myProps, containerList)
       }
    }
 }

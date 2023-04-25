@@ -81,6 +81,7 @@ export default {
             }
          }
          containerList.push(createSprite({ name: 'vx-background', props: props.background }), ...slots)
+         
          if (content.length > 0) {
             containerList.push(createSprite({ name: 'vx-content', props: { modules: content } }))
          }

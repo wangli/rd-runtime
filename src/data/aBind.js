@@ -45,7 +45,7 @@ export const getDataSource = function (value) {
     if (typeof value != 'string') return value
     if (/^RD_\S{10}$/.test(value) && remote.remotes[value]) {
         return remote.remotes[value].data
-    } else if(this.gData) {
+    } else if (this.gData) {
         const { GData } = this.gData
         const unwatch = this.unwatch
         const filterDatas = this.filterDatas
@@ -84,5 +84,5 @@ export const getDataSource = function (value) {
             }
         }
     }
-    return null
+    return value
 }
