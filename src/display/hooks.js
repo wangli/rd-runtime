@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, getCurrentInstance } from "vue"
+import { onMounted, onUnmounted } from "vue"
 import cmd from '@/command'
 
 const dispatchEvent = function ($el, event, component, value) {

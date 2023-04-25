@@ -12,7 +12,6 @@ import * as interaction from './interaction'
 export default function (options) {
    const { myApp = {}, events, data = {}, componentName = "" } = options
    let evts = {}
-   let id = data.id
    if (componentName) {
       evts = {
          style: {}
@@ -20,23 +19,23 @@ export default function (options) {
    }
    if (myApp.AppSetup && myApp.AppSetup.interaction) {
       // 开始交互动作
-      events.forEach(element => {
-         switch (element.event) {
+      events.forEach(item => {
+         switch (item.event) {
             case 'click':
                // 用户点击元件
-               Object.assign(evts, interaction.click.call(myApp, element, data))
+               Object.assign(evts, interaction.click.call(myApp, item, data))
                break
             case 'timeout':
                // 显示后延迟执行
-               Object.assign(evts, interaction.timeout.call(myApp, element, id))
+               Object.assign(evts, interaction.timeout.call(myApp, item, data))
                break
             case 'interval':
                // 显示后定时执行
-               Object.assign(evts, interaction.interval.call(myApp, element, id))
+               Object.assign(evts, interaction.interval.call(myApp, item, data))
                break
             default:
                // 自定义事件
-               Object.assign(evts, interaction.customize.call(myApp, element, id, componentName))
+               Object.assign(evts, interaction.customize.call(myApp, item, data, componentName))
          }
       });
    } else {

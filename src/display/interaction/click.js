@@ -1,16 +1,18 @@
 import CMD from '@/command'
 import { EVENTS } from '@/events'
-import { jsonData, createSimpleData } from '@/utils'
+import { createSimpleData } from '@/utils'
+import getActions from './getActions'
+
 /**
  * 添加用户点击事件
- * @param {*} element 目标对象
- * @param {*} data 元件信息
+ * @param {*} event 事件
+ * @param {*} elementData 元素数据
  */
-export default function (element, elementData) {
+export default function (eventItem, elementData) {
    const AppSetup = this.AppSetup
-   const actionData = this.data
+   const data = this.data
    const appid = this.data.info.id
-   let id = elementData.id
+   const sprid = elementData.id
    // 用户点击元件
    return {
       style: {
@@ -18,16 +20,9 @@ export default function (element, elementData) {
       },
       onClickCapture: function (evt) {
          CMD.emit(EVENTS.CLICK_SPRITE, createSimpleData(elementData), evt)
-         if (element.actions) {
-            let actions = jsonData(actionData.getActionList(element.actions))
-            if (element.actionValue && typeof element.actionValue == 'object') {
-               actions.forEach(action => {
-                  if (element.actionValue[action.id]) {
-                     action.value = element.actionValue[action.id]
-                  }
-               })
-            }
-            CMD.execute(actions, id, appid)
+         if (eventItem.actions) {
+            let actions = getActions(data, eventItem)
+            CMD.execute(actions, sprid, appid)
          }
       }
    }

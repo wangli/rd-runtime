@@ -25,10 +25,12 @@ const executeActions = function (actions, spid, data) {
  * @param {*} element 目标对象
  * @param {*} spid 元件id
  */
-export default function (element, spid, componentName) {
+export default function (element, elementData, componentName) {
    const appData = this.data
    const actionData = this.data.aData
    const components = this.component.iComponents
+   const appid = this.data.info.id
+   const sprid = elementData.id
    let evts = {}
    if (componentName && components[componentName]) {
       let emits = components[componentName].emits || []
@@ -43,13 +45,13 @@ export default function (element, spid, componentName) {
                if (/^solo-/.test(event) && data) {
                   if (element.actions && element.actions instanceof Array && element.actions.length > 0) {
                      // 如果自定义事件绑定了指定的动作，将参数传递给指定的动作
-                     executeActions.call(appData, element.actions, spid, data)
+                     executeActions.call(appData, element.actions, sprid, data)
                   } else {
                      // solo单事件处理，事件参数就是动作id
-                     CMD.execute(jsonData(actionData.getActionList(data)), spid)
+                     CMD.execute(jsonData(actionData.getActionList(data)), sprid, appid)
                   }
                } else if (element.actions && element.actions instanceof Array) {
-                  executeActions.call(appData, element.actions, spid, data)
+                  executeActions.call(appData, element.actions, sprid, data)
                }
             }
          } else {

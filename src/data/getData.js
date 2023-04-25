@@ -39,7 +39,7 @@ export default function (app) {
         if (element.type == 'temp') {
             globalData.splice(index, 1)
         }
-    });
+    })
     return jsonData({
         ...appData.info,
         globalData,

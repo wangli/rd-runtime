@@ -1,12 +1,15 @@
 import CMD from '@/command'
+import getActions from './getActions'
+
 /**
  * 添加用户延迟事件
  * @param {*} element 目标对象
- * @param {*} spid 元件id
+ * @param {*} elementData 元素数据
  */
-export default function (element, spid) {
-   const actionData = this.data.aData
+export default function (eventItem, elementData) {
+   const data = this.data
    const appid = this.data.info.id
+   const sprid = elementData.id
    let it = null
    // 用户点击元件
    return {
@@ -18,14 +21,14 @@ export default function (element, spid) {
             it = null
          }
          if (lifecycle == 'mounted') {
-            let pams = element.pams || {}
+            let pams = eventItem.pams || {}
             let delay = pams.delay || 1000
             it = setTimeout(() => {
                // 执行动作
-               if (element.actions) {
-                  CMD.execute(actionData.getActionList(element.actions), spid, appid)
+               if (eventItem.actions) {
+                  CMD.execute(getActions(data, eventItem), sprid, appid)
                }
-            }, parseInt(delay));
+            }, parseInt(delay))
          }
       }
    }

@@ -83,7 +83,7 @@ export default class GlobalData {
          this.data[id] = res
       }
       if (id) {
-         let index = dataList.findIndex(item => item.id == id)
+         let index = this.dataList.findIndex(item => item.id == id)
          if (index > -1) {
             return this.dataList[index] = this.data[id]
          }
