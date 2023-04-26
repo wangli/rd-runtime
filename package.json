@@ -1,7 +1,8 @@
 {
    "name": "rd-runtime",
-   "private": true,
-   "version": "2.0.0",
+   "version": "2.0.1",
+   "main": "./dist/rd-runtime.mjs",
+   "module": "./dist/rd-runtime.mjs",
    "scripts": {
       "dev": "vite",
       "build": "vite build & node copy",
