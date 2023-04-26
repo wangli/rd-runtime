@@ -4414,16 +4414,16 @@ class Ir extends DA {
     return this.vapp;
   }
 }
-const er = ft, Qr = Se, Cr = p, ir = xA, gr = m, Er = qi, sr = function(I, { display: A, components: g, actions: B, slots: t, data: e }) {
-  let Q = new Ir({ config: I });
-  return g && Q.use(g), B && Q.use(B), Q.create({ slots: t }), e && Q.initData(e).then((C) => {
-    C && A == !0 && Q.display();
-  }), Q;
+const er = ft, Qr = Se, Cr = p, ir = xA, gr = m, Er = qi, sr = function(I) {
+  const { dom: A, scale: g = !0, interaction: B = !0, clickCursor: t = "pointer", display: e, components: Q, actions: C, slots: E, data: s } = I, n = { interaction: B, clickCursor: t, scale: g, dom: A }, a = new Ir({ config: Object.assign({ dom: A }, n) });
+  return Q && a.use(Q), C && a.use(C), a.create({ slots: E }), s && a.initData(s).then((r) => {
+    r && e == !0 && a.display();
+  }), a;
 };
 RB.addEventListener("statechange", function(I) {
   p.emit(gr.PAGE_STATE, { state: I.newState, oldState: I.oldState });
 });
-console.log("%crd-runtime:2.0.1", "color:#0aa100");
+console.log("%crd-runtime:2.0.2", "color:#0aa100");
 export {
   gr as EVENTS,
   Cr as cmd,

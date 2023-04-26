@@ -22,9 +22,10 @@ export const EVENTS = events
 export const remote = Remote
 
 // 创建应用
-export const createVapp = function (config, { display, components, actions, slots, data }) {
-
-   let app = new App({ config })
+export const createVapp = function (options) {
+   const { dom, scale = true, interaction = true, clickCursor = 'pointer', display, components, actions, slots, data } = options
+   const config = { interaction, clickCursor, scale, dom }
+   const app = new App({ config: Object.assign({ dom }, config) })
    // 附加组件
    components && app.use(components)
    // 附加动作
