@@ -4415,15 +4415,17 @@ class Ir extends DA {
   }
 }
 const er = ft, Qr = Se, Cr = p, ir = xA, gr = m, Er = qi, sr = function(I) {
-  const { dom: A, scale: g = !0, interaction: B = !0, clickCursor: t = "pointer", display: e, components: Q, actions: C, slots: E, data: s } = I, n = { interaction: B, clickCursor: t, scale: g, dom: A }, a = new Ir({ config: Object.assign({ dom: A }, n) });
-  return Q && a.use(Q), C && a.use(C), a.create({ slots: E }), s && a.initData(s).then((r) => {
-    r && e == !0 && a.display();
-  }), a;
+  const { dom: A, scale: g = !0, interaction: B = !0, clickCursor: t = "pointer", display: e, plugins: Q, slots: C, data: E } = I, s = { interaction: B, clickCursor: t, scale: g, dom: A }, n = new Ir({ config: Object.assign({ dom: A }, s) });
+  return Array.isArray(Q) ? Q.forEach((a) => {
+    n.use(a);
+  }) : Q && n.use(Q), n.create({ slots: C }), E && n.initData(E).then((a) => {
+    a && e == !0 && n.display();
+  }), n;
 };
 RB.addEventListener("statechange", function(I) {
   p.emit(gr.PAGE_STATE, { state: I.newState, oldState: I.oldState });
 });
-console.log("%crd-runtime:2.0.2", "color:#0aa100");
+console.log("%crd-runtime:2.0.3", "color:#0aa100");
 export {
   gr as EVENTS,
   Cr as cmd,

@@ -42,8 +42,11 @@
                      interaction: true,
                      clickCursor: 'pointer',
                      scale: true,
-                     dom: stage.value
-                  }, { display: true, components, data })
+                     dom: stage.value,
+                     display: true,
+                     components,
+                     data
+                  })
 
                })
                // loadFileData(bb).then(data => {

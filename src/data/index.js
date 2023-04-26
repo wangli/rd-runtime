@@ -37,6 +37,7 @@ class AppData {
    pData = null
    // 监听对象
    unwatch = {}
+   // 过滤器
    filterDatas = {}
 
    constructor(app, option) {
@@ -154,6 +155,7 @@ class AppData {
    getData() {
       return getData(this)
    }
+   // 数据源处理
    getDataSource() {
       return ABind.getDataSource.call(this, ...arguments)
    }
