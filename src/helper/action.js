@@ -46,7 +46,7 @@ export const editEventAction = function (actionId, target, eventName, value) {
    }
 }
 /**
- * 
+ * 删除事件上的动作
  * @param {string} actionId  动作id
  * @param {*} target 目标对象
  * @param {*} eventName 事件名称
@@ -73,6 +73,7 @@ export const removeEventAction = function (actionId, target, eventName = "", rem
    }
 }
 /**
+ * 获取元素上的所有动作
  * @param {*} id 目标对象id
  * @param {*} event 事件名称
  * @returns 获取所有元素的所有动作id信息

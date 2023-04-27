@@ -44,7 +44,7 @@
                      scale: true,
                      dom: stage.value,
                      display: true,
-                     components,
+                     plugins: components,
                      data
                   })
 

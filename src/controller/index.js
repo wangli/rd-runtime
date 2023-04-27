@@ -1,6 +1,6 @@
 import CMD from '../command'
 import { CEVENTS } from '../events'
-import Controller from './controller'
+import { Controller, ActionTrigger } from './controller'
 export default function (app) {
    /**
     * 将相关事件与动作绑定
@@ -11,8 +11,8 @@ export default function (app) {
    const ctl = new Controller(app)
    for (const key in CEVENTS) {
       let event = CEVENTS[key]
-      if (ctl[event]) {
-         CMD.addEventListener(event, ctl[event], ctl)
+      if (ActionTrigger[event]) {
+         CMD.addEventListener(event, ActionTrigger[event], ctl)
       }
    }
    return ctl
