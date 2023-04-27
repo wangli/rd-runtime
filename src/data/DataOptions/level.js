@@ -4,4 +4,7 @@ export default [{
 }, {
     name: '覆盖弹层',
     type: 'overlayer'
+}, {
+    name: '固定层',
+    type: 'fixed'
 }]
