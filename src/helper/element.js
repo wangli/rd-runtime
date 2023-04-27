@@ -1,24 +1,24 @@
 import { jsonData } from '@/utils'
 
 /**
- * 调整元件层级
+ * 调整元素层级
  * @param {string}} spid 
  * @param {string} level 
  */
 export const setZindex = function (spid, level = 'up') {
     const { mData } = this.appData
-    // 所有舞台元件
+    // 所有舞台元素
     const elements = mData.elements
-    // 获取元件的数据对象
+    // 获取元素的数据对象
     const sprite = mData.getElement(spid)
     if (!sprite) {
-        console.warn('元件不存在' + spid)
+        console.warn('元素不存在' + spid)
         return
     } else if (!sprite.mid) {
         console.warn('页面上找不到' + spid)
         return
     }
-    // 获取所有元件的zIndex排序
+    // 获取所有元素的zIndex排序
     let sprs = mData.getMyElements(sprite.mid).map(item => {
         return {
             id: item.id,
@@ -68,14 +68,14 @@ export const setZindex = function (spid, level = 'up') {
     }
 }
 /**
- * 复制元件并添加
+ * 复制元素并添加
  * @param {*} sid 需要复制的数据id
  * @param {*} option 数据覆盖
  * @param {*} gpid 所在组id
  */
 export const copyAdd = function (sid, option, gpid = null) {
     const { mData } = this.appData
-    // 所有舞台元件
+    // 所有舞台元素
     const spritesData = mData.getSprites()
     const groupsData = mData.getGroups()
     if (spritesData[sid]) {
@@ -106,13 +106,13 @@ export const copyAdd = function (sid, option, gpid = null) {
 }
 
 /**
- * 复制元件数据
+ * 复制元素数据
  * @param {*} id 需要复制的数据id
  * @param {*} clear 是否清除事件与数据
  */
 export const copy = function (id, clear) {
     const { mData } = this.appData
-    // 所有舞台元件
+    // 所有舞台元素
     const spritesData = mData.getSprites()
     const groupsData = mData.getGroups()
     if (spritesData[id]) {
@@ -141,7 +141,7 @@ export const copy = function (id, clear) {
             delete element.mid
             delete element.zIndex
         }
-        // 处理子元件
+        // 处理子元素
         if (Array.isArray(element.components)) {
             element.components = element.components.map(item => {
                 return this.copy(item.id, clear)

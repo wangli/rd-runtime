@@ -13,7 +13,12 @@ export default class GroupData {
       this.mData = mData
    }
 
-   // 添加一个组合
+   /**
+    * 添加一个组合
+    * @param {object} data 数据对象
+    * @param {string} mid 模块id
+    * @returns 
+    */
    newGroup(data, mid = 'default') {
       if (data && typeof data == 'object' && data.id && this.groups[data.id]) {
          console.warn("组合" + data.id + '已存在')
@@ -32,7 +37,12 @@ export default class GroupData {
 
       return group
    }
-   // 删除组合，是否删除内部数据源
+   /**
+    * 删除组合，是否删除内部数据源
+    * @param {string|array} val 
+    * @param {boolean} clearSource 
+    * @returns 
+    */
    delGroup(val, clearSource = false) {
       if (Array.isArray(val)) {
          val.forEach(id => {
@@ -61,29 +71,34 @@ export default class GroupData {
       }
       return false
    }
-   // 项组合添加元件（元件、组合的基本属性）
+   // 项组合添加元素（元素、组合的基本属性）
    addElement(element, gpid) {
       if (gpid && element && typeof element != 'string') {
          if (this.groups[gpid] && this.groups[gpid]['components']) {
             this.groups[gpid]['components'].push(element)
             // this.esSimple[gpid]
          } else {
-            console.warn('模块添加元件数据失败')
+            console.warn('模块添加元素数据失败')
          }
       }
    }
-   // 从组合中删除元件
+   // 从组合中删除元素
    delElement(id, gpid) {
       let del = false
       if (gpid && id && this.groups[gpid] && this.groups[gpid]['components']) {
          del = removeArray(this.groups[gpid]['components'], 'id', id)
       }
       if (!del) {
-         console.warn('模块删除元件数据失败')
+         console.warn('模块删除元素数据失败')
       }
       return del
    }
-   // 创建新组合并加入已有元素
+   /**
+    * 创建新组合并加入已有元素
+    * @param {array} ids 需要绑定编组的元素id
+    * @param {string} mid 当前模块id
+    * @returns 
+    */
    newBindGroup(ids, mid = 'default') {
       if (Array.isArray(ids)) {
          let elements = this.mData.elements
@@ -94,7 +109,7 @@ export default class GroupData {
          // 获取组合的边界
          let point = { x1: 0, y1: 0, x2: 0, y2: 0 }
          let moduleComps = modules.getMyElements(mid)
-         // 需要组合的实际元件
+         // 需要组合的实际元素
          let spids = []
          // 无效的id
          let invalids = []
@@ -128,7 +143,7 @@ export default class GroupData {
             }
          })
          if (invalids.length > 0) {
-            console.warn(invalids.join(), "元件无法组合")
+            console.warn(invalids.join(), "元素无法组合")
             return false
          }
          // 从模块中移除元素（非组合）
@@ -142,7 +157,7 @@ export default class GroupData {
             height: point.y2 - point.y1
          }, mid)
          if (group) {
-            // 添加元件到组合
+            // 添加元素到组合
             spids.forEach(id => {
                if (elements[id]) {
                   elements[id].x -= point.x1
@@ -163,7 +178,12 @@ export default class GroupData {
          return false
       }
    }
-   // 解绑
+   /**
+    * 编组解绑，并删除这个组合
+    * @param {*} gpid 组合id
+    * @param {*} add 是否移除后添加到源有模块中
+    * @returns 
+    */
    unbindGroup(gpid, add = true) {
       let elements = this.mData.elements
       let modules = this.mData.modules
@@ -178,7 +198,7 @@ export default class GroupData {
             unwatchs[gpid]()
          }
          let ids = []
-         // 将组合内的元件添加到模块内
+         // 将组合内的元素添加到模块内
          let components = myGroup.components
          // 删除组合
          this.delGroup(gpid)
@@ -212,7 +232,11 @@ export default class GroupData {
       }
    }
 
-   // 返回某个组合
+   /**
+    * 返回某个组合
+    * @param {string} id 
+    * @returns 
+    */
    getGroup(id) {
       return id ? this.groups[id] : null
    }

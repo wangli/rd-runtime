@@ -3,7 +3,7 @@ import { jsonData } from '@/utils'
 
 /**
  * 添加已有的数据模板
- * @param {string|object} value 可以是元件名称，也可是数据内容
+ * @param {string|object} value 可以是元素名称，也可是数据内容
  * @param {string|object} mid 模块id
  * @param {string} gid 组id
  * @returns 
@@ -55,6 +55,33 @@ export const delElement = function (id, clear = true) {
    }
 }
 /**
+ * 将元素追加到容器内
+ * @param {*} element 元素内容（可以是对象，也可是是元素id）
+ * @param {*} parentId 需要加入的容器id（模块或编组）
+ */
+export const appendElement = function (element, parentId) {
+   if (this.modules.modules[parentId]) {
+      return this.modules.addElement(element, parentId)
+   } else if (this.groups.groups[parentId]) {
+      return this.groups.addElement(element, parentId)
+   }
+   return null
+}
+/**
+ * 将元素从容器内移除
+ * @param {*} element 
+ * @param {*} parentId 
+ */
+export const removeElement = function (id, parentId) {
+   if (this.modules.modules[parentId]) {
+      return this.modules.delElement(id, parentId)
+   } else if (this.groups.groups[parentId]) {
+      return this.groups.delElement(id, parentId)
+   }
+   return null
+}
+
+/**
  * 填充数据
  * @param {array} moduleList 
  */
@@ -71,7 +98,7 @@ export const fillData = function (moduleList) {
          }
          // 创建模块
          this.newMoule(_module)
-         // 添加模块内元件
+         // 添加模块内元素
          moduleComponents.forEach(element => {
             if (element.type == 'group') {
                // 组合处理

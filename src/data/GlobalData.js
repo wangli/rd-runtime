@@ -38,7 +38,13 @@ export default class GlobalData {
          })
       }
    }
-   // 新增一个数据对象
+   /**
+    * 新增一个数据对象
+    * @param {*} value 值
+    * @param {*} name 名称
+    * @param {*} type 类型
+    * @returns 
+    */
    addGData = function (value, name = "", type = "source") {
       const remote = this.appData.rData
       if (isPlainObject(value) && value.id) {
@@ -72,7 +78,12 @@ export default class GlobalData {
          return false
       }
    }
-   // 编辑一个数据对象
+   /**
+    * 编辑一个数据对象
+    * @param {string|object} res 
+    * @param {object} value 
+    * @returns 
+    */
    editGData = function (res, value) {
       let id = null
       if (typeof res == 'string' && isPlainObject(value) && this.data[res]) {

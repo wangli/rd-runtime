@@ -13,7 +13,7 @@ export default function (eventItem, elementData) {
    const data = this.data
    const appid = this.data.info.id
    const sprid = elementData.id
-   // 用户点击元件
+   // 用户点击元素
    return {
       style: {
          cursor: AppSetup.clickCursor

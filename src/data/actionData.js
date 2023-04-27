@@ -21,7 +21,12 @@ export default class ActionData {
          })
       }
    }
-   // 创建新动作
+   /**
+    * 创建新动作
+    * @param {string} actionName 动作名称
+    * @param {object} option 覆盖参数
+    * @returns 
+    */
    createActionData(actionName, option) {
       let actionData = DataOptions.actions.find(n => n.action == actionName)
       if (!actionData) {

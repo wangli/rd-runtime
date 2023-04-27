@@ -5,7 +5,7 @@ import createEvent from './createEvent'
 /**
  * 创建组件
  * @param {String} componentName 组件名称
- * @param {String|Object} props 元件id或组件props
+ * @param {String|Object} props 元素id或组件props
  * @param {String|Object} slots 用到插槽的内容
  * @returns 
  */
@@ -31,7 +31,7 @@ export default function (options) {
       }
    }
    if (typeof props == 'string') {
-      // 如果是元件id
+      // 如果是元素id
       const spriteData = mData.getElement(props)
       if (!spriteData) { return }
       let myProps = { id: props, options: spriteData.options }

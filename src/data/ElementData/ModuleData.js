@@ -29,23 +29,23 @@ export default class ModuleData {
       this.mData.elements[newData.id] = newData
       return newData
    }
-   // 添加元件（元件、组合的基本属性）
+   // 添加元素（元素、组合的基本属性）
    addElement(element, mid = 'default') {
       if (mid && element && typeof element != 'string') {
          if (this.modules[mid] && this.modules[mid]['components']) {
             this.modules[mid]['components'].push(element)
          } else {
-            console.warn('模块添加元件数据失败')
+            console.warn('模块添加元素数据失败')
          }
       }
    }
-   // 删除元件（只是在模块内删除，并为删除数据源）
+   // 删除元素（只是在模块内删除，并为删除数据源）
    delElement(id, mid = 'default') {
       if (mid && id) {
          if (this.modules[mid] && this.modules[mid]['components']) {
             return removeArray(this.modules[mid]['components'], 'id', id)
          } else {
-            console.warn('模块删除元件数据失败')
+            console.warn('模块删除元素数据失败')
             return false
          }
       } else {
@@ -53,7 +53,12 @@ export default class ModuleData {
          return false
       }
    }
-   // 删除模块数据
+   /**
+    * 删除模块数据
+    * @param {*} mid 模块id
+    * @param {*} clear 是否清除所有模块内数据
+    * @returns 
+    */
    delModule(mid, clear = false) {
       if (clear && this.modules[mid]) {
          let items = this.modules[mid]['components']
@@ -86,7 +91,7 @@ export default class ModuleData {
             this.modules[id] = initModuleData(Object.assign({ id }, data))
             elements[id] = modules[id]
          }
-         // 模块中元件列表不存在，创建一个空列表
+         // 模块中元素列表不存在，创建一个空列表
          if (!this.modules[id]['components']) modules[id]['components'] = []
          return this.modules[id]
       } else if (data) {
@@ -107,7 +112,12 @@ export default class ModuleData {
    getModules() {
       return this.modules
    }
-   // 返回当前所有（数组）
+   /**
+    * 返回当前所有（数组）
+    * @param {string|function} filter 过滤键值，或自定义过滤方法
+    * @param {string} key 过滤键名
+    * @returns 
+    */
    getModuleList(filter, key = 'type') {
       if (filter) {
          let items = Object.values(this.modules)
@@ -122,7 +132,12 @@ export default class ModuleData {
          return Object.values(this.modules)
       }
    }
-   // 返回模块中的所有元素
+   /**
+    * 返回模块中的所有元素
+    * @param {*} mid 模块id
+    * @param {*} source 是否是原始数据
+    * @returns 
+    */
    getMyElements(mid = 'default', source = false) {
       if (this.modules[mid] && this.modules[mid]['components']) {
          let components = this.modules[mid]['components']

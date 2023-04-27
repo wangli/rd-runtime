@@ -92,7 +92,7 @@ export default class Controller {
             // 类型存在
             let targetData = {}
             if (actionType.target == 'component' || actionType.target == 'components') {
-               // 获取元件数据
+               // 获取元素数据
                if (target instanceof Array) {
                   targetData = []
                   target.forEach(element => {

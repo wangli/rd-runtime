@@ -8,7 +8,7 @@ import { jsonData } from '@/utils'
  */
 const executeActions = function (actions, spid, data) {
    const appid = this.info.id
-   // 元件内部触发的事件与绑定的动作关联，并根据发送参数合并或替换到动作中的动作值
+   // 元素内部触发的事件与绑定的动作关联，并根据发送参数合并或替换到动作中的动作值
    let actionsArr = jsonData(this.getActionList(actions))
    for (let i = 0, lg = actionsArr.length; i < lg; i++) {
       if (data && actionsArr[i].value && typeof actionsArr[i].value == 'object') {
@@ -23,7 +23,7 @@ const executeActions = function (actions, spid, data) {
 /**
  * 添加用户点击事件
  * @param {*} element 目标对象
- * @param {*} spid 元件id
+ * @param {*} spid 元素id
  */
 export default function (element, elementData, componentName) {
    const appData = this.data
@@ -34,7 +34,7 @@ export default function (element, elementData, componentName) {
    let evts = {}
    if (componentName && components[componentName]) {
       let emits = components[componentName].emits || []
-      // 元件内部触发
+      // 元素内部触发
       let event = emits.find(n => n == element.event)
 
       if (event && typeof event == 'string') {

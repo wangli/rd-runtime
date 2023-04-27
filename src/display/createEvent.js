@@ -22,7 +22,7 @@ export default function (options) {
       events.forEach(item => {
          switch (item.event) {
             case 'click':
-               // 用户点击元件
+               // 用户点击元素
                Object.assign(evts, interaction.click.call(myApp, item, data))
                break
             case 'timeout':

@@ -39,7 +39,7 @@ export const clearUnwatch = function () {
 /**
  * 根据全局数据对象或远程数据对象放回绑定的数据源
  * @param {*} value 
- * @returns 
+ * @returns *
  */
 export const getDataSource = function (value) {
     if (typeof value != 'string') return value

@@ -13,14 +13,14 @@ export default class SpritesData {
       this.mData = mData
    }
    /**
-    * 添加一个元件（或新建一个元件）
+    * 添加一个元素（或新建一个元素）
     * @param {*} data 
     * @param {*} mid 
     * @param {*} gpid 
     * @returns 
     */
    addSprite(data, mid = 'default', gpid = null) {
-      // 建立一个新的元件数据对象（响应式的）
+      // 建立一个新的元素数据对象（响应式的）
       let newData = null
       if (typeof data == 'string' && typeof mid == 'object') {
          newData = this.setSprite(data, mid)
@@ -49,7 +49,7 @@ export default class SpritesData {
             if (option) {
                Object.assign(sprites[data.id], option)
             } else {
-               console.warn("元件" + data.id + '已存在')
+               console.warn("元素" + data.id + '已存在')
             }
             return sprites[data.id]
          } else if (data.name) {
@@ -60,7 +60,7 @@ export default class SpritesData {
             return sprites[newData.id]
          } else {
             // 无任何数据描述
-            console.error('元件添加失败', data)
+            console.error('元素添加失败', data)
             return null
          }
       } else {
@@ -72,18 +72,18 @@ export default class SpritesData {
       let groups = this.mData.groups
 
       if (!newData) {
-         console.warn('添加元件失败,无数据信息')
+         console.warn('添加元素失败,无数据信息')
          return false
       }
       if (!newData.mid) {
-         console.warn('添加元件失败,无模块id' + mid)
+         console.warn('添加元素失败,无模块id' + mid)
          return false
       }
       if (!newData.zIndex) {
          // 设置在舞台的深度
          newData.zIndex = this.mData.getMaxZIndex(newData.mid) + 1
       }
-      // 创建一个简单的元件副本
+      // 创建一个简单的元素副本
       let simpleSprite = createSimpleData.call(this.mData, newData)
       if (newData.gpid && groups.setGroup(newData.gpid)) {
          // 添加到组合中
@@ -92,13 +92,13 @@ export default class SpritesData {
          // 添加到模块中
          modules.addElement(simpleSprite, newData.mid)
       } else {
-         console.warn('添加元件失败，无法加入组或模块', simpleSprite)
+         console.warn('添加元素失败，无法加入组或模块', simpleSprite)
          return false
       }
       this.mData.watchSimples(newData)
       return newData
    }
-   // 删除单个元件
+   // 删除单个元素
    delOneSprite(id, source = true) {
       let elements = this.mData.elements
       let modules = this.mData.modules
@@ -123,12 +123,12 @@ export default class SpritesData {
          }
          return res ? true : false
       } else {
-         console.warn('删除模块内元件失败')
+         console.warn('删除模块内元素失败')
       }
       return false
    }
 
-   // 删除元件
+   // 删除元素
    delSprite(ids, source = true) {
       if (ids) {
          if (Array.isArray(ids)) {
@@ -143,17 +143,21 @@ export default class SpritesData {
       return false
    }
 
-   // 返回元件数据集合（以id键名）
+   // 返回元素数据集合（以id键名）
    getSprites() {
       return this.sprites;
    }
 
-   // 返回元件数据集合（数组）
+   /**
+    * 返回元素数据集合（数组）
+    * @param {string} mid 模块id
+    * @returns 
+    */
    getSpriteList(mid) {
       let _sprites = Object.values(this.sprites)
       return mid ? _sprites.filter(item => item.mid == mid) : _sprites
    }
-   // 返回元件数据
+   // 返回元素数据
    getSprite(id) {
       if (id && this.sprites[id]) {
          let defData = this.mData.component.getDefaultData(this.sprites[id].name)

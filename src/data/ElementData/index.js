@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import ModuleData from "./ModuleData"
 import GroupsData from "./GroupData"
 import SpritesData from "./SpritesData"
-import { fillData, addElement, delElement, watchSimples } from './expand'
+import { fillData, addElement, delElement, appendElement, removeElement, watchSimples } from './expand'
 import { getMaxZIndex } from "@/utils"
 
 export default class ElementData {
@@ -16,7 +16,7 @@ export default class ElementData {
    sprites = null
    // 所有元素集合
    elements = {}
-   // 元件数据集合（简单副本）
+   // 元素数据集合（简单副本）
    esSimple = reactive({})
    // 监听对象
    unwatchs = {}
@@ -50,13 +50,13 @@ export default class ElementData {
    getElements() {
       return [...this.groups.getGroupList(), ...this.sprites.getSpriteList()]
    }
-   // 添加已有元素到模块
+   // 添加已有元素到容器
    appendElement() {
-      return this.modules.addElement(...arguments)
+      return appendElement.call(this, ...arguments)
    }
-   // 移除模块内的已有元素
+   // 移除容器内的已有元素
    removeElement() {
-      return this.modules.delElement(...arguments)
+      return removeElement.call(this, ...arguments)
    }
    // 新建模块
    newMoule() {

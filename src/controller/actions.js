@@ -4,7 +4,7 @@
 
 export const initActions = function () {
    return {
-      // 更新元件原始数据
+      // 更新元素原始数据
       reviewData(target, data) {
          if (data && data.id) {
             console.warn(data.id + '不能替换')
@@ -12,7 +12,7 @@ export const initActions = function () {
          }
          Object.assign(target, data)
       },
-      // 显示元件
+      // 显示元素
       show(target, value) {
          if (!target) return
          if (Array.isArray(target)) {
@@ -34,7 +34,7 @@ export const initActions = function () {
             target.visible = !target.visible
          }
       },
-      // 更新元件传递数据
+      // 更新元素传递数据
       sendData(target, value) {
          if (!target) return
          if (Array.isArray(target)) {

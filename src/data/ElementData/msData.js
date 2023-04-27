@@ -4,7 +4,7 @@ import { nanoid } from 'nanoid'
 let moduleCunt = 1
 // 组合计数
 let groupCount = 1
-// 元件计数
+// 元素计数
 let spriteCount = 1
 // 初始化一个模块数据
 export const initModuleData = function (option = {}) {
@@ -66,7 +66,7 @@ export const initSpriteData = function (comp, name, option = {}) {
       mid: null,
       name: defaultData.name,
       type: defaultData.type,
-      title: title ? (title + spriteCount++) : '元件 ' + spriteCount++,
+      title: title ? (title + spriteCount++) : '元素 ' + spriteCount++,
       x: defaultData.x || 0,
       y: defaultData.y || 0,
       zIndex: defaultData.zIndex || 0,

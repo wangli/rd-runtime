@@ -85,8 +85,8 @@ const command = {
       this.emit('message-send', val)
    },
    /**
-    * 执行元件内的cmdRunning方法
-    * @param {string} id 元件id 
+    * 执行元素内的cmdRunning方法
+    * @param {string} id 元素id 
     * @param {*} data 
     */
    running(id, data) {

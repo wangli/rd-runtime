@@ -3,8 +3,8 @@ import { removeArray } from '@/utils'
 /**
  * 为事件添加一个动作
  * @param {string} actionId 动作id
- * @param {object|string} target 添加的目标对象，事件的响应对象，元件id 
- * @param {string} eventName 事件名称，通过元件id添加动作时，必须包含一个事件名称
+ * @param {object|string} target 添加的目标对象，事件的响应对象，元素id 
+ * @param {string} eventName 事件名称，通过元素id添加动作时，必须包含一个事件名称
  */
 export const addEventAction = function (actionId, target, eventName = "") {
    if (eventName && typeof target == 'string') {
@@ -23,7 +23,7 @@ export const addEventAction = function (actionId, target, eventName = "") {
    }
 }
 /**
- * 编辑当前元件向触发的动作传值
+ * 编辑当前元素向触发的动作传值
  * @param {*} actionId 
  * @param {*} target 
  * @param {*} eventName 
@@ -75,7 +75,7 @@ export const removeEventAction = function (actionId, target, eventName = "", rem
 /**
  * @param {*} id 目标对象id
  * @param {*} event 事件名称
- * @returns 获取所有元件的所有动作id信息
+ * @returns 获取所有元素的所有动作id信息
  */
 export const getSpriteActions = function (id, event) {
    const data = this.appData

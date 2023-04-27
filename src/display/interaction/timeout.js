@@ -11,7 +11,7 @@ export default function (eventItem, elementData) {
    const appid = this.data.info.id
    const sprid = elementData.id
    let it = null
-   // 用户点击元件
+   // 用户点击元素
    return {
       timeout: '1',
       onTimeout(evt) {

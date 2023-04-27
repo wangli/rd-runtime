@@ -14,7 +14,7 @@ export const newEventData = function (name, cmpName) {
 
 /**
  * 返回事件信息，eventName不传时返回所有事件列表
- * @param {string} id 元件id
+ * @param {string} id 元素id
  * @param {string} eventName 事件类型
  * @param {boolean} index 只返回事件所在列表的索引位置
  * @returns 
@@ -33,8 +33,8 @@ export const getEvent = function (id, eventName, index = false) {
 }
 
 /**
- * 为元件添加一个事件
- * @param {string} id 元件id
+ * 为元素添加一个事件
+ * @param {string} id 元素id
  * @param {string} eventName 事件名称 
  * @param {string} pams 事件参数 
  */
@@ -63,8 +63,8 @@ export const addEvent = function (id, eventName, pams) {
 }
 
 /**
- * 编辑元件事件参数
- * @param {string} id 元件id
+ * 编辑元素事件参数
+ * @param {string} id 元素id
  * @param {string} eventName 事件名称 
  * @param {string} pams 事件参数 
  */
@@ -79,8 +79,8 @@ export const editEvent = function (id, eventName, pams) {
    return null
 }
 /**
- * 删除删除某一事件
- * @param {*} id 元件id
+ * 删除元素某一事件
+ * @param {*} id 元素id
  * @param {*} eventName 事件名称 
  */
 export const removeEvent = function (id, eventName) {

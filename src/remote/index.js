@@ -84,7 +84,13 @@ export const getRemote = function (id, url = false) {
 export const clearRemote = function () {
    del()
 }
-// 请求数据
+/**
+ * 请求数据
+ * @param {*} refresh 强制重新请求
+ * @param {*} api 接口地址
+ * @param {*} callback 完成回调方法
+ * @returns 
+ */
 export const requestData = function (refresh = false, api = "", callback) {
    if (api && remotes[api]) {
       remotes[api].request(callback)
