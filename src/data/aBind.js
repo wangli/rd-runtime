@@ -30,8 +30,8 @@ export const getTransform = function () {
 export const clearUnwatch = function () {
     this.unwatch.forEach(stop => stop())
     this.unwatch = []
-    for (const key in filterDatas) {
-        filterDatas[key] = null
+    for (const key in this.filterDatas) {
+        this.filterDatas[key] = null
     }
     this.filterDatas = {}
 }

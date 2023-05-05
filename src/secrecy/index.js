@@ -1,4 +1,5 @@
 import * as crypt from './rich_wasm'
+import { nanoid } from 'nanoid'
 
 // 读取文件
 const readFile = function (file) {

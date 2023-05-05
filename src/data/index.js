@@ -36,7 +36,7 @@ class AppData {
    // 插件管理
    pData = null
    // 监听对象
-   unwatch = {}
+   unwatch = []
    // 过滤器
    filterDatas = {}
 
