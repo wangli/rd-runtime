@@ -1,0 +1,73 @@
+@keyframes vx_enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim_rotate_left {
+  animation: vx_rotate_left 9s linear infinite;
+}
+
+.anim_rotate_right {
+  animation: vx_rotate_right 9s linear infinite;
+}
+
+.anim_float {
+  animation: vx_float 6s linear infinite;
+}
+
+.animate__fadeInDown {
+  animation: fadeInDown 1s;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%)
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@keyframes vx_float {
+  0% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(-20px)
+  }
+
+  100% {
+    transform: translateY(0)
+  }
+}
+
+@keyframes vx_rotate_left {
+  0% {
+    transform: rotate(360deg)
+  }
+
+  100% {
+    transform: rotate(0)
+  }
+}
+
+@keyframes vx_rotate_right {
+  0% {
+    transform: rotate(0)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
+}

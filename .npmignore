@@ -1,0 +1,12 @@
+src/
+test/
+docs/
+development/
+libs/
+.eslintrc.json
+.jsbeautifyrc
+vite.config.js
+copy.js
+yarn-error.log
+yarn.lock
+rd-runtime.code-workspace
