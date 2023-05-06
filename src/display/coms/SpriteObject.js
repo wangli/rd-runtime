@@ -1,4 +1,4 @@
-import { h, provide, reactive } from 'vue'
+import { h, provide, reactive, ref } from 'vue'
 import { getAppGlobal } from '@/utils'
 import createSprite from '../createSprite'
 import createProps from '../createProps'
@@ -10,7 +10,7 @@ export default {
       id: String
    },
    setup(props, context) {
-      const vnode = { value: null }
+      const vnode = { value: null, child: ref(null) }
       const AppSetup = getAppGlobal('AppSetup')
       const data = getAppGlobal('data')
       const component = getAppGlobal('component')
@@ -24,7 +24,7 @@ export default {
          rect.width = myData.width
          rect.height = myData.height
          let myProps = createProps(myData, { id: props.id, myApp: { AppSetup, data, component } })
-         let slot = createSprite({ name: myData.name, props: myData.id })
+         let slot = createSprite({ name: myData.name, props: myData.id, ref: vnode.child })
          vnode.value = h('div', myProps, slot)
          return vnode.value
       }

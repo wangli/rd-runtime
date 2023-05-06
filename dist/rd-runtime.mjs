@@ -1,5 +1,5 @@
 import * as nt from "vue";
-import { getCurrentInstance as ot, isReactive as MI, reactive as U, ref as NI, watch as FI, shallowReactive as at, computed as rt, resolveComponent as ct, h as L, isVNode as ht, onMounted as kI, onUnmounted as lt, provide as Dt, toRefs as ut, createApp as ft } from "vue";
+import { getCurrentInstance as ot, isReactive as NI, reactive as U, ref as Jg, watch as FI, shallowReactive as at, computed as rt, resolveComponent as ct, h as L, isVNode as ht, onMounted as kI, onUnmounted as lt, provide as Dt, toRefs as ut, createApp as ft } from "vue";
 function wt(g, A) {
   for (var I = 0; I < A.length; I++) {
     const t = A[I];
@@ -67,7 +67,7 @@ class Mt extends Gt {
     super(A), this.newState = I.newState, this.oldState = I.oldState, this.originalEvent = I.originalEvent;
   }
 }
-const sA = "active", RA = "passive", nA = "hidden", oA = "frozen", dg = "terminated", Xg = typeof safari == "object" && safari.pushNotification, Nt = "onpageshow" in self, Ft = ["focus", "blur", "visibilitychange", "freeze", "resume", "pageshow", Nt ? "pagehide" : "unload"], Zg = (g) => (g.preventDefault(), g.returnValue = "Are you sure?"), kt = (g) => g.reduce((A, I, t) => (A[I] = t, A), {}), St = [[sA, RA, nA, dg], [sA, RA, nA, oA], [nA, RA, sA], [oA, nA], [oA, sA], [oA, RA]].map(kt), Rt = (g, A) => {
+const sA = "active", RA = "passive", nA = "hidden", oA = "frozen", dg = "terminated", Zg = typeof safari == "object" && safari.pushNotification, Nt = "onpageshow" in self, Ft = ["focus", "blur", "visibilitychange", "freeze", "resume", "pageshow", Nt ? "pagehide" : "unload"], Pg = (g) => (g.preventDefault(), g.returnValue = "Are you sure?"), kt = (g) => g.reduce((A, I, t) => (A[I] = t, A), {}), St = [[sA, RA, nA, dg], [sA, RA, nA, oA], [nA, RA, sA], [oA, nA], [oA, sA], [oA, RA]].map(kt), Rt = (g, A) => {
   for (let I, t = 0; I = St[t]; ++t) {
     const B = I[g], e = I[A];
     if (B >= 0 && e >= 0 && e > B)
@@ -79,7 +79,7 @@ class Jt extends yt {
   constructor() {
     super();
     const A = zA();
-    this.s = A, this.i = [], this.a = this.a.bind(this), Ft.forEach((I) => addEventListener(I, this.a, !0)), Xg && addEventListener("beforeunload", (I) => {
+    this.s = A, this.i = [], this.a = this.a.bind(this), Ft.forEach((I) => addEventListener(I, this.a, !0)), Zg && addEventListener("beforeunload", (I) => {
       this.n = setTimeout(() => {
         I.defaultPrevented || I.returnValue.length > 0 || this.r(I, nA);
       }, 0);
@@ -92,11 +92,11 @@ class Jt extends yt {
     return document.wasDiscarded || !1;
   }
   addUnsavedChanges(A) {
-    !this.i.indexOf(A) > -1 && (this.i.length === 0 && addEventListener("beforeunload", Zg), this.i.push(A));
+    !this.i.indexOf(A) > -1 && (this.i.length === 0 && addEventListener("beforeunload", Pg), this.i.push(A));
   }
   removeUnsavedChanges(A) {
     const I = this.i.indexOf(A);
-    I > -1 && (this.i.splice(I, 1), this.i.length === 0 && removeEventListener("beforeunload", Zg));
+    I > -1 && (this.i.splice(I, 1), this.i.length === 0 && removeEventListener("beforeunload", Pg));
   }
   r(A, I) {
     if (I !== this.s) {
@@ -108,7 +108,7 @@ class Jt extends yt {
     }
   }
   a(A) {
-    switch (Xg && clearTimeout(this.n), A.type) {
+    switch (Zg && clearTimeout(this.n), A.type) {
       case "pageshow":
       case "resume":
         this.r(A, zA());
@@ -497,9 +497,9 @@ var Ag = {}, Ht = {
       }, h.toString = function() {
         return this.$d.toUTCString();
       }, l;
-    }(), _g = KA.prototype;
-    return x.prototype = _g, [["$ms", e], ["$s", Q], ["$m", C], ["$H", E], ["$W", s], ["$M", o], ["$y", y], ["$D", d]].forEach(function(l) {
-      _g[l[1]] = function(h) {
+    }(), Xg = KA.prototype;
+    return x.prototype = Xg, [["$ms", e], ["$s", Q], ["$m", C], ["$H", E], ["$W", s], ["$M", o], ["$y", y], ["$D", d]].forEach(function(l) {
+      Xg[l[1]] = function(h) {
         return this.$g(h, l[0], l[1]);
       };
     }), x.extend = function(l, h) {
@@ -513,7 +513,7 @@ const bt = Ag, SI = /* @__PURE__ */ wt({
   __proto__: null,
   default: bt
 }, [Ag]);
-var xt = typeof JA == "object" && JA && JA.Object === Object && JA, RI = xt, vt = RI, qt = typeof self == "object" && self && self.Object === Object && self, Kt = vt || qt || Function("return this")(), aA = Kt, Ot = aA, zt = Ot.Symbol, Jg = zt, Pg = Jg, JI = Object.prototype, Tt = JI.hasOwnProperty, jt = JI.toString, SA = Pg ? Pg.toStringTag : void 0;
+var xt = typeof JA == "object" && JA && JA.Object === Object && JA, RI = xt, vt = RI, qt = typeof self == "object" && self && self.Object === Object && self, Kt = vt || qt || Function("return this")(), aA = Kt, Ot = aA, zt = Ot.Symbol, mg = zt, Vg = mg, JI = Object.prototype, Tt = JI.hasOwnProperty, jt = JI.toString, SA = Vg ? Vg.toStringTag : void 0;
 function _t(g) {
   var A = Tt.call(g, SA), I = g[SA];
   try {
@@ -528,9 +528,9 @@ var Xt = _t, Zt = Object.prototype, Pt = Zt.toString;
 function Vt(g) {
   return Pt.call(g);
 }
-var Wt = Vt, Vg = Jg, $t = Xt, AB = Wt, gB = "[object Null]", IB = "[object Undefined]", Wg = Vg ? Vg.toStringTag : void 0;
+var Wt = Vt, Wg = mg, $t = Xt, AB = Wt, gB = "[object Null]", IB = "[object Undefined]", $g = Wg ? Wg.toStringTag : void 0;
 function tB(g) {
-  return g == null ? g === void 0 ? IB : gB : Wg && Wg in Object(g) ? $t(g) : AB(g);
+  return g == null ? g === void 0 ? IB : gB : $g && $g in Object(g) ? $t(g) : AB(g);
 }
 var bA = tB;
 function BB(g, A) {
@@ -553,7 +553,7 @@ function lB(g) {
   return typeof I == "function" && I instanceof I && YI.call(I) == hB;
 }
 var CA = lB;
-const $g = {
+const AI = {
   dayjs(g, A) {
     return SI(g).format(A);
   }
@@ -569,9 +569,9 @@ const $g = {
         break;
       }
   } else
-    return typeof t == "object" && t.func ? $g[t.func].call(null, B, t.rule) : B;
-  return I && B instanceof Array ? B.map((e) => hA(e, I, null, t)) : typeof t == "object" && t.func ? $g[t.func].call(null, B, t.rule) : B;
-}, mg = function(g, A) {
+    return typeof t == "object" && t.func ? AI[t.func].call(null, B, t.rule) : B;
+  return I && B instanceof Array ? B.map((e) => hA(e, I, null, t)) : typeof t == "object" && t.func ? AI[t.func].call(null, B, t.rule) : B;
+}, Yg = function(g, A) {
   if (A && CA(A) && A.y && A.y instanceof Array && A.y.length > 0) {
     let I = [];
     if (A.x && A.x.name && A.x.path) {
@@ -664,17 +664,17 @@ const uB = {
 }, _ = function(g = "AppSetup") {
   const { appContext: { config: { globalProperties: A = {} } } } = ot();
   return A[g] || null;
-}, Yg = function(g) {
+}, Ug = function(g) {
   if (g) {
     let A = typeof g == "string" ? document.querySelector(g) : g, I = A.getBoundingClientRect();
-    return I.width > 0 && I.height > 0 ? I : A.parentElement && A.parentElement.localName != "body" ? Yg(A.parentElement) : {
+    return I.width > 0 && I.height > 0 ? I : A.parentElement && A.parentElement.localName != "body" ? Ug(A.parentElement) : {
       width: window.innerWidth,
       height: window.innerHeight
     };
   }
   return null;
 }, UI = function(g, A) {
-  let I = Yg(g) || {
+  let I = Ug(g) || {
     width: window.innerWidth,
     height: window.innerHeight
   }, t = I.height / A.height, B = I.width / A.width;
@@ -728,9 +728,9 @@ const uB = {
   __proto__: null,
   createSimpleData: v,
   dayjs: wB,
-  extractData: mg,
+  extractData: Yg,
   getAppGlobal: _,
-  getDomRect: Yg,
+  getDomRect: Ug,
   getMaxZIndex: LI,
   getScale: UI,
   getTemplateData: fB,
@@ -981,7 +981,7 @@ let YA = gA.length;
 function RB(g) {
   g < 132 || (gA[g] = YA, YA = g);
 }
-function Ug(g) {
+function Lg(g) {
   const A = M(g);
   return RB(g), A;
 }
@@ -1096,7 +1096,7 @@ function HB(g, A) {
 }
 function bB(g) {
   const A = fA(g, F.__wbindgen_malloc, F.__wbindgen_realloc), I = iA, t = F.encrypt(A, I);
-  return Ug(t);
+  return Lg(t);
 }
 function xB(g) {
   try {
@@ -1108,7 +1108,7 @@ function xB(g) {
     F.__wbindgen_add_to_stack_pointer(16), F.__wbindgen_free(A, I);
   }
 }
-function Lg(g, A) {
+function Hg(g, A) {
   try {
     return g.apply(this, A);
   } catch (I) {
@@ -1116,7 +1116,7 @@ function Lg(g, A) {
   }
 }
 function vB(g) {
-  Ug(g);
+  Lg(g);
 }
 function qB(g) {
   return K(g);
@@ -1164,7 +1164,7 @@ function WB(g) {
   return K(A);
 }
 function $B() {
-  return Lg(function(g) {
+  return Hg(function(g) {
     const A = M(g).next();
     return K(A);
   }, arguments);
@@ -1180,19 +1180,19 @@ function Ie() {
   return K(Symbol.iterator);
 }
 function te() {
-  return Lg(function(g, A) {
+  return Hg(function(g, A) {
     const I = Reflect.get(M(g), M(A));
     return K(I);
   }, arguments);
 }
 function Be() {
-  return Lg(function(g, A) {
+  return Hg(function(g, A) {
     const I = M(g).call(M(A));
     return K(I);
   }, arguments);
 }
 function ee(g, A, I) {
-  M(g)[A >>> 0] = Ug(I);
+  M(g)[A >>> 0] = Lg(I);
 }
 function Qe(g) {
   return Array.isArray(M(g));
@@ -1273,7 +1273,7 @@ const Fe = function(g) {
 }, xI = function(g) {
   let A = typeof g == "string" ? g : JSON.stringify(g), I = bB(A);
   return new Blob([new Uint8Array(I).buffer]);
-}, Hg = async function(g) {
+}, bg = async function(g) {
   let A = null;
   if (typeof g == "string")
     A = g;
@@ -1294,12 +1294,12 @@ const Fe = function(g) {
 }, Re = async function(g, A) {
   if (!g)
     return null;
-  let I = "A_" + z(10), t = await Hg(g);
+  let I = "A_" + z(10), t = await bg(g);
   return t && (t.id = I), A && Object.assign(t, A), { id: I, data: t };
 }, Je = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   copyData: Re,
-  decrypt: Hg,
+  decrypt: bg,
   encrypt: xI,
   secretkey: ke,
   validateKey: Se
@@ -1368,7 +1368,7 @@ var ve = Array.isArray, vA = ve, qe = bA, Ke = dA, Oe = "[object Symbol]";
 function ze(g) {
   return typeof g == "symbol" || Ke(g) && qe(g) == Oe;
 }
-var bg = ze, Te = vA, je = bg, _e = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/, Xe = /^\w*$/;
+var xg = ze, Te = vA, je = xg, _e = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/, Xe = /^\w*$/;
 function Ze(g, A) {
   if (Te(g))
     return !1;
@@ -1387,12 +1387,12 @@ function BQ(g) {
   var A = We(g);
   return A == gQ || A == IQ || A == AQ || A == tQ;
 }
-var xg = BQ, eQ = aA, QQ = eQ["__core-js_shared__"], CQ = QQ, lg = CQ, AI = function() {
+var vg = BQ, eQ = aA, QQ = eQ["__core-js_shared__"], CQ = QQ, lg = CQ, gI = function() {
   var g = /[^.]+$/.exec(lg && lg.keys && lg.keys.IE_PROTO || "");
   return g ? "Symbol(src)_1." + g : "";
 }();
 function iQ(g) {
-  return !!AI && AI in g;
+  return !!gI && gI in g;
 }
 var EQ = iQ, sQ = Function.prototype, nQ = sQ.toString;
 function oQ(g) {
@@ -1408,7 +1408,7 @@ function oQ(g) {
   }
   return "";
 }
-var aQ = oQ, rQ = xg, cQ = EQ, hQ = rA, lQ = aQ, DQ = /[\\^$.*+?()[\]{}|]/g, uQ = /^\[object .+?Constructor\]$/, fQ = Function.prototype, wQ = Object.prototype, dQ = fQ.toString, yQ = wQ.hasOwnProperty, pQ = RegExp(
+var aQ = oQ, rQ = vg, cQ = EQ, hQ = rA, lQ = aQ, DQ = /[\\^$.*+?()[\]{}|]/g, uQ = /^\[object .+?Constructor\]$/, fQ = Function.prototype, wQ = Object.prototype, dQ = fQ.toString, yQ = wQ.hasOwnProperty, pQ = RegExp(
   "^" + dQ.call(yQ).replace(DQ, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"
 );
 function GQ(g) {
@@ -1426,9 +1426,9 @@ function RQ(g, A) {
   var I = SQ(g, A);
   return kQ(I) ? I : void 0;
 }
-var vg = RQ, JQ = vg, mQ = JQ(Object, "create"), Eg = mQ, gI = Eg;
+var qg = RQ, JQ = qg, mQ = JQ(Object, "create"), Eg = mQ, II = Eg;
 function YQ() {
-  this.__data__ = gI ? gI(null) : {}, this.size = 0;
+  this.__data__ = II ? II(null) : {}, this.size = 0;
 }
 var UQ = YQ;
 function LQ(g) {
@@ -1517,12 +1517,12 @@ pA.prototype.delete = GC;
 pA.prototype.get = MC;
 pA.prototype.has = NC;
 pA.prototype.set = FC;
-var og = pA, kC = vg, SC = aA, RC = kC(SC, "Map"), vI = RC, II = BC, JC = og, mC = vI;
+var og = pA, kC = qg, SC = aA, RC = kC(SC, "Map"), vI = RC, tI = BC, JC = og, mC = vI;
 function YC() {
   this.size = 0, this.__data__ = {
-    hash: new II(),
+    hash: new tI(),
     map: new (mC || JC)(),
-    string: new II()
+    string: new tI()
   };
 }
 var UC = YC;
@@ -1567,7 +1567,7 @@ GA.prototype.get = Ai;
 GA.prototype.has = gi;
 GA.prototype.set = Ii;
 var qI = GA, KI = qI, ti = "Expected a function";
-function qg(g, A) {
+function Kg(g, A) {
   if (typeof g != "function" || A != null && typeof A != "function")
     throw new TypeError(ti);
   var I = function() {
@@ -1577,10 +1577,10 @@ function qg(g, A) {
     var Q = g.apply(this, t);
     return I.cache = e.set(B, Q) || e, Q;
   };
-  return I.cache = new (qg.Cache || KI)(), I;
+  return I.cache = new (Kg.Cache || KI)(), I;
 }
-qg.Cache = KI;
-var Bi = qg, ei = Bi, Qi = 500;
+Kg.Cache = KI;
+var Bi = Kg, ei = Bi, Qi = 500;
 function Ci(g) {
   var A = ei(g, function(t) {
     return I.size === Qi && I.clear(), t;
@@ -1598,14 +1598,14 @@ function ri(g, A) {
     B[I] = A(g[I], I, g);
   return B;
 }
-var ci = ri, tI = Jg, hi = ci, li = vA, Di = bg, ui = 1 / 0, BI = tI ? tI.prototype : void 0, eI = BI ? BI.toString : void 0;
+var ci = ri, BI = mg, hi = ci, li = vA, Di = xg, ui = 1 / 0, eI = BI ? BI.prototype : void 0, QI = eI ? eI.toString : void 0;
 function OI(g) {
   if (typeof g == "string")
     return g;
   if (li(g))
     return hi(g, OI) + "";
   if (Di(g))
-    return eI ? eI.call(g) : "";
+    return QI ? QI.call(g) : "";
   var A = g + "";
   return A == "0" && 1 / g == -ui ? "-0" : A;
 }
@@ -1617,7 +1617,7 @@ var yi = di, pi = vA, Gi = Pe, Mi = ai, Ni = yi;
 function Fi(g, A) {
   return pi(g) ? g : Gi(g, A) ? [g] : Mi(Ni(g));
 }
-var ki = Fi, Si = bg, Ri = 1 / 0;
+var ki = Fi, Si = xg, Ri = 1 / 0;
 function Ji(g) {
   if (typeof g == "string" || Si(g))
     return g;
@@ -1645,7 +1645,7 @@ const Ng = function(g) {
     if (CA(I))
       if (typeof I.value == "string" && I.key) {
         let t = this.appData.getDataSource(I.value);
-        t ? MI(t) ? A[I.key] = I.path ? gg(t.data, I.path) : t.data : A[I.key] = I.path ? gg(t, I.path) : t : A[I.key] = I.value;
+        t ? NI(t) ? A[I.key] = I.path ? gg(t.data, I.path) : t.data : A[I.key] = I.path ? gg(t, I.path) : t : A[I.key] = I.value;
       } else
         I.key && (A[I.key] = I.value);
   }), A;
@@ -1654,7 +1654,7 @@ class vi extends DA {
   constructor(A, I = {}) {
     super();
     const { id: t, url: B, extractRule: e, body: Q, method: C, itval: E } = A;
-    this.appData = I, this.AppSetup = I.AppSetup, this.AppInfo = I.info, this.id = t || "RD_" + z(10), this.url = B, this.body = Q, this.method = C, this.data = U({}), this.sourceData = null, this.loading = NI(!1), this.isloading = !1, this.itval = E || 0, this.it = null, this.status = "wait", this.err = null, this.extractRule = e ? U(e) : U({});
+    this.appData = I, this.AppSetup = I.AppSetup, this.AppInfo = I.info, this.id = t || "RD_" + z(10), this.url = B, this.body = Q, this.method = C, this.data = U({}), this.sourceData = null, this.loading = Jg(!1), this.isloading = !1, this.itval = E || 0, this.it = null, this.status = "wait", this.err = null, this.extractRule = e ? U(e) : U({});
     let s = xe({ url: B, body: Ng.call(this, Q), method: C }, this.AppInfo.network);
     s.on("request", () => {
       this.loading.value = !0, this.isloading = !0, this.status = "request";
@@ -1724,7 +1724,7 @@ class vi extends DA {
    * @param {*} data 
    */
   fillData(A) {
-    this.clearData(), this.extractRule && (this.extractRule.x || this.extractRule.name || this.extractRule instanceof Array) ? Object.assign(this.data, { data: mg(A, this.extractRule) }) : Object.assign(this.data, { data: A });
+    this.clearData(), this.extractRule && (this.extractRule.x || this.extractRule.name || this.extractRule instanceof Array) ? Object.assign(this.data, { data: Yg(A, this.extractRule) }) : Object.assign(this.data, { data: A });
   }
   /**
    * 销毁
@@ -1847,13 +1847,13 @@ const S = {}, LA = U([]), zI = function() {
     value: null,
     description: ""
   }, g);
-}, QI = function(g) {
+}, CI = function(g) {
   const { id: A, value: I = "", name: t = "", type: B = "source", uptime: e } = g;
   return {
     id: A || "GD_" + z(10),
     name: t,
     type: B,
-    value: I instanceof Object ? U(I) : NI(I),
+    value: I instanceof Object ? U(I) : Jg(I),
     uptime: e || (/* @__PURE__ */ new Date()).getTime()
   };
 }, _i = function(g) {
@@ -1896,7 +1896,7 @@ function Xi(g) {
     remote: e.getRemoteList()
   });
 }
-let Zi = 1, Pi = 1, CI = 1;
+let Zi = 1, Pi = 1, iI = 1;
 const ug = function(g = {}) {
   let A = {
     type: "content",
@@ -1932,14 +1932,14 @@ const ug = function(g = {}) {
     components: []
   });
   return Object.assign(A, g), A.id || (A.id = "group_" + z(10)), A;
-}, iI = function(g, A, I = {}) {
+}, EI = function(g, A, I = {}) {
   let t = g.getDefaultData(A), B = t.title, e = U({
     id: null,
     gpid: null,
     mid: null,
     name: t.name,
     type: t.type,
-    title: B ? B + CI++ : "元素 " + CI++,
+    title: B ? B + iI++ : "元素 " + iI++,
     x: t.x || 0,
     y: t.y || 0,
     zIndex: t.zIndex || 0,
@@ -2229,13 +2229,13 @@ class $i {
   setSprite(A, I) {
     let t = this.mData.component, B = this.mData.elements, e = this.sprites;
     if (typeof A == "string" && t.iComponents[A]) {
-      let Q = iI(t, A, I);
+      let Q = EI(t, A, I);
       return e[Q.id] = Q, B[Q.id] = Q, Q;
     } else if (typeof A == "object") {
       if (A.id && e[A.id])
         return I ? Object.assign(e[A.id], I) : console.warn("元素" + A.id + "已存在"), e[A.id];
       if (A.name) {
-        let Q = iI(t, A.name, Object.assign({}, A, I));
+        let Q = EI(t, A.name, Object.assign({}, A, I));
         return e[Q.id] = Q, B[Q.id] = Q, e[Q.id];
       } else
         return console.error("元素添加失败", A), null;
@@ -2611,7 +2611,7 @@ class CE {
       return this.data[A.id] ? this.data[A.id] : (A.type == "remote" ? (A.value = B.addRemote(A.value).id, this.data[A.id] = wg(A)) : this.data[A.id] = wg(A), this.dataList.push(this.data[A.id]), this.data[A.id]);
     if (A) {
       let e = {};
-      return t == "remote" ? (A = B.addRemote(A).id, e = QI({ value: A, name: I, type: t })) : e = QI({ value: A, name: I, type: t }), this.data[e.id] = wg(e), this.dataList.push(this.data[e.id]), this.data[e.id];
+      return t == "remote" ? (A = B.addRemote(A).id, e = CI({ value: A, name: I, type: t })) : e = CI({ value: A, name: I, type: t }), this.data[e.id] = wg(e), this.dataList.push(this.data[e.id]), this.data[e.id];
     } else
       return console.warn("无效全局数据添加"), !1;
   };
@@ -2884,7 +2884,7 @@ class aE {
     this.mData.clearData(), this.aData.clearData(), this.gData.clearData(), this.rData.clearData(), this.pData.clearData(), nE.call(this);
   }
 }
-function Kg(g, A) {
+function Og(g, A) {
   let I = b(g.getActionList(A.actions));
   return A.actionValue && typeof A.actionValue == "object" && I.forEach((t) => {
     A.actionValue[t.id] && (t.value = g.getDataSource(A.actionValue[t.id]));
@@ -2898,13 +2898,13 @@ function rE(g, A) {
     },
     onClickCapture: function(Q) {
       if (p.emit(m.CLICK_SPRITE, v(A), Q), g.actions) {
-        let C = Kg(t, g);
+        let C = Og(t, g);
         p.execute(C, e, B);
       }
     }
   };
 }
-const EI = function(g, A, I) {
+const sI = function(g, A, I) {
   const t = this.info.id;
   let B = b(this.getActionList(g));
   for (let e = 0, Q = B.length; e < Q; e++)
@@ -2917,7 +2917,7 @@ function cE(g, A, I) {
   if (I && e[I]) {
     let n = (e[I].emits || []).find((o) => o == g.event);
     n && typeof n == "string" ? /^[a-zA-Z][-_a-zA-Z0-9_-]{1,32}$/.test(n) ? E["on" + n.toLowerCase().replace(/( |^)[a-z]/g, (o) => o.toUpperCase())] = function(o) {
-      /^solo-/.test(n) && o ? g.actions && g.actions instanceof Array && g.actions.length > 0 ? EI.call(t, g.actions, C, o) : p.execute(b(B.getActionList(o)), C, Q) : g.actions && g.actions instanceof Array && EI.call(t, g.actions, C, o);
+      /^solo-/.test(n) && o ? g.actions && g.actions instanceof Array && g.actions.length > 0 ? sI.call(t, g.actions, C, o) : p.execute(b(B.getActionList(o)), C, Q) : g.actions && g.actions instanceof Array && sI.call(t, g.actions, C, o);
     } : console.warn(n + "无效的事件名定义") : console.warn(g.event + "事件没有定义");
   }
   return E;
@@ -2932,7 +2932,7 @@ function hE(g, A) {
       if (e && (clearTimeout(e), e = null), C == "mounted") {
         let s = (g.pams || {}).delay || 1e3;
         e = setTimeout(() => {
-          g.actions && p.execute(Kg(I, g), B, t);
+          g.actions && p.execute(Og(I, g), B, t);
         }, parseInt(s));
       }
     }
@@ -2947,7 +2947,7 @@ function lE(g, A) {
       if (e && (UA.del(e), e = null), Q.detail.value == "mounted") {
         let E = (g.pams || {}).delay || 1e3;
         e = UA.add(() => {
-          g.actions && p.execute(Kg(I, g), B, t);
+          g.actions && p.execute(Og(I, g), B, t);
         }, parseInt(E));
       }
     }
@@ -3022,35 +3022,35 @@ function Fg(g) {
   }), e;
 }
 function T(g) {
-  const { name: A, props: I, slots: t } = g, B = {
+  const { name: A, props: I, slots: t, ref: B } = g, e = {
     AppSetup: _("AppSetup"),
     data: _("data"),
     component: _("component")
-  }, e = B.data.mData;
-  let Q = A, C = null;
-  if (Q ? (C = ct(Q), C == Q && (console.warn(C + "组件没有找到"), C = "div")) : (console.warn("数据缺少组件" + I), C = "div"), typeof I == "string") {
-    const E = e.getElement(I);
-    if (!E)
+  }, Q = e.data.mData;
+  let C = A, E = null;
+  if (C ? (E = ct(C), E == C && (console.warn(E + "组件没有找到"), E = "div")) : (console.warn("数据缺少组件" + I), E = "div"), typeof I == "string") {
+    const s = Q.getElement(I);
+    if (!s)
       return;
-    let s = { id: I, options: E.options };
-    if (E.id) {
-      let n = { myApp: B, events: E.events || [], data: E, componentName: Q };
+    let n = { id: I, options: s.options, ref: B };
+    if (s.id) {
+      let o = { myApp: e, events: s.events || [], data: s, componentName: C };
+      Object.assign(n, Fg(o));
+    }
+    if (s.data) {
+      let o = e.data.getDataSource(s.data);
+      o && (n.data = NI(o) && o.data || o);
+    }
+    return L(E, n);
+  } else if (typeof I < "u") {
+    let s = { ...I };
+    if (I.events) {
+      let n = { myApp: e, events: I.events || [], data: I, componentName: C };
       Object.assign(s, Fg(n));
     }
-    if (E.data) {
-      let n = B.data.getDataSource(E.data);
-      n && (s.data = MI(n) && n.data || n);
-    }
-    return L(C, s);
-  } else if (typeof I < "u") {
-    let E = { ...I };
-    if (I.events) {
-      let s = { myApp: B, events: I.events || [], data: I, componentName: Q };
-      Object.assign(E, Fg(s));
-    }
-    return E.ref = E.id, E.name && delete E.name, E.mid && delete E.mid, L(C, E, t);
+    return s.ref = B || s.id, s.name && delete s.name, s.mid && delete s.mid, L(E, s, t);
   } else
-    return L(C, {}, "");
+    return L(E, {}, "");
 }
 const DE = {
   name: "stage",
@@ -3264,22 +3264,22 @@ const ZA = function(g, A, I, t) {
   let t = null;
   kI(() => {
     A.id && p.addEventListener(`run_function_${A.id}`, (B) => {
-      g.cmdRunning && g.cmdRunning(B);
+      g.child && g.child.value && g.child.value.cmdRunning && g.child.value.cmdRunning(B);
     }), g.value && g.value.el && (t = g.value.el, ZA(t, "timeout", g.value, "mounted"), ZA(t, "interval", g.value, "mounted"));
   }), lt(() => {
     A.id && p.removeEventListener(`run_function_${A.id}`), t && (ZA(t, "timeout", g.value, "beforeUnmount"), ZA(t, "interval", g.value, "beforeUnmount"));
   });
-}, Og = {
+}, zg = {
   name: "vx-sprite",
   props: {
     id: String
   },
   setup(g, A) {
-    const I = { value: null }, t = _("AppSetup"), B = _("data"), e = _("component"), Q = U({ x: 0, y: 0, width: 0, height: 0 });
+    const I = { value: null, child: Jg(null) }, t = _("AppSetup"), B = _("data"), e = _("component"), Q = U({ x: 0, y: 0, width: 0, height: 0 });
     return Dt("rect", Q), fE(I, g), () => {
       const C = B.getElement(g.id);
       Q.x = C.x, Q.y = C.y, Q.width = C.width, Q.height = C.height;
-      let E = ZI(C, { id: g.id, myApp: { AppSetup: t, data: B, component: e } }), s = T({ name: C.name, props: C.id });
+      let E = ZI(C, { id: g.id, myApp: { AppSetup: t, data: B, component: e } }), s = T({ name: C.name, props: C.id, ref: I.child });
       return I.value = L("div", E, s), I.value;
     };
   }
@@ -3295,7 +3295,7 @@ const ZA = function(g, A, I, t) {
       let Q = ZI(e, { id: g.id, myApp: { AppSetup: A, data: I, component: t } });
       const C = [];
       return e.components && e.components.forEach((E, s) => {
-        E.visible && C.push(L(Og, { id: E.id }));
+        E.visible && C.push(L(zg, { id: E.id }));
       }), L("div", Q, C);
     };
   }
@@ -3308,7 +3308,7 @@ const ZA = function(g, A, I, t) {
     return (I) => {
       const t = [];
       return A.value && A.value.forEach((B, e) => {
-        B.visible && (B.type == "group" ? t.push(L(PI, { id: B.id })) : t.push(L(Og, { id: B.id })));
+        B.visible && (B.type == "group" ? t.push(L(PI, { id: B.id })) : t.push(L(zg, { id: B.id })));
       }), L("div", {
         id: I.id,
         style: I.style
@@ -3424,7 +3424,7 @@ const kE = {
     };
   }
 };
-let sI = {
+let nI = {
   position: "absolute",
   width: "100%",
   top: 0,
@@ -3457,10 +3457,10 @@ const RE = {
     };
     return () => g.length > 0 ? L("div", {
       id: "vx-message",
-      style: sI
+      style: nI
     }, g.map((I) => L("div", { class: "message_item", style: SE }, I))) : L("div", {
       id: "vx-message",
-      style: sI
+      style: nI
     });
   }
 }, JE = {
@@ -3512,7 +3512,7 @@ const YE = {
       });
     };
   }
-}, UE = [wE, dE, yE, kE, GE, NE, RE, JE, YE, PI, Og], LE = {
+}, UE = [wE, dE, yE, kE, GE, NE, RE, JE, YE, PI, zg], LE = {
   install: (g) => {
     UE.forEach((A) => {
       g.component(A.name, A);
@@ -3557,22 +3557,22 @@ MA.prototype.delete = As;
 MA.prototype.get = gs;
 MA.prototype.has = Is;
 MA.prototype.set = ts;
-var Bs = MA, es = vg, Qs = function() {
+var Bs = MA, es = qg, Qs = function() {
   try {
     var g = es(Object, "defineProperty");
     return g({}, "", {}), g;
   } catch {
   }
-}(), VI = Qs, nI = VI;
+}(), VI = Qs, oI = VI;
 function Cs(g, A, I) {
-  A == "__proto__" && nI ? nI(g, A, {
+  A == "__proto__" && oI ? oI(g, A, {
     configurable: !0,
     enumerable: !0,
     value: I,
     writable: !0
   }) : g[A] = I;
 }
-var zg = Cs, is = zg, Es = sg;
+var Tg = Cs, is = Tg, Es = sg;
 function ss(g, A, I) {
   (I !== void 0 && !Es(g[A], I) || I === void 0 && !(A in g)) && is(g, A, I);
 }
@@ -3605,10 +3605,10 @@ var os = ns, as = os, rs = as(), cs = rs, Bg = {}, hs = {
   }
   g.exports = E;
 })(hs, Bg);
-var ls = aA, Ds = ls.Uint8Array, us = Ds, oI = us;
+var ls = aA, Ds = ls.Uint8Array, us = Ds, aI = us;
 function fs(g) {
   var A = new g.constructor(g.byteLength);
-  return new oI(A).set(new oI(g)), A;
+  return new aI(A).set(new aI(g)), A;
 }
 var ws = fs, ds = ws;
 function ys(g, A) {
@@ -3622,14 +3622,14 @@ function Gs(g, A) {
     A[I] = g[I];
   return A;
 }
-var Ms = Gs, Ns = rA, aI = Object.create, Fs = function() {
+var Ms = Gs, Ns = rA, rI = Object.create, Fs = function() {
   function g() {
   }
   return function(A) {
     if (!Ns(A))
       return {};
-    if (aI)
-      return aI(A);
+    if (rI)
+      return rI(A);
     g.prototype = A;
     var I = new g();
     return g.prototype = void 0, I;
@@ -3647,19 +3647,19 @@ var Ls = Us, Hs = bA, bs = dA, xs = "[object Arguments]";
 function vs(g) {
   return bs(g) && Hs(g) == xs;
 }
-var qs = vs, rI = qs, Ks = dA, At = Object.prototype, Os = At.hasOwnProperty, zs = At.propertyIsEnumerable, Ts = rI(function() {
+var qs = vs, cI = qs, Ks = dA, At = Object.prototype, Os = At.hasOwnProperty, zs = At.propertyIsEnumerable, Ts = cI(function() {
   return arguments;
-}()) ? rI : function(g) {
+}()) ? cI : function(g) {
   return Ks(g) && Os.call(g, "callee") && !zs.call(g, "callee");
 }, gt = Ts, js = 9007199254740991;
 function _s(g) {
   return typeof g == "number" && g > -1 && g % 1 == 0 && g <= js;
 }
-var It = _s, Xs = xg, Zs = It;
+var It = _s, Xs = vg, Zs = It;
 function Ps(g) {
   return g != null && Zs(g.length) && !Xs(g);
 }
-var Tg = Ps, Vs = Tg, Ws = dA;
+var jg = Ps, Vs = jg, Ws = dA;
 function $s(g) {
   return Ws(g) && Vs(g);
 }
@@ -3709,17 +3709,17 @@ var Un = Yn, eg = {}, Ln = {
   }();
   g.exports = C;
 })(Ln, eg);
-var Hn = mn, bn = Un, cI = eg, hI = cI && cI.isTypedArray, xn = hI ? bn(hI) : Hn, tt = xn;
+var Hn = mn, bn = Un, hI = eg, lI = hI && hI.isTypedArray, xn = lI ? bn(lI) : Hn, tt = xn;
 function vn(g, A) {
   if (!(A === "constructor" && typeof g[A] == "function") && A != "__proto__")
     return g[A];
 }
-var Bt = vn, qn = zg, Kn = sg, On = Object.prototype, zn = On.hasOwnProperty;
+var Bt = vn, qn = Tg, Kn = sg, On = Object.prototype, zn = On.hasOwnProperty;
 function Tn(g, A, I) {
   var t = g[A];
   (!(zn.call(g, A) && Kn(t, I)) || I === void 0 && !(A in g)) && qn(g, A, I);
 }
-var jn = Tn, _n = jn, Xn = zg;
+var jn = Tn, _n = jn, Xn = Tg;
 function Zn(g, A, I, t) {
   var B = !I;
   I || (I = {});
@@ -3768,7 +3768,7 @@ function uo(g) {
     t == "constructor" && (A || !Do.call(g, t)) || I.push(t);
   return I;
 }
-var fo = uo, wo = no, yo = fo, po = Tg;
+var fo = uo, wo = no, yo = fo, po = jg;
 function Go(g) {
   return po(g) ? wo(g, !0) : yo(g);
 }
@@ -3776,19 +3776,19 @@ var Qt = Go, Mo = Pn, No = Qt;
 function Fo(g) {
   return Mo(g, No(g));
 }
-var ko = Fo, lI = WI, So = Bg, Ro = ps, Jo = Ms, mo = Ls, DI = gt, uI = vA, Yo = An, Uo = HA, Lo = xg, Ho = rA, bo = CA, xo = tt, fI = Bt, vo = ko;
+var ko = Fo, DI = WI, So = Bg, Ro = ps, Jo = Ms, mo = Ls, uI = gt, fI = vA, Yo = An, Uo = HA, Lo = vg, Ho = rA, bo = CA, xo = tt, wI = Bt, vo = ko;
 function qo(g, A, I, t, B, e, Q) {
-  var C = fI(g, I), E = fI(A, I), s = Q.get(E);
+  var C = wI(g, I), E = wI(A, I), s = Q.get(E);
   if (s) {
-    lI(g, I, s);
+    DI(g, I, s);
     return;
   }
   var n = e ? e(C, E, I + "", g, A, Q) : void 0, o = n === void 0;
   if (o) {
-    var r = uI(E), y = !r && Uo(E), d = !r && !y && xo(E);
-    n = E, r || y || d ? uI(C) ? n = C : Yo(C) ? n = Jo(C) : y ? (o = !1, n = So(E, !0)) : d ? (o = !1, n = Ro(E, !0)) : n = [] : bo(E) || DI(E) ? (n = C, DI(C) ? n = vo(C) : (!Ho(C) || Lo(C)) && (n = mo(E))) : o = !1;
+    var r = fI(E), y = !r && Uo(E), d = !r && !y && xo(E);
+    n = E, r || y || d ? fI(C) ? n = C : Yo(C) ? n = Jo(C) : y ? (o = !1, n = So(E, !0)) : d ? (o = !1, n = Ro(E, !0)) : n = [] : bo(E) || uI(E) ? (n = C, uI(C) ? n = vo(C) : (!Ho(C) || Lo(C)) && (n = mo(E))) : o = !1;
   }
-  o && (Q.set(E, n), B(n, E, t, e, Q), Q.delete(E)), lI(g, I, n);
+  o && (Q.set(E, n), B(n, E, t, e, Q), Q.delete(E)), DI(g, I, n);
 }
 var Ko = qo, Oo = Bs, zo = WI, To = cs, jo = Ko, _o = rA, Xo = Qt, Zo = Bt;
 function Ct(g, A, I, t, B) {
@@ -3819,10 +3819,10 @@ function Wo(g, A, I) {
   }
   return g.apply(A, I);
 }
-var $o = Wo, Aa = $o, wI = Math.max;
+var $o = Wo, Aa = $o, dI = Math.max;
 function ga(g, A, I) {
-  return A = wI(A === void 0 ? g.length - 1 : A, 0), function() {
-    for (var t = arguments, B = -1, e = wI(t.length - A, 0), Q = Array(e); ++B < e; )
+  return A = dI(A === void 0 ? g.length - 1 : A, 0), function() {
+    for (var t = arguments, B = -1, e = dI(t.length - A, 0), Q = Array(e); ++B < e; )
       Q[B] = t[A + B];
     B = -1;
     for (var C = Array(A + 1); ++B < A; )
@@ -3836,8 +3836,8 @@ function ta(g) {
     return g;
   };
 }
-var Ba = ta, ea = Ba, dI = VI, Qa = it, Ca = dI ? function(g, A) {
-  return dI(g, "toString", {
+var Ba = ta, ea = Ba, yI = VI, Qa = it, Ca = yI ? function(g, A) {
+  return yI(g, "toString", {
     configurable: !0,
     enumerable: !1,
     value: ea(A),
@@ -3860,7 +3860,7 @@ var aa = oa, ra = ia, ca = aa, ha = ca(ra), la = ha, Da = it, ua = Ia, fa = la;
 function wa(g, A) {
   return fa(ua(g, A, Da), g + "");
 }
-var da = wa, ya = sg, pa = Tg, Ga = et, Ma = rA;
+var da = wa, ya = sg, pa = jg, Ga = et, Ma = rA;
 function Na(g, A, I) {
   if (!Ma(I))
     return !1;
@@ -3880,7 +3880,7 @@ function Ra(g) {
 }
 var Ja = Ra, ma = Po, Ya = Ja, Ua = Ya(function(g, A, I) {
   ma(g, A, I);
-}), yI = Ua;
+}), pI = Ua;
 class La {
   app = null;
   // 所有已安装组件
@@ -3951,7 +3951,7 @@ class La {
       if (this.iComponents[A.name])
         console.warn("重复组件名:" + A.name);
       else {
-        let I = yI({}, A);
+        let I = pI({}, A);
         this.iComponents[A.name] = I, this.iComponentsInfo[I.name] = {
           name: I.name,
           type: I.type,
@@ -3969,7 +3969,7 @@ class La {
   // 重装组件（一般应用与vue实例变更）
   reload() {
     Object.values(this.iComponents).forEach((I) => {
-      this.app && this.app.vapp ? (this.iComponents[I.name] = yI({}, tA, I), this.app.vapp.component(I.name, this.iComponents[I.name])) : console.error("组件注册失败，缺少app");
+      this.app && this.app.vapp ? (this.iComponents[I.name] = pI({}, tA, I), this.app.vapp.component(I.name, this.iComponents[I.name])) : console.error("组件注册失败，缺少app");
     });
   }
 }
@@ -4024,7 +4024,7 @@ const Ha = function() {
     valueType: g.valueType || null,
     value: g.value || ""
   };
-}, pI = function(g, A, I) {
+}, GI = function(g, A, I) {
   if (this.actions[g]) {
     let { data: { mData: t } } = this.app, B = mA.find((e) => e.action == g);
     if (B) {
@@ -4038,12 +4038,12 @@ const Ha = function() {
     }
   } else
     console.warn(g + "动作不存在");
-}, GI = {
+}, MI = {
   // 元素动作
   [uA.ACTION](g) {
     g.data && g.appid == this.app.id && (g.data instanceof Array ? g.data.forEach((A) => {
-      pI.call(this, A.action, A.target, A.value);
-    }) : g.data instanceof Object && typeof g.data != "function" && pI.call(this, g.data.action, g.data.target, g.data.value));
+      GI.call(this, A.action, A.target, A.value);
+    }) : g.data instanceof Object && typeof g.data != "function" && GI.call(this, g.data.action, g.data.target, g.data.value));
   },
   // 应用动作
   [uA.APP_ACTION]() {
@@ -4084,7 +4084,7 @@ function va(g) {
   const A = new xa(g);
   for (const I in uA) {
     let t = uA[I];
-    GI[t] && p.addEventListener(t, GI[t], A);
+    MI[t] && p.addEventListener(t, MI[t], A);
   }
   return A;
 }
@@ -4254,7 +4254,7 @@ class Ar {
     return b.call(this, ...arguments);
   }
   extractData() {
-    return mg.call(this, ...arguments);
+    return Yg.call(this, ...arguments);
   }
   setZindex() {
     return qa.call(this, ...arguments);
@@ -4300,14 +4300,14 @@ class Ar {
   }
 }
 var kg = function() {
-}, Qg = {}, jg = {}, Cg = {};
+}, Qg = {}, _g = {}, Cg = {};
 function gr(g, A) {
   g = g.push ? g : [g];
   var I = [], t = g.length, B = t, e, Q, C, E;
   for (e = function(s, n) {
     n.length && I.push(s), B--, B || A(I);
   }; t--; ) {
-    if (Q = g[t], C = jg[Q], C) {
+    if (Q = g[t], C = _g[Q], C) {
       e(Q, C);
       continue;
     }
@@ -4317,7 +4317,7 @@ function gr(g, A) {
 function Et(g, A) {
   if (g) {
     var I = Cg[g];
-    if (jg[g] = A, !!I)
+    if (_g[g] = A, !!I)
       for (; I.length; )
         I[0](g, A), I.splice(0, 1);
   }
@@ -4391,7 +4391,7 @@ wA.done = function(A) {
   Et(A, []);
 };
 wA.reset = function() {
-  Qg = {}, jg = {}, Cg = {};
+  Qg = {}, _g = {}, Cg = {};
 };
 wA.isDefined = function(A) {
   return A in Qg;
@@ -4427,7 +4427,7 @@ class er extends DA {
     super(), this.id = A.id || z(10), this.vapp = null, this.dom = null, this.component = new La(this), this.data = new aE(this, A.config), this.controller = va(this), this.AppSetup = this.data.AppSetup, this.helper = new Ar(this);
   }
   async initData(A) {
-    let I = await Hg(A);
+    let I = await bg(A);
     return this.id = I.id, I && Array.isArray(I.plugins) && await Br.call(this, I.plugins), this.data.init(I), {
       id: this.data.info.id,
       info: this.data.info,
@@ -4492,7 +4492,7 @@ const Er = dB, sr = Je, nr = p, or = xA, Qr = m, ar = Oi, rr = function(g) {
 mt.addEventListener("statechange", function(g) {
   p.emit(Qr.PAGE_STATE, { state: g.newState, oldState: g.oldState });
 });
-console.log("%crd-runtime:2.0.7", "color:#0aa100");
+console.log("%crd-runtime:2.0.8", "color:#0aa100");
 export {
   Qr as EVENTS,
   nr as cmd,

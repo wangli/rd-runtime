@@ -10,7 +10,7 @@ import createEvent from './createEvent'
  * @returns 
  */
 export default function (options) {
-   const { name, props, slots } = options
+   const { name, props, slots, ref } = options
    const myApp = {
       AppSetup: getAppGlobal('AppSetup'),
       data: getAppGlobal('data'),
@@ -34,7 +34,7 @@ export default function (options) {
       // 如果是元素id
       const spriteData = mData.getElement(props)
       if (!spriteData) { return }
-      let myProps = { id: props, options: spriteData.options }
+      let myProps = { id: props, options: spriteData.options, ref }
       if (spriteData.id) {
          // 绑定事件
          let event = { myApp, events: spriteData.events || [], data: spriteData, componentName }
@@ -57,7 +57,7 @@ export default function (options) {
          let event = { myApp, events: props.events || [], data: props, componentName }
          Object.assign(myProps, createEvent(event))
       }
-      myProps['ref'] = myProps.id
+      myProps['ref'] = ref || myProps.id
       // 删除组件定义相关信息
       if (myProps['name']) delete myProps['name']
       if (myProps['mid']) delete myProps['mid']

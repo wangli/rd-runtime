@@ -17,7 +17,9 @@ export const lifecycleHook = function (vnode, props, context) {
     onMounted(() => {
         if (props.id) {
             cmd.addEventListener(`run_function_${props.id}`, data => {
-                vnode.cmdRunning && vnode.cmdRunning(data)
+                if (vnode.child && vnode.child.value) {
+                    vnode.child.value.cmdRunning && vnode.child.value.cmdRunning(data)
+                }
             })
         }
         if (vnode.value && vnode.value.el) {
