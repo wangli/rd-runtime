@@ -10,6 +10,7 @@ import getData from './getData'
 import ElementData from './ElementData'
 import ActionData from './ActionData'
 import GlobalData from './GlobalData'
+import EventData from './EventData'
 import RemoteData from './RemoteData'
 import PluginData from './PluginData'
 import * as ABind from './aBind'
@@ -29,6 +30,8 @@ class AppData {
    mData = null
    // 管理动作事件数据
    aData = null
+   // app事件管理
+   eData = null
    // 管理全局数据
    gData = null
    // 管理接口数据
@@ -51,6 +54,8 @@ class AppData {
       this.mData = new ElementData(this)
       // 动作数据
       this.aData = new ActionData(this)
+      // app事件数据
+      this.eData = new EventData(this)
       // 远程数据
       this.rData = new RemoteData(this)
       // 全局数据
@@ -81,7 +86,7 @@ class AppData {
    splitData(_data) {
       this.iData = {}
       let data = _data ? jsonData(_data) : {}
-      let keys = ['modules', 'actions', 'globalData', 'remote', 'plugins']
+      let keys = ['modules', 'actions', 'globalData', 'remote', 'plugins', 'events']
       keys.forEach(key => {
          if (data[key]) {
             this.iData[key] = data[key]
@@ -100,6 +105,8 @@ class AppData {
          this.mData.fillData(this.iData.modules)
          // 动作数据
          this.aData.fillData(this.iData.actions)
+         // 事件数据
+         this.eData.fillData(this.iData.events)
          // 远程数据
          this.rData.fillData(this.iData.remote)
          // 全局数据
@@ -166,6 +173,7 @@ class AppData {
       this.gData.clearData()
       this.rData.clearData()
       this.pData.clearData()
+      this.eData.clearData()
       ABind.clearUnwatch.call(this)
    }
 }

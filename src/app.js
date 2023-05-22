@@ -76,6 +76,7 @@ export default class App extends EventEmitter {
             this.vapp.config.globalProperties.AppSetup = this.AppSetup
             this.vapp.config.globalProperties.data = this.data
             this.vapp.config.globalProperties.component = this.component
+            this.vapp.config.globalProperties.helper = this.helper
             // 安装内部默认组件
             this.vapp.use(Display)
             // 注册组件到应用

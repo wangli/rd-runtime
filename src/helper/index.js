@@ -3,6 +3,7 @@ import * as event from './event'
 import * as action from './action'
 import * as other from './other'
 import { jsonData, extractData } from '@/utils'
+import handleOptions from './handleOptions'
 
 
 class Helper {
@@ -59,6 +60,9 @@ class Helper {
    }
    getBodyData() {
       return other.getBodyData.call(this, ...arguments)
+   }
+   handleOptions() {
+      return handleOptions.call(this, this.appData, ...arguments)
    }
 }
 

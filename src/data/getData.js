@@ -7,6 +7,7 @@ export default function (app) {
     const mData = app.mData
     const gData = app.gData
     const aData = app.aData
+    const eData = app.eData
     const rData = app.rData
     const pData = app.pData
 
@@ -45,6 +46,7 @@ export default function (app) {
         globalData,
         modules,
         actions: aData.getActionList(),
+        events: eData.getGAction(),
         plugins: pData.getPluginList(),
         remote: rData.getRemoteList()
     })

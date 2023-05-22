@@ -3,6 +3,7 @@ import actions from "./actions"
 import dataTypes from "./dataTypes"
 import component from "./component"
 import events from "./events"
+import appEvents from "./appEvents"
 
 /**
  * 此模块是数据相关定义、初始化、配置等
@@ -12,5 +13,6 @@ export default {
     get actions() { return actions },
     get dataTypes() { return dataTypes },
     get component() { return component },
-    get events() { return events }
+    get events() { return events },
+    get appEvents() { return appEvents }
 }

@@ -82,3 +82,13 @@ export const definePlugin = function (option) {
         uptime: new Date().getTime()
     }, option))
 }
+
+// 应用事件
+export const defineGEvent = function (option) {
+    return Object.assign({
+        event: "launch",
+        pams: { delay: 1000 },
+        actions: [],
+        actionValue: {}
+    }, option)
+}
