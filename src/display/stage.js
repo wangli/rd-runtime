@@ -3,6 +3,7 @@ import { jsonData, getAppGlobal } from '@/utils'
 import { EVENTS } from '@/events'
 import createSprite from './createSprite'
 import cmd from '@/command'
+import { stageHook } from './hooks'
 export default {
    name: 'stage',
    props: {
@@ -41,7 +42,6 @@ export default {
    setup(props) {
       const data = getAppGlobal('data')
       const modules = data.mData.modules.getModules()
-      const events = data.eData.getGAction('launch')
       const appData = data.getAppData()
       const slots = isVNode(props.slots) ? [props.slots] : []
       if (slots.length == 0) {
@@ -53,16 +53,8 @@ export default {
             slots.push(h(props.slots))
          }
       }
+      stageHook(data)
 
-      onMounted(() => {
-         cmd.emit(EVENTS.STAGE_MOUNTED)
-         if (data.AppSetup.interaction && events) {
-            if (Array.isArray(events.actions)) {
-               let actions = data.aData.getActionList(events.actions)
-               cmd.execute(actions, 'app', data.info.id)
-            }
-         }
-      })
       return () => {
          // 舞台内容分层显示容器组件
          var containerList = []

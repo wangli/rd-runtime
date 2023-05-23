@@ -32,7 +32,7 @@ export default class EventData {
         if (event) {
             // 如果事件不存在，创建一个新的事件对象
             if (!this.data[eventName]) {
-                this.data[eventName] = event
+                this.data[eventName] = JSON.parse(JSON.stringify(event))
             }
             // 添加动作
             if (this.data[eventName].actions.findIndex(n => n == actionId) < 0) {

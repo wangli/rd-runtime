@@ -7,7 +7,9 @@ import { removeArray } from '@/utils'
  * @param {string} eventName 事件名称，通过元素id添加动作时，必须包含一个事件名称
  */
 export const addEventAction = function (actionId, target, eventName = "") {
-   if (eventName && typeof target == 'string') {
+   if (target == 'app') {
+      this.appData.eData.addGAction(actionId, eventName)
+   } else if (eventName && typeof target == 'string') {
       let event = this.getEvent(target, eventName)
       if (event) {
          if (event.actions.findIndex(n => n == actionId) < 0) {
@@ -30,7 +32,9 @@ export const addEventAction = function (actionId, target, eventName = "") {
  * @param {*} value 
  */
 export const editEventAction = function (actionId, target, eventName, value) {
-   if (eventName && typeof target == 'string') {
+   if (target == 'app') {
+      this.appData.eData.editGAction(actionId, eventName, value)
+   } else if (eventName && typeof target == 'string') {
       let event = this.getEvent(target, eventName)
       if (event) {
          if (typeof value != 'undefined') {
@@ -55,7 +59,9 @@ export const editEventAction = function (actionId, target, eventName, value) {
  */
 export const removeEventAction = function (actionId, target, eventName = "", removeSource = false) {
    const data = this.appData
-   if (eventName && typeof target == 'string') {
+   if (target == 'app') {
+      this.appData.eData.delGAction(eventName, actionId)
+   } else if (eventName && typeof target == 'string') {
       let event = this.getEvent(target, eventName)
       if (event) {
          removeArray(event.actions, '', actionId)
