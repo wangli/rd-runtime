@@ -3214,13 +3214,18 @@ const ZA = function(g, A, I, t) {
     }) : g.slots && B.push(L(g.slots))), dE(A), () => {
       var e = [];
       const Q = [], C = [], E = [];
-      for (const n in I)
-        if (I.hasOwnProperty.call(I, n)) {
-          const a = I[n];
-          (typeof a.visible > "u" || a.visible == !0) && (a.type == "content" ? Q.push(a) : a.type == "fixed" ? C.push(a) : a.type == "overlayer" && E.push(a));
+      for (const a in I)
+        if (I.hasOwnProperty.call(I, a)) {
+          const o = I[a];
+          (typeof o.visible > "u" || o.visible == !0) && (o.type == "content" ? Q.push(o) : o.type == "fixed" ? C.push(o) : o.type == "overlayer" && E.push(o));
         }
       e.push(T({ name: "vx-background", props: g.background }), ...B), Q.length > 0 && e.push(T({ name: "vx-content", props: { modules: Q } })), C.length > 0 && e.push(T({ name: "vx-fixed", props: { modules: C } })), E.length > 0 && (e.unshift(T({ name: "vx-mask" })), e.push(T({ name: "vx-overlayer", props: { modules: E } }))), e.push(T({ name: "vx-popwin", props: g.popwin })), e.push(T({ name: "vx-message" }));
-      let s = {
+      let s = b(t.info.background);
+      if (s && s.backgroundColor && /\blinear-gradient\(([^()]*|\([^()]*\))*\)/.test(s.backgroundColor)) {
+        let a = s.backgroundColor;
+        delete s.backgroundColor, s.backgroundImage ? s.backgroundImage = s.backgroundImage + "," + a : s.backgroundImage = a;
+      }
+      let n = {
         position: "absolute",
         width: t.info.width ? t.info.width + "px" : "100%",
         height: t.info.height ? t.info.height + "px" : "100%",
@@ -3231,13 +3236,13 @@ const ZA = function(g, A, I, t) {
         zIndex: 0,
         userSelect: "none",
         overflow: "hidden",
-        ...b(t.info.background)
+        ...s
       };
       return L("div", {
         id: "vx-stage",
-        style: s,
-        onclick(n) {
-          y.emit(m.CLICK_STAGE, n);
+        style: n,
+        onclick(a) {
+          y.emit(m.CLICK_STAGE, a);
         }
       }, e);
     };
@@ -3350,7 +3355,11 @@ const tA = {
   }
 };
 function yE(g) {
-  let A = typeof g.anim == "object" && g.anim.options ? g.anim.options : {};
+  let A = typeof g.anim == "object" && g.anim.options ? g.anim.options : {}, I = b(g.background);
+  if (I && I.backgroundColor && /\blinear-gradient\(([^()]*|\([^()]*\))*\)/.test(I.backgroundColor)) {
+    let t = I.backgroundColor;
+    delete I.backgroundColor, I.backgroundImage ? I.backgroundImage = I.backgroundImage + "," + t : I.backgroundImage = t;
+  }
   return {
     position: "absolute",
     width: g.width > 0 ? g.width + "px" : "80px",
@@ -3361,8 +3370,8 @@ function yE(g) {
     transform: "rotate(" + g.angle + "deg)",
     opacity: g.opacity / 100,
     padding: g.padding,
+    ...I,
     ...g.border,
-    ...g.background,
     ...g.shadow,
     ...A
   };
@@ -4625,7 +4634,7 @@ const or = wB, rr = me, cr = y, hr = GA, sr = m, lr = zi, Dr = function(g) {
 Yt.addEventListener("statechange", function(g) {
   y.emit(sr.PAGE_STATE, { state: g.newState, oldState: g.oldState });
 });
-console.log("%crd-runtime:2.0.10", "color:#0aa100");
+console.log("%crd-runtime:2.0.11", "color:#0aa100");
 export {
   sr as EVENTS,
   cr as cmd,

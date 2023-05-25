@@ -96,6 +96,18 @@ export default {
          containerList.push(createSprite({ name: 'vx-popwin', props: props.popwin }))
          // 消息提醒弹层
          containerList.push(createSprite({ name: 'vx-message' }))
+         let background = jsonData(appData.info.background)
+         if (background && background.backgroundColor) {
+            if (/\blinear-gradient\(([^()]*|\([^()]*\))*\)/.test(background.backgroundColor)) {
+               let backgroundColor = background.backgroundColor
+               delete background.backgroundColor
+               if (background.backgroundImage) {
+                  background.backgroundImage = background.backgroundImage + "," + backgroundColor
+               } else {
+                  background.backgroundImage = backgroundColor
+               }
+            }
+         }
 
          let style = {
             position: 'absolute',
@@ -108,7 +120,7 @@ export default {
             zIndex: 0,
             userSelect: 'none',
             overflow: 'hidden',
-            ...jsonData(appData.info.background)
+            ...background
          }
          return h('div', {
             id: "vx-stage",
