@@ -1,5 +1,6 @@
 import { computed } from 'vue'
 import getValue from 'lodash/get'
+import jsCookie from 'js-cookie'
 import * as remote from '@/remote'
 
 // 缩放变形相关样式
@@ -75,6 +76,23 @@ export const getDataSource = function (value) {
                 } else {
                     return null
                 }
+            } else if (GData[gdid].type == 'local') {
+                let value = GData[gdid].value
+                let data = null
+                if (value.source == 'cookie') {
+                    data = jsCookie.get(value.key)
+                } else {
+                    let res = value.source == 'local' ? localStorage.getItem(value.key) : sessionStorage.getItem(value.key)
+                    try {
+                        data = JSON.parse(res)
+                    } catch (error) {
+                        data = res
+                    }
+                }
+                if (data && typeof data == 'object' && path) {
+                    return getValue(data, path)
+                }
+                return data
             } else {
                 if (path) {
                     return getValue(GData[gdid].value, path)
