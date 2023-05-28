@@ -93,13 +93,14 @@ export const copyAdd = function (sid, option, gpid = null) {
         Object.assign(element, option)
         // 组合处理
         let groupComponents = []
-        if (element.components) {
-            groupComponents = element.components
+        if (element.components && Array.isArray(element.components)) {
+            groupComponents = element.components.sort((a, b) => a.zIndex - b.zIndex)
             delete element.components
         }
         let newGroup = mData.newGroup(element, element.mid)
-        groupComponents.forEach(sprite => {
-            this.copyAdd(sprite.id, { gpid: newGroup.id }, newGroup.id)
+        groupComponents.forEach((sprite, index) => {
+            let zIndex = newGroup.zIndex + index + 1
+            this.copyAdd(sprite.id, { gpid: newGroup.id, zIndex }, newGroup.id)
         })
         return newGroup
     }

@@ -39,6 +39,7 @@ export const getScale = function (dom, _size) {
         return { value: w, h, w }
     }
 }
+
 // 获取列表项最大的深度值
 export const getMaxZIndex = function (components) {
     if (Array.isArray(components) && components.length > 0) {

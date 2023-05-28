@@ -158,17 +158,17 @@ export default class GroupData {
          }, mid)
          if (group) {
             // 添加元素到组合
-            spids.forEach(id => {
+            spids.forEach((id, index) => {
                if (elements[id]) {
                   elements[id].x -= point.x1
                   elements[id].y -= point.y1
                   elements[id].gpid = group.id
                   elements[id].hover = false
                   elements[id].selected = false
+                  elements[id].zIndex = index
                   this.addElement(esSimple[id], group.id)
                }
             })
-            console.log(group)
             group.selected = true
             return group
          } else {
@@ -190,6 +190,7 @@ export default class GroupData {
       let unwatchs = this.mData.unwatchs
       let esSimple = this.mData.esSimple
       let myGroup = this.groups[gpid]
+      let myZindex = myGroup.zIndex
 
       if (gpid && myGroup && myGroup.components) {
          // 删除模块子集内的组合
@@ -200,12 +201,24 @@ export default class GroupData {
          let ids = []
          // 将组合内的元素添加到模块内
          let components = myGroup.components
+         // 获取所在模块的所有元素
+         let moduleElements = modules.getMyElements(myGroup.mid)
+         if (Array.isArray(moduleElements) && moduleElements.length > 0) {
+            moduleElements = moduleElements.sort((a, b) => a.zIndex - b.zIndex)
+            let sIndex = moduleElements.findIndex(item => item.id == myGroup.id) + 1
+            let count = components.length
+            for (let index = sIndex, lg = moduleElements.length; index < lg; index++) {
+               let ele = elements[moduleElements[index].id]
+               ele && (ele.zIndex += count)
+            }
+         }
          // 删除组合
          this.delGroup(gpid)
-         components.forEach(element => {
+         components.forEach((element, index) => {
             elements[element.id].x += myGroup.x
             elements[element.id].y += myGroup.y
             elements[element.id].gpid = null
+            elements[element.id].zIndex = myZindex + index
             ids.push(element.id)
             add && modules.addElement(esSimple[element.id], element.mid)
          })
