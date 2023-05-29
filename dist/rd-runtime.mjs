@@ -150,8 +150,8 @@ var Lt = new Ut(), UA = typeof globalThis < "u" ? globalThis : typeof window < "
   function B(E, n, s, a, o) {
     if (typeof s != "function")
       throw new TypeError("The listener must be a function");
-    var u = new e(s, a || E, o), l = I ? I + n : n;
-    return E._events[l] ? E._events[l].fn ? E._events[l] = [E._events[l], u] : E._events[l].push(u) : (E._events[l] = u, E._eventsCount++), E;
+    var d = new e(s, a || E, o), l = I ? I + n : n;
+    return E._events[l] ? E._events[l].fn ? E._events[l] = [E._events[l], d] : E._events[l].push(d) : (E._events[l] = d, E._eventsCount++), E;
   }
   function Q(E, n) {
     --E._eventsCount === 0 ? E._events = new t() : delete E._events[n];
@@ -172,13 +172,13 @@ var Lt = new Ut(), UA = typeof globalThis < "u" ? globalThis : typeof window < "
       return [];
     if (a.fn)
       return [a.fn];
-    for (var o = 0, u = a.length, l = new Array(u); o < u; o++)
+    for (var o = 0, d = a.length, l = new Array(d); o < d; o++)
       l[o] = a[o].fn;
     return l;
   }, C.prototype.listenerCount = function(n) {
     var s = I ? I + n : n, a = this._events[s];
     return a ? a.fn ? 1 : a.length : 0;
-  }, C.prototype.emit = function(n, s, a, o, u, l) {
+  }, C.prototype.emit = function(n, s, a, o, d, l) {
     var G = I ? I + n : n;
     if (!this._events[G])
       return !1;
@@ -194,9 +194,9 @@ var Lt = new Ut(), UA = typeof globalThis < "u" ? globalThis : typeof window < "
         case 4:
           return D.fn.call(D.context, s, a, o), !0;
         case 5:
-          return D.fn.call(D.context, s, a, o, u), !0;
+          return D.fn.call(D.context, s, a, o, d), !0;
         case 6:
-          return D.fn.call(D.context, s, a, o, u, l), !0;
+          return D.fn.call(D.context, s, a, o, d, l), !0;
       }
       for (J = 1, W = new Array(Z - 1); J < Z; J++)
         W[J - 1] = arguments[J];
@@ -230,18 +230,18 @@ var Lt = new Ut(), UA = typeof globalThis < "u" ? globalThis : typeof window < "
   }, C.prototype.once = function(n, s, a) {
     return B(this, n, s, a, !0);
   }, C.prototype.removeListener = function(n, s, a, o) {
-    var u = I ? I + n : n;
-    if (!this._events[u])
+    var d = I ? I + n : n;
+    if (!this._events[d])
       return this;
     if (!s)
-      return Q(this, u), this;
-    var l = this._events[u];
+      return Q(this, d), this;
+    var l = this._events[d];
     if (l.fn)
-      l.fn === s && (!o || l.once) && (!a || l.context === a) && Q(this, u);
+      l.fn === s && (!o || l.once) && (!a || l.context === a) && Q(this, d);
     else {
       for (var G = 0, D = [], Z = l.length; G < Z; G++)
         (l[G].fn !== s || o && !l[G].once || a && l[G].context !== a) && D.push(l[G]);
-      D.length ? this._events[u] = D.length === 1 ? D[0] : D : Q(this, u);
+      D.length ? this._events[d] = D.length === 1 ? D[0] : D : Q(this, d);
     }
     return this;
   }, C.prototype.removeAllListeners = function(n) {
@@ -306,31 +306,31 @@ var tg = {}, vt = {
   (function(I, t) {
     g.exports = t();
   })(UA, function() {
-    var I = 1e3, t = 6e4, e = 36e5, B = "millisecond", Q = "second", C = "minute", E = "hour", n = "day", s = "week", a = "month", o = "quarter", u = "year", l = "date", G = "Invalid Date", D = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/, Z = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g, W = { name: "en", weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"), months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"), ordinal: function(f) {
-      var h = ["th", "st", "nd", "rd"], r = f % 100;
-      return "[" + f + (h[(r - 20) % 10] || h[r] || h[0]) + "]";
-    } }, J = function(f, h, r) {
-      var d = String(f);
-      return !d || d.length >= h ? f : "" + Array(h + 1 - d.length).join(r) + f;
-    }, hg = { s: J, z: function(f) {
-      var h = -f.utcOffset(), r = Math.abs(h), d = Math.floor(r / 60), c = r % 60;
-      return (h <= 0 ? "+" : "-") + J(d, 2, "0") + ":" + J(c, 2, "0");
-    }, m: function f(h, r) {
+    var I = 1e3, t = 6e4, e = 36e5, B = "millisecond", Q = "second", C = "minute", E = "hour", n = "day", s = "week", a = "month", o = "quarter", d = "year", l = "date", G = "Invalid Date", D = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/, Z = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g, W = { name: "en", weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"), months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"), ordinal: function(u) {
+      var h = ["th", "st", "nd", "rd"], r = u % 100;
+      return "[" + u + (h[(r - 20) % 10] || h[r] || h[0]) + "]";
+    } }, J = function(u, h, r) {
+      var f = String(u);
+      return !f || f.length >= h ? u : "" + Array(h + 1 - f.length).join(r) + u;
+    }, hg = { s: J, z: function(u) {
+      var h = -u.utcOffset(), r = Math.abs(h), f = Math.floor(r / 60), c = r % 60;
+      return (h <= 0 ? "+" : "-") + J(f, 2, "0") + ":" + J(c, 2, "0");
+    }, m: function u(h, r) {
       if (h.date() < r.date())
-        return -f(r, h);
-      var d = 12 * (r.year() - h.year()) + (r.month() - h.month()), c = h.clone().add(d, a), w = r - c < 0, y = h.clone().add(d + (w ? -1 : 1), a);
-      return +(-(d + (r - c) / (w ? c - y : y - c)) || 0);
-    }, a: function(f) {
-      return f < 0 ? Math.ceil(f) || 0 : Math.floor(f);
-    }, p: function(f) {
-      return { M: a, y: u, w: s, d: n, D: l, h: E, m: C, s: Q, ms: B, Q: o }[f] || String(f || "").toLowerCase().replace(/s$/, "");
-    }, u: function(f) {
-      return f === void 0;
+        return -u(r, h);
+      var f = 12 * (r.year() - h.year()) + (r.month() - h.month()), c = h.clone().add(f, a), w = r - c < 0, y = h.clone().add(f + (w ? -1 : 1), a);
+      return +(-(f + (r - c) / (w ? c - y : y - c)) || 0);
+    }, a: function(u) {
+      return u < 0 ? Math.ceil(u) || 0 : Math.floor(u);
+    }, p: function(u) {
+      return { M: a, y: d, w: s, d: n, D: l, h: E, m: C, s: Q, ms: B, Q: o }[u] || String(u || "").toLowerCase().replace(/s$/, "");
+    }, u: function(u) {
+      return u === void 0;
     } }, j = "en", EA = {};
     EA[j] = W;
-    var lg = function(f) {
-      return f instanceof zA;
-    }, OA = function f(h, r, d) {
+    var lg = function(u) {
+      return u instanceof zA;
+    }, OA = function u(h, r, f) {
       var c;
       if (!h)
         return j;
@@ -339,29 +339,29 @@ var tg = {}, vt = {
         EA[w] && (c = w), r && (EA[w] = r, c = w);
         var y = h.split("-");
         if (!c && y.length > 1)
-          return f(y[0]);
+          return u(y[0]);
       } else {
         var N = h.name;
         EA[N] = h, c = N;
       }
-      return !d && c && (j = c), c || !d && j;
-    }, x = function(f, h) {
-      if (lg(f))
-        return f.clone();
+      return !f && c && (j = c), c || !f && j;
+    }, x = function(u, h) {
+      if (lg(u))
+        return u.clone();
       var r = typeof h == "object" ? h : {};
-      return r.date = f, r.args = arguments, new zA(r);
+      return r.date = u, r.args = arguments, new zA(r);
     }, k = hg;
-    k.l = OA, k.i = lg, k.w = function(f, h) {
-      return x(f, { locale: h.$L, utc: h.$u, x: h.$x, $offset: h.$offset });
+    k.l = OA, k.i = lg, k.w = function(u, h) {
+      return x(u, { locale: h.$L, utc: h.$u, x: h.$x, $offset: h.$offset });
     };
     var zA = function() {
-      function f(r) {
+      function u(r) {
         this.$L = OA(r.locale, null, !0), this.parse(r);
       }
-      var h = f.prototype;
+      var h = u.prototype;
       return h.parse = function(r) {
-        this.$d = function(d) {
-          var c = d.date, w = d.utc;
+        this.$d = function(f) {
+          var c = f.date, w = f.utc;
           if (c === null)
             return /* @__PURE__ */ new Date(NaN);
           if (k.u(c))
@@ -384,28 +384,28 @@ var tg = {}, vt = {
         return k;
       }, h.isValid = function() {
         return this.$d.toString() !== G;
-      }, h.isSame = function(r, d) {
+      }, h.isSame = function(r, f) {
         var c = x(r);
-        return this.startOf(d) <= c && c <= this.endOf(d);
-      }, h.isAfter = function(r, d) {
-        return x(r) < this.startOf(d);
-      }, h.isBefore = function(r, d) {
-        return this.endOf(d) < x(r);
-      }, h.$g = function(r, d, c) {
-        return k.u(r) ? this[d] : this.set(c, r);
+        return this.startOf(f) <= c && c <= this.endOf(f);
+      }, h.isAfter = function(r, f) {
+        return x(r) < this.startOf(f);
+      }, h.isBefore = function(r, f) {
+        return this.endOf(f) < x(r);
+      }, h.$g = function(r, f, c) {
+        return k.u(r) ? this[f] : this.set(c, r);
       }, h.unix = function() {
         return Math.floor(this.valueOf() / 1e3);
       }, h.valueOf = function() {
         return this.$d.getTime();
-      }, h.startOf = function(r, d) {
-        var c = this, w = !!k.u(d) || d, y = k.p(r), N = function(hA, O) {
+      }, h.startOf = function(r, f) {
+        var c = this, w = !!k.u(f) || f, y = k.p(r), N = function(hA, O) {
           var BA = k.w(c.$u ? Date.UTC(c.$y, O, hA) : new Date(c.$y, O, hA), c);
           return w ? BA : BA.endOf(n);
         }, H = function(hA, O) {
           return k.w(c.toDate()[hA].apply(c.toDate("s"), (w ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(O)), c);
         }, U = this.$W, q = this.$M, eA = this.$D, $ = "set" + (this.$u ? "UTC" : "");
         switch (y) {
-          case u:
+          case d:
             return w ? N(1, 0) : N(31, 11);
           case a:
             return w ? N(1, q) : N(0, q + 1);
@@ -426,43 +426,43 @@ var tg = {}, vt = {
         }
       }, h.endOf = function(r) {
         return this.startOf(r, !1);
-      }, h.$set = function(r, d) {
-        var c, w = k.p(r), y = "set" + (this.$u ? "UTC" : ""), N = (c = {}, c[n] = y + "Date", c[l] = y + "Date", c[a] = y + "Month", c[u] = y + "FullYear", c[E] = y + "Hours", c[C] = y + "Minutes", c[Q] = y + "Seconds", c[B] = y + "Milliseconds", c)[w], H = w === n ? this.$D + (d - this.$W) : d;
-        if (w === a || w === u) {
+      }, h.$set = function(r, f) {
+        var c, w = k.p(r), y = "set" + (this.$u ? "UTC" : ""), N = (c = {}, c[n] = y + "Date", c[l] = y + "Date", c[a] = y + "Month", c[d] = y + "FullYear", c[E] = y + "Hours", c[C] = y + "Minutes", c[Q] = y + "Seconds", c[B] = y + "Milliseconds", c)[w], H = w === n ? this.$D + (f - this.$W) : f;
+        if (w === a || w === d) {
           var U = this.clone().set(l, 1);
           U.$d[N](H), U.init(), this.$d = U.set(l, Math.min(this.$D, U.daysInMonth())).$d;
         } else
           N && this.$d[N](H);
         return this.init(), this;
-      }, h.set = function(r, d) {
-        return this.clone().$set(r, d);
+      }, h.set = function(r, f) {
+        return this.clone().$set(r, f);
       }, h.get = function(r) {
         return this[k.p(r)]();
-      }, h.add = function(r, d) {
+      }, h.add = function(r, f) {
         var c, w = this;
         r = Number(r);
-        var y = k.p(d), N = function(q) {
+        var y = k.p(f), N = function(q) {
           var eA = x(w);
           return k.w(eA.date(eA.date() + Math.round(q * r)), w);
         };
         if (y === a)
           return this.set(a, this.$M + r);
-        if (y === u)
-          return this.set(u, this.$y + r);
+        if (y === d)
+          return this.set(d, this.$y + r);
         if (y === n)
           return N(1);
         if (y === s)
           return N(7);
         var H = (c = {}, c[C] = t, c[E] = e, c[Q] = I, c)[y] || 1, U = this.$d.getTime() + r * H;
         return k.w(U, this);
-      }, h.subtract = function(r, d) {
-        return this.add(-1 * r, d);
+      }, h.subtract = function(r, f) {
+        return this.add(-1 * r, f);
       }, h.format = function(r) {
-        var d = this, c = this.$locale();
+        var f = this, c = this.$locale();
         if (!this.isValid())
           return c.invalidDate || G;
         var w = r || "YYYY-MM-DDTHH:mm:ssZ", y = k.z(this), N = this.$H, H = this.$m, U = this.$M, q = c.weekdays, eA = c.months, $ = function(O, BA, Dg, TA) {
-          return O && (O[BA] || O(d, w)) || Dg[BA].slice(0, TA);
+          return O && (O[BA] || O(f, w)) || Dg[BA].slice(0, TA);
         }, SA = function(O) {
           return k.s(N % 12 || 12, O, "0");
         }, RA = c.meridiem || function(O, BA, Dg) {
@@ -474,17 +474,17 @@ var tg = {}, vt = {
         });
       }, h.utcOffset = function() {
         return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
-      }, h.diff = function(r, d, c) {
-        var w, y = k.p(d), N = x(r), H = (N.utcOffset() - this.utcOffset()) * t, U = this - N, q = k.m(this, N);
-        return q = (w = {}, w[u] = q / 12, w[a] = q, w[o] = q / 3, w[s] = (U - H) / 6048e5, w[n] = (U - H) / 864e5, w[E] = U / e, w[C] = U / t, w[Q] = U / I, w)[y] || U, c ? q : k.a(q);
+      }, h.diff = function(r, f, c) {
+        var w, y = k.p(f), N = x(r), H = (N.utcOffset() - this.utcOffset()) * t, U = this - N, q = k.m(this, N);
+        return q = (w = {}, w[d] = q / 12, w[a] = q, w[o] = q / 3, w[s] = (U - H) / 6048e5, w[n] = (U - H) / 864e5, w[E] = U / e, w[C] = U / t, w[Q] = U / I, w)[y] || U, c ? q : k.a(q);
       }, h.daysInMonth = function() {
         return this.endOf(a).$D;
       }, h.$locale = function() {
         return EA[this.$L];
-      }, h.locale = function(r, d) {
+      }, h.locale = function(r, f) {
         if (!r)
           return this.$L;
-        var c = this.clone(), w = OA(r, d, !0);
+        var c = this.clone(), w = OA(r, f, !0);
         return w && (c.$L = w), c;
       }, h.clone = function() {
         return k.w(this.$d, this);
@@ -496,16 +496,16 @@ var tg = {}, vt = {
         return this.$d.toISOString();
       }, h.toString = function() {
         return this.$d.toUTCString();
-      }, f;
+      }, u;
     }(), Wg = zA.prototype;
-    return x.prototype = Wg, [["$ms", B], ["$s", Q], ["$m", C], ["$H", E], ["$W", n], ["$M", a], ["$y", u], ["$D", l]].forEach(function(f) {
-      Wg[f[1]] = function(h) {
-        return this.$g(h, f[0], f[1]);
+    return x.prototype = Wg, [["$ms", B], ["$s", Q], ["$m", C], ["$H", E], ["$W", n], ["$M", a], ["$y", d], ["$D", l]].forEach(function(u) {
+      Wg[u[1]] = function(h) {
+        return this.$g(h, u[0], u[1]);
       };
-    }), x.extend = function(f, h) {
-      return f.$i || (f(h, zA, x), f.$i = !0), x;
-    }, x.locale = OA, x.isDayjs = lg, x.unix = function(f) {
-      return x(1e3 * f);
+    }), x.extend = function(u, h) {
+      return u.$i || (u(h, zA, x), u.$i = !0), x;
+    }, x.locale = OA, x.isDayjs = lg, x.unix = function(u) {
+      return x(1e3 * u);
     }, x.en = EA[j], x.Ls = EA, x.p = {}, x;
   });
 })(vt);
@@ -1899,8 +1899,8 @@ function VC(g) {
     s.components && Array.isArray(s.components) && (s.components = s.components.map((a) => {
       if (a.type == "group") {
         let o = I.getGroup(a.id);
-        return o.components && (o.components = o.components.map((u) => {
-          let l = I.getSprite(u.id);
+        return o.components && (o.components = o.components.map((d) => {
+          let l = I.getSprite(d.id);
           return l.selected = !1, l;
         })), o.selected = !1, o;
       } else {
@@ -2166,9 +2166,9 @@ class gE {
       let t = this.mData.elements, e = this.mData.modules, B = this.mData.sprites, Q = this.mData.esSimple, C = { x1: 0, y1: 0, x2: 0, y2: 0 }, E = e.getMyElements(I), n = [], s = [];
       if (A.forEach((o) => {
         /^group_/.test(o) ? n.push(...this.unbindGroup(o)) : n.push(o);
-      }), n.forEach((o, u) => {
+      }), n.forEach((o, d) => {
         let l = E.find((D) => D.id == o), G = l ? l.type == "group" ? this.groups[o] : t[o] : null;
-        G ? u == 0 ? (C.x1 = G.x, C.y1 = G.y, C.x2 = G.x + G.width, C.y2 = G.y + G.height) : (C.x1 = G.x < C.x1 ? G.x : C.x1, C.y1 = G.y < C.y1 ? G.y : C.y1, C.x2 = G.x + G.width > C.x2 ? G.x + G.width : C.x2, C.y2 = G.y + G.height > C.y2 ? G.y + G.height : C.y2) : s.push(o);
+        G ? d == 0 ? (C.x1 = G.x, C.y1 = G.y, C.x2 = G.x + G.width, C.y2 = G.y + G.height) : (C.x1 = G.x < C.x1 ? G.x : C.x1, C.y1 = G.y < C.y1 ? G.y : C.y1, C.x2 = G.x + G.width > C.x2 ? G.x + G.width : C.x2, C.y2 = G.y + G.height > C.y2 ? G.y + G.height : C.y2) : s.push(o);
       }), s.length > 0)
         return console.warn(s.join(), "元素无法组合"), !1;
       B.delSprite(n, !1);
@@ -2178,8 +2178,8 @@ class gE {
         width: C.x2 - C.x1,
         height: C.y2 - C.y1
       }, I);
-      return a ? (n.forEach((o, u) => {
-        t[o] && (t[o].x -= C.x1, t[o].y -= C.y1, t[o].gpid = a.id, t[o].hover = !1, t[o].selected = !1, t[o].zIndex = u, this.addElement(Q[o], a.id));
+      return a ? (n.forEach((o, d) => {
+        t[o] && (t[o].x -= C.x1, t[o].y -= C.y1, t[o].gpid = a.id, t[o].hover = !1, t[o].selected = !1, this.addElement(Q[o], a.id));
       }), a.selected = !0, a) : !1;
     } else
       return !1;
@@ -2197,14 +2197,14 @@ class gE {
       let n = [], s = C.components, a = e.getMyElements(C.mid);
       if (Array.isArray(a) && a.length > 0) {
         a = a.sort((l, G) => l.zIndex - G.zIndex);
-        let o = a.findIndex((l) => l.id == C.id) + 1, u = s.length;
+        let o = a.findIndex((l) => l.id == C.id) + 1, d = s.length;
         for (let l = o, G = a.length; l < G; l++) {
           let D = t[a[l].id];
-          D && (D.zIndex += u);
+          D && (D.zIndex += d);
         }
       }
-      return this.delGroup(A), s.forEach((o, u) => {
-        t[o.id].x += C.x, t[o.id].y += C.y, t[o.id].gpid = null, t[o.id].zIndex = E + u, n.push(o.id), I && e.addElement(Q[o.id], o.mid);
+      return this.delGroup(A), s.forEach((o, d) => {
+        t[o.id].x += C.x, t[o.id].y += C.y, t[o.id].gpid = null, t[o.id].zIndex = E + d, n.push(o.id), I && e.addElement(Q[o.id], o.mid);
       }), n;
     }
     return !1;
@@ -3470,7 +3470,7 @@ function NE(g) {
 }
 function $I(g, { id: A, myApp: I }) {
   const t = NE(g), e = Jg({ myApp: I, events: g.events || [], data: g, componentName: "" }), B = ["element_sprite", { element_selected: g.selected }, { element_hover: g.hover }];
-  return g.anim && g.anim.name && I.AppSetup.interaction && B.push(g.anim.name), e.style && (Object.assign(t, e.style), delete e.style), { id: A, ...e, style: t, class: B };
+  return g.anim && g.anim.name && I.AppSetup.interaction && (B.push(g.anim.name), g.anim.init && typeof g.anim.init == "object" && Object.assign(t, g.anim.init)), e.style && (Object.assign(t, e.style), delete e.style), { id: A, ...e, style: t, class: B };
 }
 const Xg = {
   name: "vx-sprite",
@@ -3988,8 +3988,8 @@ function _a(g, A, I, t, e, B, Q) {
   }
   var s = B ? B(C, E, I + "", g, A, Q) : void 0, a = s === void 0;
   if (a) {
-    var o = pI(E), u = !o && qa(E), l = !o && !u && Ta(E);
-    s = E, o || u || l ? pI(C) ? s = C : va(C) ? s = ba(C) : u ? (a = !1, s = La(E, !0)) : l ? (a = !1, s = Ha(E, !0)) : s = [] : za(E) || wI(E) ? (s = C, wI(C) ? s = ja(C) : (!Oa(C) || Ka(C)) && (s = xa(E))) : a = !1;
+    var o = pI(E), d = !o && qa(E), l = !o && !d && Ta(E);
+    s = E, o || d || l ? pI(C) ? s = C : va(C) ? s = ba(C) : d ? (a = !1, s = La(E, !0)) : l ? (a = !1, s = Ha(E, !0)) : s = [] : za(E) || wI(E) ? (s = C, wI(C) ? s = ja(C) : (!Oa(C) || Ka(C)) && (s = xa(E))) : a = !1;
   }
   a && (Q.set(E, s), e(s, E, t, B, Q), Q.delete(E)), yI(g, I, s);
 }
@@ -4344,9 +4344,9 @@ const Xo = function(g, A = "up") {
     let C = [];
     Q.components && Array.isArray(Q.components) && (C = Q.components.sort((n, s) => n.zIndex - s.zIndex), delete Q.components);
     let E = t.newGroup(Q, Q.mid);
-    return C.forEach((n, s) => {
-      let a = E.zIndex + s + 1;
-      this.copyAdd(n.id, { gpid: E.id, zIndex: a }, E.id);
+    return C.forEach((n) => {
+      let s = E.zIndex;
+      this.copyAdd(n.id, { gpid: E.id, zIndex: s }, E.id);
     }), E;
   }
 }, Po = function(g, A) {
@@ -4572,8 +4572,8 @@ function rt(g, A, I, t) {
     o.type = "module";
   } else if (/^nomodule!/.test(E) && a)
     return A(g, "l");
-  o.onload = o.onerror = o.onbeforeload = function(u) {
-    var l = u.type[0];
+  o.onload = o.onerror = o.onbeforeload = function(d) {
+    var l = d.type[0];
     if (s)
       try {
         o.sheet.cssText.length || (l = "e");
@@ -4585,7 +4585,7 @@ function rt(g, A, I, t) {
         return rt(g, A, I, t);
     } else if (o.rel == "preload" && o.as == "style")
       return o.rel = "stylesheet";
-    A(g, l, u.defaultPrevented);
+    A(g, l, d.defaultPrevented);
   }, C(g, o) !== !1 && e.head.appendChild(o);
 }
 function nr(g, A, I) {
@@ -4727,7 +4727,7 @@ const lr = pe, Dr = UB, ur = p, fr = GA, rr = m, dr = jC, yr = function(g) {
 Lt.addEventListener("statechange", function(g) {
   p.emit(rr.PAGE_STATE, { state: g.newState, oldState: g.oldState });
 });
-console.log("%crd-runtime:2.0.16", "color:#0aa100");
+console.log("%crd-runtime:2.0.19", "color:#0aa100");
 export {
   rr as EVENTS,
   ur as cmd,

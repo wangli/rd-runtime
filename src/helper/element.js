@@ -98,8 +98,8 @@ export const copyAdd = function (sid, option, gpid = null) {
             delete element.components
         }
         let newGroup = mData.newGroup(element, element.mid)
-        groupComponents.forEach((sprite, index) => {
-            let zIndex = newGroup.zIndex + index + 1
+        groupComponents.forEach(sprite => {
+            let zIndex = newGroup.zIndex
             this.copyAdd(sprite.id, { gpid: newGroup.id, zIndex }, newGroup.id)
         })
         return newGroup

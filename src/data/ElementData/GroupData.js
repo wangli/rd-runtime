@@ -165,7 +165,6 @@ export default class GroupData {
                   elements[id].gpid = group.id
                   elements[id].hover = false
                   elements[id].selected = false
-                  elements[id].zIndex = index
                   this.addElement(esSimple[id], group.id)
                }
             })
