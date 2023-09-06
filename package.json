@@ -1,6 +1,6 @@
 {
    "name": "rd-runtime",
-   "version": "2.0.19",
+   "version": "2.0.20",
    "main": "./dist/rd-runtime.mjs",
    "module": "./dist/rd-runtime.mjs",
    "scripts": {

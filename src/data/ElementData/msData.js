@@ -41,6 +41,8 @@ export const initGroupData = function (options = {}) {
       selected: false,
       hover: false,
       padding: '',
+      cstatus: false,
+      childstatus: {},
       background: {},
       border: {},
       shadow: {},

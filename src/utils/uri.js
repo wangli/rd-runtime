@@ -8,7 +8,7 @@ export const jsonToParams = function (data) {
 
 // 获取url参数值
 export const getUrlParam = function (name, decode = true) {
-    let url = location.href.slice(location.href.lastIndexOf('?'))
+    let url = location.search || location.hash
     let result = {}
     let reg = /([^?=&#]+)=([^?=&#]+)/g
     url.replace(reg, (n, x, y) => result[x] = decode ? decodeURIComponent(y) : y)
