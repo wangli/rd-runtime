@@ -24,6 +24,7 @@ export default function (myData) {
         transform: 'rotate(' + myData.angle + 'deg)',
         opacity: myData.opacity / 100,
         padding: myData.padding,
+        overflow: myData.overflow || 'visible',
         ...background,
         ...myData.border,
         ...myData.shadow,

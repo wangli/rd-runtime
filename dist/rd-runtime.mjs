@@ -3464,6 +3464,7 @@ function NE(g) {
     transform: "rotate(" + g.angle + "deg)",
     opacity: g.opacity / 100,
     padding: g.padding,
+    overflow: g.overflow || "visible",
     ...I,
     ...g.border,
     ...g.shadow,
@@ -4730,7 +4731,7 @@ const lr = pe, Dr = UB, ur = p, fr = GA, rr = m, dr = jC, yr = function(g) {
 Lt.addEventListener("statechange", function(g) {
   p.emit(rr.PAGE_STATE, { state: g.newState, oldState: g.oldState });
 });
-console.log("%crd-runtime:2.0.20", "color:#0aa100");
+console.log("%crd-runtime:2.0.21", "color:#0aa100");
 export {
   rr as EVENTS,
   ur as cmd,
