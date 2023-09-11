@@ -25,6 +25,7 @@ export default function (myData) {
         opacity: myData.opacity / 100,
         padding: myData.padding,
         overflow: myData.overflow || 'visible',
+        filter: myData.filter || '',
         ...background,
         ...myData.border,
         ...myData.shadow,
