@@ -4734,7 +4734,7 @@ const lr = pe, Dr = UB, ur = p, fr = GA, rr = m, dr = jC, yr = function(g) {
 Lt.addEventListener("statechange", function(g) {
   p.emit(rr.PAGE_STATE, { state: g.newState, oldState: g.oldState });
 });
-console.log("%crd-runtime:2.0.22", "color:#0aa100");
+console.log("%crd-runtime:2.0.23", "color:#0aa100");
 export {
   rr as EVENTS,
   ur as cmd,

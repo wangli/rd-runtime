@@ -26,6 +26,10 @@
   animation: fadeInDown 1s;
 }
 
+.anim_flash {
+  animation: vx_flash 1s linear infinite;
+}
+
 @keyframes fadeInDown {
   0% {
     opacity: 0;
@@ -69,5 +73,27 @@
 
   100% {
     transform: rotate(360deg)
+  }
+}
+
+@keyframes vx_flash {
+  0% {
+    filter: rotate(1)
+  }
+
+  40% {
+    filter: brightness(3);
+  }
+
+  50% {
+    filter: brightness(3);
+  }
+
+  90% {
+    filter: brightness(.5);
+  }
+
+  100% {
+    filter: brightness(1);
   }
 }
