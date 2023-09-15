@@ -7,7 +7,8 @@ import { lifecycleHook } from '../hooks'
 export default {
    name: 'vx-sprite',
    props: {
-      id: String
+      id: String,
+      layout: Object
    },
    setup(props, context) {
       const vnode = { value: null, child: ref(null) }
@@ -25,6 +26,13 @@ export default {
          rect.height = myData.height
          let myProps = createProps(myData, { id: props.id, myApp: { AppSetup, data, component } })
          let slot = createSprite({ name: myData.name, props: myData.id, ref: vnode.child })
+
+         if (props.layout && props.layout.type == 'grid') {
+            myProps.style.position = 'relative'
+            myProps.style.top = 'auto'
+            myProps.style.left = 'auto'
+         }
+         myProps.id = myProps.id + '_outer'
          vnode.value = h('div', myProps, slot)
          return vnode.value
       }

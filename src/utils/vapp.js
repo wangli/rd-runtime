@@ -6,6 +6,26 @@ export const getAppGlobal = function (key = 'AppSetup') {
     const { appContext: { config: { globalProperties: global = {} } } } = getCurrentInstance()
     return global[key] || null
 }
+// 获取上级尺寸
+export const getParentSize = function (_dom) {
+    if (_dom && _dom != document.body && _dom.parentNode) {
+        if (_dom.parentNode.clientWidth > 0 && _dom.parentNode.clientHeight > 0) {
+            return {
+                width: _dom.parentNode.clientWidth,
+                height: _dom.parentNode.clientHeight,
+                ratio: _dom.parentNode.clientHeight / _dom.parentNode.clientWidth
+            }
+        } else {
+            return getParentSize(_dom.parentNode)
+        }
+    } else {
+        return {
+            width: window.outerWidth,
+            height: window.outerHeight,
+            ratio: window.outerHeight / window.outerWidth
+        }
+    }
+}
 
 // 距离计算
 export const getDomRect = function (_dom) {

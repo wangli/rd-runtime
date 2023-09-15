@@ -1,13 +1,5 @@
-@keyframes vx_enter {
-  0% {
-    opacity: 0;
-    transform: translateY(-20%);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+* {
+  box-sizing: border-box;
 }
 
 .anim_rotate_left {
@@ -28,6 +20,18 @@
 
 .anim_flash {
   animation: vx_flash 1s linear infinite;
+}
+
+@keyframes vx_enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInDown {

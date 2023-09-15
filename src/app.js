@@ -2,6 +2,7 @@ import * as vue from 'vue'
 import EventEmitter from 'eventemitter3'
 import { createApp } from 'vue'
 import { nanoid } from 'nanoid'
+import { getParentSize } from '@/utils'
 import Data from './data'
 import Stage from './display/stage'
 import Display from './display'
@@ -103,6 +104,11 @@ export default class App extends EventEmitter {
                     return false
                 }
                 domlist.push(this.dom)
+                if (this.dom.parentNode && this.data.info.parentSize) {
+                    let { ratio } = getParentSize(this.dom)
+                    this.AppSetup.height = this.AppSetup.width * ratio
+                    this.data.info.height = this.data.info.width * ratio
+                }
                 this.vapp.mount(this.dom)
                 this.AppSetup.status = "display"
                 console.log('%c灿display', 'color:#0aa100')

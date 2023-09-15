@@ -17,10 +17,10 @@ export default {
    setup(props) {
       return () => {
          const modules = props.modules
-         const content = [];
+         const content = []
          for (const key in modules) {
             if (modules.hasOwnProperty.call(modules, key)) {
-               const item = modules[key];
+               const item = modules[key]
                if (typeof item.visible == 'undefined' || item.visible == true) {
                   content.push(createSprite({ name: 'vx-module', props: item }))
                }

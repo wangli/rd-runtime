@@ -14,6 +14,7 @@ export const initModuleData = function (option = {}) {
       title: '页面' + moduleCunt++,
       x: 0,
       y: 0,
+      layout: null,
       components: []
    }
    Object.assign(data, option)

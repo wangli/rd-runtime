@@ -1,12 +1,16 @@
 import { h, toRefs } from 'vue'
+import { getAppGlobal } from '@/utils'
 import baseComponent from '@/component/baseComponent'
 import SpriteGroup from './SpriteGroup'
 import SpriteObject from './SpriteObject'
 export default {
    extends: baseComponent,
    name: 'vx-module',
-   props: ['components'],
+   props: ['components', 'layout'],
    setup(props) {
+      const AppSetup = getAppGlobal('AppSetup')
+      const data = getAppGlobal('data')
+      const appData = data.getAppData()
       const { components } = toRefs(props)
       return (context) => {
          // 组件内容
@@ -15,17 +19,42 @@ export default {
          if (components.value) {
             components.value.forEach((item, i) => {
                if (item.visible) {
-                  if (item.type == 'group') {
-                     containerList.push(h(SpriteGroup, { id: item.id }))
+                  if (AppSetup.develop && props.layout && props.layout.type == 'grid') {
+                     let sVNode = null
+                     if (item.type == 'group') {
+                        sVNode = h(SpriteGroup, { id: item.id, layout: props.layout })
+                     } else {
+                        sVNode = h(SpriteObject, { id: item.id, layout: props.layout })
+                     }
+                     containerList.push(h('div', { className: 'rd_page_grid_wrapper' }, sVNode))
                   } else {
-                     containerList.push(h(SpriteObject, { id: item.id }))
+                     if (item.type == 'group') {
+                        containerList.push(h(SpriteGroup, { id: item.id, layout: props.layout }))
+                     } else {
+                        containerList.push(h(SpriteObject, { id: item.id, layout: props.layout }))
+                     }
                   }
                }
             })
          }
+         let style = context.style
+         if (props.layout && props.layout.type == 'grid') {
+            let width = context.style.width == 'auto' ? appData.info.width + 'px' : context.style.width
+            let height = context.style.height == 'auto' ? appData.info.height + 'px' : context.style.height
+            style = Object.assign({}, context.style, {
+               position: 'fixed',
+               display: 'grid',
+               overflow: props.layout.rows ? 'auto' : 'hidden auto',
+               gridTemplateColumns: props.layout.colums || 'none',
+               gridTemplateRows: props.layout.rows || 'none',
+               gridTemplateAreas: props.layout.areas || 'none',
+               width,
+               height
+            })
+         }
          return h('div', {
             id: context.id,
-            style: context.style,
+            style,
          }, containerList)
       }
    }

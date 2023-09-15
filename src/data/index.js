@@ -2,7 +2,7 @@
  * app基础布局与组件渲染数据
  */
 import { reactive } from 'vue'
-import { jsonData, getScale } from '@/utils'
+import { jsonData, getScale, getParentSize } from '@/utils'
 import { defineAppSetup, defineAppInfo } from './defineData'
 import { EVENTS } from '@/events'
 import cmd from '@/command'
@@ -100,7 +100,7 @@ class AppData {
    initData() {
       if (this.iData) {
          // 应用基本信息
-         Object.assign(this.info, this.iData.info)
+         this.initAppInfo(this.iData.info)
          // 模块数据
          this.mData.fillData(this.iData.modules)
          // 动作数据
@@ -119,6 +119,13 @@ class AppData {
          this.rData.requestData(true)
       }
       return this
+   }
+   initAppInfo(info) {
+      Object.assign(this.info, info)
+      if (this.AppSetup.dom.parentNode && this.info.parentSize) {
+         let { ratio } = getParentSize(this.dom)
+         this.info.height = this.info.width * ratio
+      }
    }
    requestRemote() {
       // 请求远端数据

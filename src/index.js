@@ -23,8 +23,18 @@ export const remote = Remote
 
 // 创建应用
 export const createVapp = function (options) {
-   const { dom, scale = true, interaction = true, clickCursor = 'pointer', display, plugins, slots, data } = options
-   const config = { interaction, clickCursor, scale, dom }
+   const {
+      dom,
+      scale = true,
+      interaction = true,
+      develop = false,
+      clickCursor = 'pointer',
+      display,
+      plugins,
+      slots,
+      data
+   } = options
+   const config = { interaction, clickCursor, scale, dom, develop }
    const app = new App({ config: Object.assign({ dom }, config) })
    if (Array.isArray(plugins)) {
       plugins.forEach(item => {

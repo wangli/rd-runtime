@@ -6,7 +6,8 @@ import { getAppGlobal } from '@/utils'
 export default {
    name: 'vx-sprite-group',
    props: {
-      id: String
+      id: String,
+      layout: Object
    },
    setup(props) {
       const AppSetup = getAppGlobal('AppSetup')
@@ -22,6 +23,11 @@ export default {
             if (uData && isReactive(uData)) {
                uData = uData.data
             }
+         }
+         if (props.layout && props.layout.type == 'grid') {
+            myProps.style.position = 'relative'
+            myProps.style.top = 'auto'
+            myProps.style.left = 'auto'
          }
          // 组件内容
          const containerList = []
@@ -39,6 +45,7 @@ export default {
                }
             })
          }
+         myProps.id = myProps.id + '_outer'
          return h('div', myProps, containerList)
       }
    }

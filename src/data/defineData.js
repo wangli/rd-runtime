@@ -20,6 +20,8 @@ export const defineAppSetup = function (option) {
         scale: false,
         // 当前应用状态，none未创建，create已创建，display已展示，destroy销毁
         status: 'none',
+        // 是否在编辑状态
+        develop: false,
         // 所在容器
         dom: null
     }, option))
@@ -36,6 +38,7 @@ export const defineAppInfo = function () {
         description: '',
         width: 800,
         height: 600,
+        parentSize: false,
         background: {
             backgroundColor: "#222222"
         },
