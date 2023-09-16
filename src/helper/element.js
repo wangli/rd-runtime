@@ -1,5 +1,29 @@
 import { jsonData } from '@/utils'
 
+
+
+/**
+ * 调整元素所在顺序
+ * @param {*} spid 
+ * @param {*} newIndex 
+ * @returns 
+ */
+export const setIndex = function (spid, newIndex) {
+    // 获取元素的数据对象
+    const sprite = this.appData.getElement(spid)
+    const parentId = sprite ? sprite.gpid || sprite.mid : null
+    const parent = parentId ? this.appData.getElement(parentId) : null
+    if (parent && Array.isArray(parent.components) && typeof newIndex != 'undefined') {
+        let index = parent.components.findIndex(item => item.id == spid)
+        console.log(index, newIndex)
+        if (index > -1 && parent.components[newIndex]) {
+            let a = parent.components.splice(index, 1)
+            parent.components.splice(newIndex, 0, a[0])
+            return true
+        }
+    }
+    return false
+}
 /**
  * 调整元素层级
  * @param {string}} spid 

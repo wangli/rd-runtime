@@ -19,6 +19,9 @@ class Helper {
    extractData() {
       return extractData.call(this, ...arguments)
    }
+   setIndex() {
+      return element.setIndex.call(this, ...arguments)
+   }
    setZindex() {
       return element.setZindex.call(this, ...arguments)
    }

@@ -2045,7 +2045,7 @@ class gE {
     } else if (typeof A == "string" && this.modules[A])
       return console.warn("模块" + A + "已存在"), null;
     let I = pg(A);
-    return Array.isArray(I.components) || (I.components = []), this.modules[I.id] = I, this.mData.elements[I.id] = I, I;
+    return Array.isArray(I.components) || (I.components = []), this.modules[I.id] = I, this.mData.elements[I.id] = this.modules[I.id], I;
   }
   // 添加元素（元素、组合的基本属性）
   addElement(A, I = "default") {
@@ -3045,8 +3045,7 @@ class fE {
   }
   // 返回元素
   getElement(A) {
-    if (this.mData)
-      return this.mData.getElement(A);
+    return this.mData.getElement(A);
   }
   // 模块列表
   getModuleList() {
@@ -4341,7 +4340,17 @@ function Xo(g) {
   }
   return A;
 }
-const Zo = function(g, A = "up") {
+const Zo = function(g, A) {
+  const I = this.appData.getElement(g), t = I ? I.gpid || I.mid : null, e = t ? this.appData.getElement(t) : null;
+  if (e && Array.isArray(e.components) && typeof A < "u") {
+    let B = e.components.findIndex((Q) => Q.id == g);
+    if (console.log(B, A), B > -1 && e.components[A]) {
+      let Q = e.components.splice(B, 1);
+      return e.components.splice(A, 0, Q[0]), !0;
+    }
+  }
+  return !1;
+}, Po = function(g, A = "up") {
   const { mData: I } = this.appData, t = I.elements, e = I.getElement(g);
   if (e) {
     if (!e.mid) {
@@ -4383,7 +4392,7 @@ const Zo = function(g, A = "up") {
         t[B[C].id].zIndex++;
     }
   }
-}, Po = function(g, A, I = null) {
+}, Vo = function(g, A, I = null) {
   const { mData: t } = this.appData, e = t.getSprites(), B = t.getGroups();
   if (e[g]) {
     let Q = b(e[g]);
@@ -4399,7 +4408,7 @@ const Zo = function(g, A = "up") {
       this.copyAdd(n.id, { gpid: E.id, zIndex: s }, E.id);
     }), E;
   }
-}, Vo = function(g, A) {
+}, Wo = function(g, A) {
   const { mData: I } = this.appData, t = I.getSprites(), e = I.getGroups();
   if (t[g]) {
     let B = b(t[g]);
@@ -4408,7 +4417,7 @@ const Zo = function(g, A = "up") {
     let B = b(e[g]);
     return B.title += "_c", A && (delete B.id, delete B.gpid, delete B.mid, delete B.zIndex), Array.isArray(B.components) && (B.components = B.components.map((Q) => this.copy(Q.id, A))), B;
   }
-}, Wo = function(g, A) {
+}, $o = function(g, A) {
   const { mData: I } = this.appData;
   I.getModuleList().forEach((t) => {
     if (A) {
@@ -4420,21 +4429,21 @@ const Zo = function(g, A = "up") {
     }
     t.type != "fixed" && (t.id == g ? t.visible = !0 : t.visible = !1);
   });
-}, $o = function(g, A) {
+}, Ar = function(g, A) {
   const { component: I } = this.app;
   let t = GA.events.find((e) => e.event == g) || I.getMyEvents(A).find((e) => e.event == g);
   return t ? b(t) : !1;
-}, Ar = function(g, A, I = !1) {
+}, gr = function(g, A, I = !1) {
   let t = this.appData.getElement(g);
   return A ? I ? t.events ? t.events.findIndex((e) => e.event == A) : -1 : t.events ? t.events.find((e) => e.event == A) : null : t.events || null;
-}, gr = function(g, A, I) {
+}, Ir = function(g, A, I) {
   const t = this.appData;
   let e = this.getEvent(g, A);
   if (e)
     return e;
   let B = t.getElement(g), Q = this.newEventData(A, B.name);
   return B && Q ? (B.events || (B.events = []), I && (Q.pams = I), B.events.push(Q), B.events[B.events.length - 1]) : (console.warn(B ? A + "事件名称不对" : "缺少组件数据"), null);
-}, Ir = function(g, A, I) {
+}, tr = function(g, A, I) {
   const t = this.appData;
   let e = this.getEvent(g, A, !0);
   if (e > -1) {
@@ -4442,7 +4451,7 @@ const Zo = function(g, A = "up") {
     return B.events[e].pams = I, B.events[e];
   }
   return null;
-}, tr = function(g, A) {
+}, er = function(g, A) {
   const I = this.appData;
   let t = this.getEvent(g, A, !0);
   if (t > -1) {
@@ -4450,7 +4459,7 @@ const Zo = function(g, A = "up") {
     return e.events.splice(t, 1), e.events;
   }
   return null;
-}, er = function(g, A, I = "") {
+}, Br = function(g, A, I = "") {
   if (A == "app")
     this.appData.eData.addGAction(g, I);
   else if (I && typeof A == "string") {
@@ -4458,14 +4467,14 @@ const Zo = function(g, A = "up") {
     return t ? t.actions.findIndex((e) => e == g) < 0 && t.actions.push(g) : console.warn(A + "中" + I + "事件不存在"), t;
   } else if (typeof A == "object" && A.actions && A.actions instanceof Array)
     return A.actions.push(g), A;
-}, Br = function(g, A, I, t) {
+}, Qr = function(g, A, I, t) {
   if (A == "app")
     this.appData.eData.editGAction(g, I, t);
   else if (I && typeof A == "string") {
     let e = this.getEvent(A, I);
     return e ? typeof t < "u" && (e.actionValue || (e.actionValue = {}), e.actionValue[g] = t) : console.warn(A + "中" + I + "事件不存在"), e;
   }
-}, Qr = function(g, A, I = "", t = !1) {
+}, ir = function(g, A, I = "", t = !1) {
   const e = this.appData;
   if (A == "app")
     this.appData.eData.delGAction(I, g);
@@ -4474,7 +4483,7 @@ const Zo = function(g, A = "up") {
     return B && X(B.actions, "", g), t && e.aData.delActionData(g), B;
   } else if (typeof A == "object" && A.actions && A.actions instanceof Array)
     return X(A.actions, "", g), t && e.aData.delActionData(g), A;
-}, ir = function(g, A) {
+}, Cr = function(g, A) {
   const I = this.appData;
   let t = [];
   if (g) {
@@ -4504,7 +4513,7 @@ const Zo = function(g, A = "up") {
     })) : []).flat() : []).flat();
   return t;
 };
-function Cr(g, A) {
+function Er(g, A) {
   let I = A ? JSON.stringify(A) : "{}";
   if (I) {
     const t = I.match(/\$\{(.+?)\}/g);
@@ -4526,7 +4535,7 @@ function Cr(g, A) {
   }
   return JSON.parse(I);
 }
-class Er {
+class nr {
   app = null;
   appData = null;
   constructor(A) {
@@ -4538,55 +4547,58 @@ class Er {
   extractData() {
     return Kg.call(this, ...arguments);
   }
-  setZindex() {
+  setIndex() {
     return Zo.call(this, ...arguments);
   }
-  copy() {
-    return Vo.call(this, ...arguments);
-  }
-  copyAdd() {
+  setZindex() {
     return Po.call(this, ...arguments);
   }
-  changeModuleShow() {
+  copy() {
     return Wo.call(this, ...arguments);
   }
-  newEventData() {
+  copyAdd() {
+    return Vo.call(this, ...arguments);
+  }
+  changeModuleShow() {
     return $o.call(this, ...arguments);
   }
-  getEvent() {
+  newEventData() {
     return Ar.call(this, ...arguments);
   }
-  addEvent() {
+  getEvent() {
     return gr.call(this, ...arguments);
   }
-  editEvent() {
+  addEvent() {
     return Ir.call(this, ...arguments);
   }
-  removeEvent() {
+  editEvent() {
     return tr.call(this, ...arguments);
   }
-  addEventAction() {
+  removeEvent() {
     return er.call(this, ...arguments);
   }
-  editEventAction() {
+  addEventAction() {
     return Br.call(this, ...arguments);
   }
-  removeEventAction() {
+  editEventAction() {
     return Qr.call(this, ...arguments);
   }
-  getSpriteActions() {
+  removeEventAction() {
     return ir.call(this, ...arguments);
+  }
+  getSpriteActions() {
+    return Cr.call(this, ...arguments);
   }
   getBodyData() {
     return mg.call(this, ...arguments);
   }
   handleOptions() {
-    return Cr.call(this, this.appData, ...arguments);
+    return Er.call(this, this.appData, ...arguments);
   }
 }
 var Hg = function() {
 }, Eg = {}, $g = {}, ng = {};
-function nr(g, A) {
+function sr(g, A) {
   g = g.push ? g : [g];
   var I = [], t = g.length, e = t, B, Q, C, E;
   for (B = function(n, s) {
@@ -4638,7 +4650,7 @@ function ct(g, A, I, t) {
     A(g, l, d.defaultPrevented);
   }, C(g, o) !== !1 && e.head.appendChild(o);
 }
-function sr(g, A, I) {
+function ar(g, A, I) {
   g = g.push ? g : [g];
   var t = g.length, e = t, B = [], Q, C;
   for (Q = function(E, n, s) {
@@ -4659,7 +4671,7 @@ function wA(g, A, I) {
     Eg[t] = !0;
   }
   function B(Q, C) {
-    sr(g, function(E) {
+    ar(g, function(E) {
       bg(e, E), Q && bg({ success: Q, error: C }, E), rt(t, E);
     }, e);
   }
@@ -4668,7 +4680,7 @@ function wA(g, A, I) {
   B();
 }
 wA.ready = function(A, I) {
-  return nr(A, function(t) {
+  return sr(A, function(t) {
     bg(I, t);
   }), wA;
 };
@@ -4683,7 +4695,7 @@ wA.isDefined = function(A) {
 };
 const xg = function(g) {
   g instanceof Function ? g(this) : g && typeof g == "object" && g.install && g.install instanceof Function && g.install(this);
-}, ar = function({ url: g, name: A }) {
+}, or = function({ url: g, name: A }) {
   return new Promise((I, t) => {
     wA([g], {
       success: () => {
@@ -4694,12 +4706,12 @@ const xg = function(g) {
       error: (e) => t(e)
     });
   });
-}, or = function(g) {
+}, rr = function(g) {
   return new Promise((A, I) => {
     if (Array.isArray(g)) {
       let t = [];
       g.forEach((e) => {
-        t.push(ar.call(this, e));
+        t.push(or.call(this, e));
       }), Promise.all(t).then(A, I);
     } else
       A();
@@ -4707,13 +4719,13 @@ const xg = function(g) {
 };
 window && typeof window.Vue > "u" && (window.Vue = ht);
 const Ag = [];
-class rr extends fA {
+class cr extends fA {
   constructor(A = {}) {
-    super(), this.id = A.id || z(10), this.vapp = null, this.dom = null, this.component = new zo(this), this.data = new fE(this, A.config), this.controller = Xo(this), this.AppSetup = this.data.AppSetup, this.helper = new Er(this);
+    super(), this.id = A.id || z(10), this.vapp = null, this.dom = null, this.component = new zo(this), this.data = new fE(this, A.config), this.controller = Xo(this), this.AppSetup = this.data.AppSetup, this.helper = new nr(this);
   }
   async initData(A) {
     let I = await jg(A);
-    return this.id = I.id, I && Array.isArray(I.plugins) && await or.call(this, I.plugins), this.data.init(I), {
+    return this.id = I.id, I && Array.isArray(I.plugins) && await rr.call(this, I.plugins), this.data.init(I), {
       id: this.data.info.id,
       info: this.data.info,
       mData: this.data.mData,
@@ -4778,7 +4790,7 @@ class rr extends fA {
     return this.vapp;
   }
 }
-const Dr = Ge, ur = LB, fr = p, dr = GA, cr = Y, yr = _C, wr = function(g) {
+const ur = Ge, fr = LB, dr = p, yr = GA, hr = Y, wr = _C, pr = function(g) {
   const {
     dom: A,
     scale: I = !0,
@@ -4789,7 +4801,7 @@ const Dr = Ge, ur = LB, fr = p, dr = GA, cr = Y, yr = _C, wr = function(g) {
     plugins: C,
     slots: E,
     data: n
-  } = g, s = { interaction: t, clickCursor: B, scale: I, dom: A, develop: e }, a = new rr({ config: Object.assign({ dom: A }, s) });
+  } = g, s = { interaction: t, clickCursor: B, scale: I, dom: A, develop: e }, a = new cr({ config: Object.assign({ dom: A }, s) });
   return Array.isArray(C) ? C.forEach((o) => {
     a.use(o);
   }) : C && a.use(C), a.create({ slots: E }), n && a.initData(n).then((o) => {
@@ -4797,16 +4809,16 @@ const Dr = Ge, ur = LB, fr = p, dr = GA, cr = Y, yr = _C, wr = function(g) {
   }), a;
 };
 Ht.addEventListener("statechange", function(g) {
-  p.emit(cr.PAGE_STATE, { state: g.newState, oldState: g.oldState });
+  p.emit(hr.PAGE_STATE, { state: g.newState, oldState: g.oldState });
 });
-console.log("%crd-runtime:2.0.25", "color:#0aa100");
+console.log("%crd-runtime:2.1.0", "color:#0aa100");
 export {
-  cr as EVENTS,
-  fr as cmd,
-  wr as createVapp,
-  dr as dataOptions,
-  yr as remote,
-  ur as secrecy,
-  Dr as utils
+  hr as EVENTS,
+  dr as cmd,
+  pr as createVapp,
+  yr as dataOptions,
+  wr as remote,
+  fr as secrecy,
+  ur as utils
 };
 //# sourceMappingURL=rd-runtime.mjs.map

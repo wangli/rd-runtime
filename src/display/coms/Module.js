@@ -1,4 +1,4 @@
-import { h, toRefs } from 'vue'
+import { h, toRefs, watch } from 'vue'
 import { getAppGlobal } from '@/utils'
 import baseComponent from '@/component/baseComponent'
 import SpriteGroup from './SpriteGroup'

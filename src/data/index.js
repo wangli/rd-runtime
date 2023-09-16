@@ -133,9 +133,7 @@ class AppData {
    }
    // 返回元素
    getElement(id) {
-      if (this.mData) {
-         return this.mData.getElement(id)
-      }
+      return this.mData.getElement(id)
    }
    // 模块列表
    getModuleList() {

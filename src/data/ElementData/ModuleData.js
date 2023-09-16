@@ -26,7 +26,7 @@ export default class ModuleData {
       if (!Array.isArray(newData.components)) newData.components = []
       this.modules[newData.id] = newData
       // 加入元素库
-      this.mData.elements[newData.id] = newData
+      this.mData.elements[newData.id] = this.modules[newData.id]
       return newData
    }
    // 添加元素（元素、组合的基本属性）
