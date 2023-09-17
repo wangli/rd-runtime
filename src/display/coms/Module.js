@@ -10,6 +10,7 @@ export default {
    setup(props) {
       const AppSetup = getAppGlobal('AppSetup')
       const data = getAppGlobal('data')
+      const appInfo = getAppGlobal('appInfo')
       const appData = data.getAppData()
       const { components } = toRefs(props)
       return (context) => {
@@ -39,8 +40,8 @@ export default {
          }
          let style = context.style
          if (props.layout && props.layout.type == 'grid') {
-            let width = context.style.width == 'auto' ? appData.info.width + 'px' : context.style.width
-            let height = context.style.height == 'auto' ? appData.info.height + 'px' : context.style.height
+            let width = context.style.width == 'auto' ? appInfo.value.width + 'px' : context.style.width
+            let height = context.style.height == 'auto' ? appInfo.value.height + 'px' : context.style.height
             style = Object.assign({}, context.style, {
                position: 'fixed',
                display: 'grid',
@@ -51,6 +52,10 @@ export default {
                width,
                height
             })
+            if (style.gridTemplateRows == 'none') {
+               style.maxHeight = style.height
+               delete style.height
+            }
          }
          return h('div', {
             id: context.id,

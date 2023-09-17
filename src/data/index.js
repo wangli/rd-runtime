@@ -2,7 +2,7 @@
  * app基础布局与组件渲染数据
  */
 import { reactive } from 'vue'
-import { jsonData, getScale, getParentSize } from '@/utils'
+import { jsonData, getScale } from '@/utils'
 import { defineAppSetup, defineAppInfo } from './defineData'
 import { EVENTS } from '@/events'
 import cmd from '@/command'
@@ -14,6 +14,7 @@ import EventData from './EventData'
 import RemoteData from './RemoteData'
 import PluginData from './PluginData'
 import * as ABind from './aBind'
+
 
 class AppData {
    // 应用配置
@@ -75,11 +76,10 @@ class AppData {
       this.resetScale()
       // 窗口变化数据处理
       window.addEventListener('resize', () => this.resetScale())
-
    }
    // 缩放比例更新
    resetScale() {
-      let size = { width: this.info.width, height: this.info.height }
+      let size = { width: this.app.appInfo.value.width, height: this.app.appInfo.value.height }
       Object.assign(this.scale, getScale(this.AppSetup.dom, size))
    }
    // 拆分数据
@@ -122,10 +122,6 @@ class AppData {
    }
    initAppInfo(info) {
       Object.assign(this.info, info)
-      if (this.AppSetup.dom.parentNode && this.info.parentSize) {
-         let { ratio } = getParentSize(this.dom)
-         this.info.height = this.info.width * ratio
-      }
    }
    requestRemote() {
       // 请求远端数据

@@ -15,7 +15,6 @@ export const setIndex = function (spid, newIndex) {
     const parent = parentId ? this.appData.getElement(parentId) : null
     if (parent && Array.isArray(parent.components) && typeof newIndex != 'undefined') {
         let index = parent.components.findIndex(item => item.id == spid)
-        console.log(index, newIndex)
         if (index > -1 && parent.components[newIndex]) {
             let a = parent.components.splice(index, 1)
             parent.components.splice(newIndex, 0, a[0])

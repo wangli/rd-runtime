@@ -1,6 +1,6 @@
 import * as vue from 'vue'
 import EventEmitter from 'eventemitter3'
-import { createApp } from 'vue'
+import { createApp, computed } from 'vue'
 import { nanoid } from 'nanoid'
 import { getParentSize } from '@/utils'
 import Data from './data'
@@ -31,6 +31,15 @@ export default class App extends EventEmitter {
         this.controller = controller(this)
         this.AppSetup = this.data.AppSetup
         this.helper = new Helper(this)
+        // 设置应用计算属性
+        this.appInfo = computed(() => {
+            if (this.AppSetup.status == "display" && this.dom && this.dom.parentNode && this.data.info.parentSize) {
+                let { ratio } = getParentSize(this.dom)
+                return Object.assign({}, this.data.info, { height: this.data.info.width * ratio })
+            } else {
+                return this.data.info
+            }
+        })
     }
     async initData(value) {
         let res = await secrecy.decrypt(value)
@@ -78,6 +87,7 @@ export default class App extends EventEmitter {
             this.vapp.config.globalProperties.data = this.data
             this.vapp.config.globalProperties.component = this.component
             this.vapp.config.globalProperties.helper = this.helper
+            this.vapp.config.globalProperties.appInfo = this.appInfo
             // 安装内部默认组件
             this.vapp.use(Display)
             // 注册组件到应用
@@ -104,13 +114,9 @@ export default class App extends EventEmitter {
                     return false
                 }
                 domlist.push(this.dom)
-                if (this.dom.parentNode && this.data.info.parentSize) {
-                    let { ratio } = getParentSize(this.dom)
-                    this.AppSetup.height = this.AppSetup.width * ratio
-                    this.data.info.height = this.data.info.width * ratio
-                }
                 this.vapp.mount(this.dom)
                 this.AppSetup.status = "display"
+                this.data.resetScale()
                 console.log('%c灿display', 'color:#0aa100')
                 return true
             } else {

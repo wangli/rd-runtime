@@ -41,6 +41,7 @@ export default {
    },
    setup(props) {
       const data = getAppGlobal('data')
+      const appInfo = getAppGlobal('appInfo')
       const modules = data.mData.modules.getModules()
       const appData = data.getAppData()
       const slots = isVNode(props.slots) ? [props.slots] : []
@@ -96,7 +97,7 @@ export default {
          containerList.push(createSprite({ name: 'vx-popwin', props: props.popwin }))
          // 消息提醒弹层
          containerList.push(createSprite({ name: 'vx-message' }))
-         let background = jsonData(appData.info.background)
+         let background = jsonData(appInfo.value.background)
          if (background && background.backgroundColor) {
             if (/\blinear-gradient\(([^()]*|\([^()]*\))*\)/.test(background.backgroundColor)) {
                let backgroundColor = background.backgroundColor
@@ -111,8 +112,8 @@ export default {
 
          let style = {
             position: 'absolute',
-            width: appData.info.width ? appData.info.width + "px" : "100%",
-            height: appData.info.height ? appData.info.height + "px" : "100%",
+            width: appInfo.value.width ? appInfo.value.width + "px" : "100%",
+            height: appInfo.value.height ? appInfo.value.height + "px" : "100%",
             top: 0,
             left: 0,
             transformOrigin: "0 0",

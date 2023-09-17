@@ -8,7 +8,7 @@ export const getTransform = function () {
     return computed(() => {
         if (this.AppSetup.scale) {
             if (this.info.scaleMode == 'auto') {
-                let size = { width: this.info.width, height: this.info.height }
+                let size = { width: this.app.appInfo.value.width, height: this.app.appInfo.value.height }
                 if (this.scale.w > this.scale.h) {
                     let mvx = size.width * (this.scale.w - this.scale.h) / 2 / this.scale.value;
                     return "scale(" + this.scale.value + ")  translateX(" + mvx + "px)"

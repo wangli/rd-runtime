@@ -1,15 +1,11 @@
-import { ref, reactive, shallowReactive } from 'vue'
+import { ref, reactive, isReactive, shallowReactive, computed } from 'vue'
 import { nanoid } from 'nanoid'
+
+
 
 // 应用设置
 export const defineAppSetup = function (option) {
     return shallowReactive(Object.assign({
-        // 宽度
-        width: 800,
-        // 高度
-        height: 600,
-        // 背景色
-        backgroundColor: "#222222",
         // 缩放模式
         scaleMode: 'auto',
         // 开启交互动作
@@ -49,6 +45,14 @@ export const defineAppInfo = function () {
     })
 }
 
+export const computedAppInfo = function (appinfo) {
+    if (isReactive(appinfo)) {
+        return computed(() => {
+            return appinfo
+        })
+    }
+    return null
+}
 
 // 应用信息
 export const defineAction = function (option) {
