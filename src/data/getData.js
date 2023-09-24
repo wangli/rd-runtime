@@ -1,4 +1,3 @@
-import * as remote from '@/remote'
 import { jsonData } from '@/utils'
 
 

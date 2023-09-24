@@ -10,7 +10,7 @@ import Component from './component'
 import Command from './command'
 import controller from './controller'
 import Helper from './helper'
-import * as Plugin from './plugin'
+import Plugin from './plugin'
 import * as secrecy from './secrecy'
 
 if (window && typeof window.Vue == 'undefined') {
@@ -31,6 +31,7 @@ export default class App extends EventEmitter {
         this.controller = controller(this)
         this.AppSetup = this.data.AppSetup
         this.helper = new Helper(this)
+        this.plugin = new Plugin(this)
         // 设置应用计算属性
         this.appInfo = computed(() => {
             if (this.AppSetup.status == "display" && this.dom && this.dom.parentNode && this.data.info.parentSize) {
@@ -45,7 +46,7 @@ export default class App extends EventEmitter {
         let res = await secrecy.decrypt(value)
         this.id = res.id
         if (res && Array.isArray(res.plugins)) {
-            await Plugin.useAsyncLoad.call(this, res.plugins)
+            await this.plugin.useAsyncLoad(res.plugins)
         }
         this.data.init(res)
         // if (display && this.AppSetup.status != "display") {
@@ -76,7 +77,7 @@ export default class App extends EventEmitter {
     }
     // 使用插件
     use(value) {
-        Plugin.use.call(this, value)
+        this.plugin.use(value)
     }
     // 创建
     create(props = {}) {
@@ -105,8 +106,8 @@ export default class App extends EventEmitter {
         if (this.vapp) {
             if (this.AppSetup.dom instanceof HTMLElement) {
                 this.dom = this.AppSetup.dom
-            } else if (typeof dom == 'string') {
-                this.dom = document.querySelector(dom)
+            } else if (typeof this.AppSetup.dom == 'string') {
+                this.dom = document.querySelector(this.AppSetup.dom)
             }
             if (this.dom) {
                 if (domlist.includes(this.dom)) {

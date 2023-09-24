@@ -99,3 +99,25 @@ export const defineGEvent = function (option) {
         actionValue: {}
     }, option)
 }
+// 资源数据信息
+export const defineAssets = function (option) {
+    const { id, url = "", type = 'other', uptime } = option
+    return reactive({
+        id: id || "AS_" + nanoid(10),
+        url,
+        type,
+        uptime: uptime || new Date().getTime()
+    })
+}
+
+// 脚本函数信息
+export const defineFunction = function (option) {
+    const { id, name, description = '', value = '', uptime } = option
+    return reactive({
+        id: id || "FU_" + nanoid(10),
+        name,
+        description,
+        value,
+        uptime: uptime || new Date().getTime()
+    })
+}

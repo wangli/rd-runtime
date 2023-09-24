@@ -3,7 +3,7 @@ import { jsonData } from '@/utils'
 
 
 /**
- * 调整元素所在顺序
+ * 调整元素所在顺序(数组内位置)
  * @param {*} spid 
  * @param {*} newIndex 
  * @returns 
@@ -121,8 +121,8 @@ export const copyAdd = function (sid, option, gpid = null) {
             delete element.components
         }
         let newGroup = mData.newGroup(element, element.mid)
-        groupComponents.forEach(sprite => {
-            let zIndex = newGroup.zIndex
+        groupComponents.forEach((sprite, index) => {
+            let zIndex = newGroup.zIndex + 1 + index
             this.copyAdd(sprite.id, { gpid: newGroup.id, zIndex }, newGroup.id)
         })
         return newGroup
