@@ -5,16 +5,21 @@ import { jsonToParams } from './uri'
 
 
 export default function (_obj, _network = {}) {
+    let headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+    }
+    if (_network.headers) {
+        Object.assign(headers, _network.headers)
+        delete _network.headers
+    }
     let network = Object.assign({
         host: '',
         token: 'token',
         responseType: 'json',
         method: 'get',
         mode: 'cors',
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json'
-        }
+        headers
     }, _network)
 
     // 地址

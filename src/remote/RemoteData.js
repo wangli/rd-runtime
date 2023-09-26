@@ -4,7 +4,6 @@ import requestData from './requestData'
 import { reactive, ref, watch } from "vue"
 import { jsonData, interval, extractData } from '@/utils'
 import { nanoid } from 'nanoid'
-import { getBodyData } from '@/helper/other'
 
 /**
  * @param {string} url 接口地址
@@ -35,7 +34,7 @@ export default class extends EventEmitter {
       this.err = null
       // 提取规则
       this.extractRule = extractRule ? reactive(extractRule) : reactive({})
-      let req = requestData({ url, body: getBodyData.call(this, body), method }, this.AppInfo.network)
+      let req = requestData({ url, body, method }, this)
       req.on('request', () => {
          this.loading.value = true
          this.isloading = true
@@ -87,7 +86,7 @@ export default class extends EventEmitter {
       }
       if (info.body) {
          this.body = info.body
-         this.req.options.body = getBodyData.call(this.appData, info.body)
+         this.req.options.body = info.body
       }
       if (isFinite(info.itval)) {
          this.itval = info.itval
@@ -110,8 +109,8 @@ export default class extends EventEmitter {
       return jsonData(this.extractRule)
    }
    //    请求数据
-   request(callback) {
-      this.req.request(callback)
+   request(callback, body) {
+      this.req.request(callback, body)
       this.setinterval(this.itval)
    }
    // 开启轮询请求

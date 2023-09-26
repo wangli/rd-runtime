@@ -2,13 +2,16 @@ import EventEmitter from 'eventemitter3'
 import request from "@/utils/request"
 import { nanoid } from 'nanoid'
 import { removeArray } from "@/utils"
+import { getBodyData } from '@/helper/other'
 
 const reqs = {}
 const ids = []
 
 class RequestData extends EventEmitter {
-   constructor(options) {
+   constructor(options, remote) {
       super()
+      this.remote = remote
+      this.network = remote.AppInfo.network
       this.id = "R_" + nanoid(10)
       this.controller = new AbortController()
       this.signal = this.controller.signal
@@ -19,18 +22,30 @@ class RequestData extends EventEmitter {
       this.err = null
       // this.request()
    }
+   // 更新配置
+   setOptions(options) {
+      Object.assign(this.options, options)
+   }
    //    请求数据
-   request(callback) {
+   request(callback, body = {}) {
       if (this.status == 'request') return;
       this.isloading = true
       this.status = 'request'
       this.emit("request", this)
+      let data = Object.assign({}, getBodyData.call(this.remote, body) || {}, body)
+      let network = this.network
+      if (network.headers) {
+         let kyes = Object.keys(network.headers)
+         kyes.forEach(key => {
+            network.headers[key] = this.remote.appData.getDataSource(network.headers[key])
+         })
+      }
       request({
-         url: this.options.url || "",
-         data: this.options.body || {},
+         data,
+         url: this.options.url,
          method: this.options.method,
          signal: this.signal
-      }).then(res => {
+      }, network).then(res => {
          this.data = res
          this.status = 'success'
          this.isloading = false
@@ -61,7 +76,7 @@ class RequestData extends EventEmitter {
    }
 }
 // 添加一个新的请求对象
-export default function (options) {
+export default function (options, remote) {
    let url = options.url || ""
    let body = options.body || {}
    let test = (url + JSON.stringify(body)).split("").sort().join("")
@@ -70,7 +85,7 @@ export default function (options) {
       //    如果当前请求地址和参数相同，返回已有请求对象
       return reqs[rid.id]
    }
-   let req = new RequestData(options)
+   let req = new RequestData(options, remote)
    ids.push({
       id: req.id,
       test

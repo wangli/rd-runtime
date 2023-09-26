@@ -74,6 +74,12 @@ export const initActions = function () {
             }
          }
          return module
+      },
+      // 接口数据读取
+      remote(target, value) {
+         if (target && target.request) {
+            target.request(() => { }, value)
+         }
       }
    }
 }
