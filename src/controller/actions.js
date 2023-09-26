@@ -1,3 +1,4 @@
+import { isRef, isReactive } from 'vue'
 /**
  * 动作处理
  */
@@ -76,9 +77,21 @@ export const initActions = function () {
          return module
       },
       // 接口数据读取
-      remote(target, value) {
+      readRemote(target, value) {
          if (target && target.request) {
-            target.request(() => { }, value)
+            target.request(null, value)
+         }
+      },
+      // 修改数据对象
+      setGData(target, value) {
+         if (target && target.value) {
+            if (isRef(target.value)) {
+               target.value.value = value
+            } else if (isReactive(target.value)) {
+               Object.assign(target.value, value)
+            } else {
+               target.value = value
+            }
          }
       }
    }

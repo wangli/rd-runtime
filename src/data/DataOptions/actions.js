@@ -36,4 +36,16 @@ export default [{
     target: 'module',
     valueType: 'string',
     value: ""
+}, {
+    name: '远端请求',
+    action: 'readRemote',
+    target: 'remote',
+    valueType: 'object',
+    value: null
+}, {
+    name: '数据修改',
+    action: 'setGData',
+    target: 'gdata',
+    valueType: 'object',
+    value: null
 }]

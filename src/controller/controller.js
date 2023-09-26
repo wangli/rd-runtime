@@ -22,7 +22,7 @@ const defineAction = function (_config) {
  */
 const executeAction = function (action, target, value) {
    if (this.actions[action]) {
-      let { data: { mData: ElementData, rData: remoteData } } = this.app
+      let { data: { mData: ElementData, rData: remoteData, gData: globalData } } = this.app
       // 获取动作类型
       let actionType = ActionTypes.find(n => n.action == action)
       if (actionType) {
@@ -53,6 +53,9 @@ const executeAction = function (action, target, value) {
          } else if (actionType.target == 'remote') {
             // 远程请求
             targetData = remoteData.getRemote(target, true)
+         } else if (actionType.target == 'gdata') {
+            // 修改全局数据对象
+            targetData = globalData.getGData(target)
          }
          // 执行动作
          this.actions[action].call(this.app, targetData, value);
