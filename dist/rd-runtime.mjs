@@ -1651,7 +1651,7 @@ const ZI = function(g) {
     if (iA(I))
       if (typeof I.value == "string" && I.key) {
         let t = this.appData.getDataSource(I.value);
-        t ? ng(t) ? A[I.key] = I.path ? bA(t.data, I.path) : t.data : A[I.key] = I.path ? bA(t, I.path) : t : A[I.key] = I.value;
+        t ? ng(t) ? A[I.key] = I.path ? bA(t.data, I.path) : t.data || t : A[I.key] = I.path ? bA(t, I.path) : t : A[I.key] = I.value;
       } else
         I.key && (A[I.key] = I.value);
   }), A;
@@ -1669,7 +1669,7 @@ class qC extends fA {
     if (this.status == "request")
       return;
     this.isloading = !0, this.status = "request", this.emit("request", this);
-    let t = Object.assign({}, ZI.call(this.remote, I) || {}, I), e = this.network;
+    let t = Object.assign({}, ZI.call(this.remote, this.options.body) || {}, I), e = JSON.parse(JSON.stringify(this.network));
     e.headers && Object.keys(e.headers).forEach((Q) => {
       e.headers[Q] = this.remote.appData.getDataSource(e.headers[Q]);
     }), vB({

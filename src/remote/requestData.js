@@ -32,8 +32,8 @@ class RequestData extends EventEmitter {
       this.isloading = true
       this.status = 'request'
       this.emit("request", this)
-      let data = Object.assign({}, getBodyData.call(this.remote, body) || {}, body)
-      let network = this.network
+      let data = Object.assign({}, getBodyData.call(this.remote, this.options.body) || {}, body)
+      let network = JSON.parse(JSON.stringify(this.network))
       if (network.headers) {
          let kyes = Object.keys(network.headers)
          kyes.forEach(key => {

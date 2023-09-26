@@ -19,7 +19,7 @@ export const getBodyData = function (data) {
                     let _val = this.appData.getDataSource(element.value)
                     if (_val) {
                         if (isReactive(_val)) {
-                            _o[element.key] = element.path ? getValue(_val.data, element.path) : _val.data
+                            _o[element.key] = element.path ? getValue(_val.data, element.path) : _val.data || _val
                         } else {
                             _o[element.key] = element.path ? getValue(_val, element.path) : _val
                         }
