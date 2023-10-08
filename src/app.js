@@ -1,6 +1,6 @@
 import * as vue from 'vue'
 import EventEmitter from 'eventemitter3'
-import { createApp, computed } from 'vue'
+import { computed } from 'vue'
 import { nanoid } from 'nanoid'
 import { getParentSize } from '@/utils'
 import Data from './data'
@@ -82,7 +82,7 @@ export default class App extends EventEmitter {
     // 创建
     create(props = {}) {
         if (!this.vapp) {
-            this.vapp = createApp(Stage, props)
+            this.vapp = vue.createApp(Stage, props)
             // 设置全局配置，可被所有组件访问
             this.vapp.config.globalProperties.AppSetup = this.AppSetup
             this.vapp.config.globalProperties.data = this.data

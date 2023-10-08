@@ -217,7 +217,7 @@ export default class GroupData {
             elements[element.id].x += myGroup.x
             elements[element.id].y += myGroup.y
             elements[element.id].gpid = null
-            elements[element.id].zIndex = myZindex + index
+            // elements[element.id].zIndex = element.zIndex
             ids.push(element.id)
             add && modules.addElement(esSimple[element.id], element.mid)
          })
