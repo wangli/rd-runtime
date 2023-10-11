@@ -1,6 +1,6 @@
 import { h, isReactive, resolveComponent } from 'vue'
 import { getAppGlobal } from '@/utils'
-import createEvent from './createEvent'
+// import createEvent from './createEvent'
 
 /**
  * 创建组件
@@ -35,11 +35,11 @@ export default function (options) {
       const spriteData = mData.getElement(props)
       if (!spriteData) { return }
       let myProps = { id: props, options: spriteData.options, ref }
-      if (spriteData.id) {
-         // 绑定事件
-         let event = { myApp, events: spriteData.events || [], data: spriteData, componentName }
-         Object.assign(myProps, createEvent(event))
-      }
+      // if (spriteData.id) {
+      //    // 绑定事件
+      //    let event = { myApp, events: spriteData.events || [], data: spriteData, componentName }
+      //    Object.assign(myProps, createEvent(event))
+      // }
       // 删除组件定义相关信息
       if (spriteData.data) {
          let _data = myApp.data.getDataSource(spriteData.data)
@@ -53,10 +53,10 @@ export default function (options) {
    } else if (typeof props != 'undefined') {
       // 如果是模块或组合
       let myProps = { ...props }
-      if (props.events) {
-         let event = { myApp, events: props.events || [], data: props, componentName }
-         Object.assign(myProps, createEvent(event))
-      }
+      // if (props.events) {
+      //    let event = { myApp, events: props.events || [], data: props, componentName }
+      //    Object.assign(myProps, createEvent(event))
+      // }
       myProps['ref'] = ref || myProps.id
       // 删除组件定义相关信息
       if (myProps['name']) delete myProps['name']
