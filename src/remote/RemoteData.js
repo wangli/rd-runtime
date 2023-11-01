@@ -164,6 +164,7 @@ export default class extends EventEmitter {
       } else {
          Object.assign(this.data, { data })
       }
+      localStorage.setItem(this.id, JSON.stringify(this.data.data))
    }
    /**
     * 销毁

@@ -51,7 +51,7 @@ const command = {
    emit(eventName, args, force = false) {
       if (typeof force == 'boolean' && force) {
          evtCenter.emit(eventName, args)
-      } else if (buffer(eventName)) {
+      } else if (buffer(eventName, args)) {
          let len = arguments.length
          if (len <= 3) {
             evtCenter.emit(eventName, args, force)

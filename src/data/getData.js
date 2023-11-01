@@ -39,6 +39,10 @@ export default function (app) {
         if (element.type == 'temp') {
             globalData.splice(index, 1)
         }
+        let trigger = element.trigger
+        if (!trigger || (trigger && (!trigger.operator || !trigger.action))) {
+            element.trigger = null
+        }
     })
     return jsonData({
         ...appData.info,

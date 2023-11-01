@@ -110,7 +110,7 @@ export const fillData = function (moduleList) {
                this.newGroup(element, _module.id)
                groupComponents.forEach(sprite => {
                   this.addSprite(sprite, _module.id, sprite.gpid)
-               });
+               })
             } else {
                this.addSprite(element, _module.id)
             }
@@ -133,7 +133,9 @@ export const watchSimples = function (data) {
          if (esSimple[attsVary.id]) {
             let keys = Object.keys(esSimple[attsVary.id])
             keys.forEach(key => {
-               esSimple[attsVary.id][key] = attsVary[key]
+               if (esSimple[attsVary.id][key] != attsVary[key]) {
+                  esSimple[attsVary.id][key] = attsVary[key]
+               }
             })
          }
       })

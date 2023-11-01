@@ -107,7 +107,13 @@ export const getTemplateData = function (...override) {
         width: 1080,
         height: 768,
         scaleMode: 'auto',
-        network: {},
+        network: {
+            host: '',
+            method: 'GET',
+            offline: false,
+            headers: {},
+            watch: ''
+        },
         globalData: [],
         modules: [],
         actions: [],

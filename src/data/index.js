@@ -5,6 +5,7 @@ import { reactive } from 'vue'
 import { jsonData, getScale } from '@/utils'
 import { defineAppSetup, defineAppInfo } from './defineData'
 import { EVENTS } from '@/events'
+import isPlainObject from 'lodash/isPlainObject'
 import cmd from '@/command'
 import getData from './getData'
 import ElementData from './ElementData'
@@ -121,7 +122,14 @@ class AppData {
       return this
    }
    initAppInfo(info) {
-      Object.assign(this.info, info)
+      let keys = Object.keys(this.info)
+      keys.forEach(key => {
+         if (isPlainObject(this.info[key]) && isPlainObject(info[key])) {
+            Object.assign(this.info[key], info[key])
+         } else if (typeof info[key] != 'undefined') {
+            this.info[key] = info[key]
+         }
+      })
    }
    requestRemote() {
       // 请求远端数据
@@ -166,6 +174,10 @@ class AppData {
    // 数据源处理
    getDataSource() {
       return ABind.getDataSource.call(this, ...arguments)
+   }
+   // 数据监听
+   watchDataTrigger() {
+      return ABind.watchDataTrigger.call(this, ...arguments)
    }
    // 清除所有数据
    clearDataAll() {

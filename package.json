@@ -1,6 +1,6 @@
 {
   "name": "rd-runtime",
-  "version": "2.1.9",
+  "version": "2.2.2",
   "main": "./dist/rd-runtime.mjs",
   "module": "./dist/rd-runtime.mjs",
   "scripts": {
@@ -12,6 +12,7 @@
     "animate.css": "^4.1.1",
     "dayjs": "^1.11.7",
     "eventemitter3": "^5.0.0",
+    "idb-keyval": "^6.2.1",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.2",

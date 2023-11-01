@@ -1,4 +1,5 @@
-import { computed } from 'vue'
+import { computed, watch, isRef } from 'vue'
+import CMD from '@/command'
 import getValue from 'lodash/get'
 import jsCookie from 'js-cookie'
 import * as remote from '@/remote'
@@ -35,6 +36,62 @@ export const clearUnwatch = function () {
         this.filterDatas[key] = null
     }
     this.filterDatas = {}
+}
+
+const judgeDataTrigger = function (data, operator, value) {
+    let targetValue = this.getDataSource(value)
+    switch (operator) {
+        case '==':
+            return data == targetValue;
+        case '>':
+            return data > targetValue;
+        case '<':
+            return data < targetValue;
+        case '>=':
+            return data >= targetValue;
+        case '<=':
+            return data <= targetValue;
+
+        default:
+            return false;
+    }
+}
+
+const actionTrigger = function (action, actionValue) {
+    if (this.aData.actions[action]) {
+        let myAction = JSON.parse(JSON.stringify(this.aData.actions[action]))
+        if (typeof actionValue != 'undefined' && actionValue != null) {
+            myAction.value = actionValue
+        }
+        CMD.execute(myAction, '', this.info.id)
+    }
+}
+export const watchDataTrigger = function (data) {
+    if (data && data.id && data.trigger) {
+        let operator = data.trigger.operator
+        let value = data.trigger.value
+        let action = data.trigger.action
+        let actionValue = data.trigger.actionValue
+        if (operator && action) {
+            if (data.type == 'source') {
+                this.unwatch.push(watch(data, newData => {
+                    let srcData = isRef(newData.value) ? newData.value.value : newData.value
+                    if (judgeDataTrigger.call(this, srcData, operator, value)) {
+                        actionTrigger.call(this, action, actionValue)
+                    }
+                }, { deep: true }))
+            } else if (data.type == 'remote' && typeof data.value == 'string') {
+                let _remote = remote.getRemote(data.value)
+                if (_remote) {
+                    this.unwatch.push(watch(_remote.data, newData => {
+                        if (judgeDataTrigger.call(this, newData.data, operator, value)) {
+                            actionTrigger.call(this, action, actionValue)
+                        }
+                    }, { deep: true }))
+                }
+            }
+        }
+    }
 }
 
 /**

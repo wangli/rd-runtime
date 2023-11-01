@@ -25,10 +25,10 @@ export const setIndex = function (spid, newIndex) {
 }
 /**
  * 调整元素层级
- * @param {string}} spid 
- * @param {string} level 
+ * @param {string} spid 
+ * @param {string|number} level 
  */
-export const setZindex = function (spid, level = 'up') {
+export const setZindex = function (spid, level = 'up', move = false) {
     const { mData } = this.appData
     // 所有舞台元素
     const elements = mData.elements
@@ -44,12 +44,37 @@ export const setZindex = function (spid, level = 'up') {
     // 获取所有元素的zIndex排序
     let sprs = mData.getMyElements(sprite.mid).map(item => {
         return {
+            title: item.title,
             id: item.id,
             zIndex: item.zIndex
         }
     }).sort((a, b) => {
         return b.zIndex - a.zIndex
     })
+
+    if (typeof level == 'number') {
+        if (move) {
+            let oldIndex = sprs.findIndex(n => n.id == spid)
+            let newIndex = sprs.findIndex(n => n.zIndex == level)
+            if (newIndex > oldIndex) {
+                // 移动位置层级值小于原有值，
+                for (let i = newIndex; i > oldIndex; i--) {
+                    elements[sprs[i].id].zIndex = sprs[i - 1].zIndex
+                }
+            } else if (newIndex < oldIndex && newIndex > -1) {
+                // 移动位置层级值大于原有值，
+                for (let i = newIndex; i < oldIndex; i++) {
+                    let newZindex = sprs[i + 1].zIndex - 1
+                    elements[sprs[i].id].zIndex = newZindex
+                }
+            }
+            elements[spid].zIndex = level
+        } else {
+            sprite.zIndex = level
+        }
+        return
+    }
+
     if (level == 'up') {
         // 层级向上
         let index = sprs.findIndex(n => n.id == spid)
@@ -121,6 +146,7 @@ export const copyAdd = function (sid, option, gpid = null) {
             delete element.components
         }
         let newGroup = mData.newGroup(element, element.mid)
+        newGroup.zIndex = newGroup.zIndex + groupComponents.length
         groupComponents.forEach((sprite, index) => {
             let zIndex = newGroup.zIndex + 1 + index
             this.copyAdd(sprite.id, { gpid: newGroup.id, zIndex }, newGroup.id)

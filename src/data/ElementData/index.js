@@ -17,7 +17,7 @@ export default class ElementData {
    // 所有元素集合
    elements = {}
    // 元素数据集合（简单副本）
-   esSimple = reactive({})
+   esSimple = {}
    // 监听对象
    unwatchs = {}
    // -------------------

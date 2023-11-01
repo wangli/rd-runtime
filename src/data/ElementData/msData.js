@@ -133,7 +133,7 @@ export const createSimpleData = function (data, value = {}) {
       }
    }
    if (resData) {
-      this.esSimple[resData.id] = resData
+      this.esSimple[resData.id] = reactive(resData)
       return this.esSimple[resData.id]
    }
    return null

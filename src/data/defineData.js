@@ -39,7 +39,11 @@ export const defineAppInfo = function () {
             backgroundColor: "#222222"
         },
         network: {
-            host: '', method: 'GET', headers: {}
+            host: '',
+            method: 'GET',
+            offline: false,
+            headers: {},
+            watch: ''
         },
         scaleMode: 'auto'
     })
@@ -67,13 +71,23 @@ export const defineAction = function (option) {
 
 // 全局数据信息
 export const defineGData = function (option) {
-    const { id, value = "", name = "", type = "source", uptime } = option
+    const { id, value = "", name = "", type = "source", uptime, trigger } = option
+    let myValue = value
+    if (type != 'remote') {
+        myValue = (value instanceof Object) ? reactive(value) : ref(value)
+    }
     return {
         id: id || "GD_" + nanoid(10),
         name,
         type,
-        value: (value instanceof Object) ? reactive(value) : ref(value),
-        uptime: uptime || new Date().getTime()
+        value: myValue,
+        uptime: uptime || new Date().getTime(),
+        trigger: Object.assign({
+            operator: '',
+            value: '',
+            action: '',
+            actionValue: null
+        }, trigger)
     }
 }
 

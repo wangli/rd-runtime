@@ -1,7 +1,7 @@
 import { reactive } from "vue"
-import isPlainObject from 'lodash/isPlainObject'
 import { removeArray } from "@/utils"
 import { definePlugin } from './defineData'
+import isPlainObject from 'lodash/isPlainObject'
 
 export default class PluginData {
     // 数据集合

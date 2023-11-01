@@ -28,6 +28,7 @@ class RequestData extends EventEmitter {
    }
    //    请求数据
    request(callback, body = {}) {
+      if (this.network.offline == true) return;
       if (this.status == 'request') return;
       this.isloading = true
       this.status = 'request'

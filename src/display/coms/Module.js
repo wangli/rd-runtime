@@ -18,7 +18,8 @@ export default {
          const containerList = []
          // 遍历模块数据
          if (components.value) {
-            components.value.forEach((item, i) => {
+            const items = components.value.sort((a, b) => b.zIndex - a.zIndex)
+            items.forEach((item, i) => {
                if (item.visible) {
                   if (AppSetup.develop && props.layout && props.layout.type == 'grid') {
                      let sVNode = null

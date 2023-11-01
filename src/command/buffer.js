@@ -3,7 +3,8 @@
  */
 const eventNames = {}
 const interval = 10;
-export default function (name) {
+let sprid = null
+export default function (name, args) {
     // 过滤发送的事件命令，发送间隔低于10毫秒的不通过
     var ispass = true
     var time = new Date().getTime()
@@ -15,6 +16,14 @@ export default function (name) {
         eventNames[name] = {
             count: 1,
             time: time
+        }
+    }
+    if (ispass) {
+        sprid = null
+    } else if (name == 'action') {
+        if (args && args.sprid != sprid) {
+            ispass = true
+            sprid = args.sprid
         }
     }
     return ispass
